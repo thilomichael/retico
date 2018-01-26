@@ -1,0 +1,50 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites/sct11/messages/conv05_callee.wav -- offset: 0, duration: 00:01:26.821 / 86.821 / 86821
+
+dialogue_act	callee	920	2470	greeting:callee_name	Hallo hier Pizzeria Roma	0.8199888467788696
+
+dialogue_act	callee	13625	16345	provide_info:toppings	die hat Spinat Champignons Tomaten und Käse drauf	0.9407676458358765
+dialogue_act	callee	17175	18355	request_info:num_of_persons	und sagen für zwei Person	0.572106122970581
+dialogue_act	callee	19775	20410	stalling	Ehm	1
+dialogue_act	callee	20410	22350	provide_info:price	dann würde die 17 € kosten	0.8019081950187683
+dialogue_act	callee	27555	28225	provide_partial:toppings-3	Käse	0.9076098799705505
+dialogue_act	callee	28225	28760	provide_partial:toppings-0	und Spinat	0.8953075408935547
+dialogue_act	callee	36705	37395	stalling	Ehm	1
+dialogue_act	callee	37765	42425	provide_info:delivery_duration	das dauert heute so na ich sag mal zwischen 30 und 45	0.8704721331596375
+dialogue_act	callee	42590	44080	request_info:address	am besten sie geben mir noch mal ihre Adresse	0.7754359841346741
+dialogue_act	callee	49080	51280	confirm:address-0	Glücksburger Straße	0.9005352854728699
+dialogue_act	callee	51285	52635	confirm:address-1	41	0.7153915762901306
+dialogue_act	callee	53902	55422	confirm:address-2	in Bochum	0.9153555631637573
+dialogue_act	callee	56600	59980	provide_info:delivery_duration	das sollte nicht länger als 45 Minuten da	0.944033682346344
+dialogue_act	callee	59985	61555	request_info:telephone	geben Sie mir noch mal Ihre Telefonnummer	0.8426864743232727
+dialogue_act	callee	64141	65841	confirm:telephone-0,telephone-1	08	0.6428520083427429
+dialogue_act	callee	65846	67226	confirm:telephone-2,telephone-3	11	0.7734475135803223
+dialogue_act	callee	69500	70620	confirm:telephone-4	7	0.17069341242313385
+dialogue_act	callee	73470	75270	confirm:telephone-7,telephone-8	20	0.9027125239372253
+dialogue_act	callee	75275	76385	confirm:telephone	alles klar	0.8983728289604187
+dialogue_act	callee	76605	77065	confirm	gut	0.8822888135910034
+dialogue_act	callee	77320	77740	stalling	Ehm	1
+dialogue_act	callee	83645	84005	confirm	super	0.7125205993652344
+dialogue_act	callee	85190	85730	goodbye	tschüss	0.733812153339386
+dialogue_act.	callee	922	1366	greeting	Hallo	0.7762777209281921
+dialogue_act.	callee	1366	2477	provide_info:callee_name	Pizzeria Roma	0.9467979669570923
+
+dialogue_act.	callee	13620	14380	provide_partial:toppings-1	die hat Spinat	0.935019314289093
+dialogue_act.	callee	14385	14935	provide_partial:toppings-2	Champignon	0.9814176559448242
+dialogue_act.	callee	14935	15325	provide_partial_toppings-3	und Käse	1
+dialogue_act.	callee	15325	15835	provide_partial:toppings-4	und Käse	0.8619704246520996
+dialogue_act.	callee	17330	18350	request_info:num_of_persons	für zwei Person	0.48414143919944763
+dialogue_act.	callee	19775	22355	provide_info:price	dann würde die 17 € kosten	0.8006422519683838
+dialogue_act.	callee	49085	52635	confirm:address	Glücksburger Straße 41	0.9293947219848633
+dialogue_act.	callee	53907	56187	confirm:address-2	in Bochum okay	0.6502570509910583
+dialogue_act.	callee	69503	75281	confirm:telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	73420	0.4415927529335022
+
+dialogue_act..	callee	49085	53255	request_info:address-2	Glücksburger Straße 41a	0.9013878703117371
+dialogue_act..	callee	69502	71502	confirm:telephone-4,telephone-5	73	0.0
+dialogue_act..	callee	71513	75291	confirm:telephone-6,telephone-7,telephone-8	420	0.9104501008987427
+dialogue_act...	callee	70624	71513	confirm:telephone-5	drei	0.0
+dialogue_act...	callee	72912	73479	confirm:telephone-6	4	0.253909707069397
+dialogue_act...	callee	73495	74350	confirm:telephone-7	2	0.32001128792762756
+dialogue_act...	callee	74355	75277	confirm:telephone-8	0	0.6591271162033081
+dialogue_act....	callee	73488	75288	confirm:telephone-7,telephone-8	20	0.9023318290710449
+dialogue_act.....	callee	69510	74355	confirm:telephone-4,telephone-5,telephone-6,telephone-7	7342	0.5622996687889099
+dialogue_act......	callee	72927	75282	confirm:telephone-6,telephone-7,telephone-8	420	0.9103120565414429

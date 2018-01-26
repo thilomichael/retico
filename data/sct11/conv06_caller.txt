@@ -1,0 +1,35 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/sct11/messages/conv06_caller.wav -- offset: 0, duration: 00:00:58.126 / 58.126 / 58126
+
+dialogue_act	caller	2430	4260	greeting:caller_name	hallo mein Name ist Jeremy Clemens	0.9108478426933289
+dialogue_act	caller	4260	5840	provide_info:reason	ich bräuchte eine große Pizza	0.9624990224838257
+dialogue_act	caller	5845	6805	provide_info:num_of_persons	für zwei Personen	0.8787954449653625
+dialogue_act	caller	7730	9080	provide_info:pizza_type	am besten vegetarisch	0.9395661950111389
+dialogue_act	caller	26920	27320	confirm	Ja	1
+dialogue_act	caller	27325	29095	request_info:price	was fährt denn so der Preis noch mal	0.649061918258667
+dialogue_act	caller	31458	32068	confirm	okay	0.9045037627220154
+dialogue_act	caller	35783	37713	provide_info:caller_name	mein Name ist Jeremy Clemens	0.6242921948432922
+dialogue_act	caller	40240	43620	provide_partial:address-0,address-1,address-2	Glücksburger Straße 41 in Bochum	0.9163877367973328
+dialogue_act	caller	44690	49980	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	und Telefon werden 08117 43020	0.2749921381473541
+dialogue_act	caller	51500	53750	request_info:delivery_duration	und wie lange dauert es bis ich die Pizza bekommen	0.924426257610321
+dialogue_act	caller	54885	55300	confirm	okay	0.8462734222412109
+dialogue_act	caller	55300	55920	thanks	vielen Dank	0.9235788583755493
+dialogue_act	caller	56845	57255	goodbye	Auf Wiedersehen	1
+dialogue_act.	caller	5840	9080	provide_info:num_of_persons,pizza_type	für zwei Personen und am besten vegetarisch	0.8978500962257385
+dialogue_act.	caller	27325	28655	request_info:price	was fährt denn so der Preis	0.6734676957130432
+dialogue_act.	caller	36008	37718	provide_info_caller_name	mein Name ist Jeremy Clemens	0.926017165184021
+dialogue_act.	caller	40245	41740	provide_partial:address-0	Glücksburger Straße	0.8975680470466614
+dialogue_act.	caller	41740	42780	provide_partial:address-1	41	0.5134342312812805
+dialogue_act.	caller	42785	43625	provide-partial:address-2	in Bochum	0.9148934483528137
+dialogue_act.	caller	45460	49980	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	Telefon werden 0811 734 20	0.4675268530845642
+dialogue_act.	caller	51730	53750	request_info:delivery_duration	wie lange dauert es bis ich die Pizza bekommen	0.9075500965118408
+dialogue_act..	caller	4265	6805	provide_info:reason,num_of_persons	ich bräuchte eine große Pizza für zwei Personen	0.7832381129264832
+dialogue_act..	caller	40245	42785	provide_partial:address-0,address-1	Glücksburger Straße 41	0.9379118084907532
+dialogue_act..	caller	46305	46860	provide_partial:telephone-1	08	0.7222568988800049
+dialogue_act..	caller	46860	47350	provide_partial:telephone-2,telephone-3	11	1
+dialogue_act..	caller	47840	48380	provide_partial:telephone-4	7	0.29040685296058655
+dialogue_act..	caller	48455	49225	provide_partial:telephone-5,telephone-6	34	0.765914261341095
+dialogue_act..	caller	49225	49985	provide_partial:telephone-7,telephone-8	20	0.2970699369907379
+dialogue_act...	caller	4260	9080	provide_info:reason,num_of_persons,pizza_type	ich bräuchte eine große Pizza für zwei Personen und am besten vegetarisch	0.8321099281311035
+dialogue-act....	caller	7730	11980	provide_info:pizza_type	am besten vegetarisch bevorzuge ich was haben sie da so für Möglichkeiten	0.845526933670044
+dialogue_act.....	caller	5840	11980	provide_info:num_of_persons,pizza_type	für zwei Personen und am besten vegetarisch bevorzuge ich was haben sie da so für Möglichkeiten	0.8997342586517334
+dialogue_act......	caller	4260	11980	provide_info:reason,num_of_persons,pizza_type	ich bräuchte eine große Pizza für zwei Personen und am besten vegetarisch bevorzuge ich was haben sie da so für Möglichkeiten	0.8666805028915405

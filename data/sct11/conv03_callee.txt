@@ -1,0 +1,22 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites/sct11/messages/conv03_callee.wav -- offset: 0, duration: 00:01:03.091 / 63.091 / 63091
+
+dialogue_act	callee	910	2370	greeting:callee_name	Hallo Pizzeria Roma hier	0.8721833229064941
+dialogue_act	callee	11980	14050	request_info:offer	okay also wir haben die Vegetarier	0.9503660798072815
+dialogue_act	callee	14260	14870	provide_partial:toppings-0	mit Spinat	0.9537948369979858
+dialogue_act	callee	14905	15445	provide_partial:toppings-1	Champignons	0.7198420166969299
+dialogue_act	callee	15455	15755	provide_partial:toppings-2	Tomaten	1
+dialogue_act	callee	15895	16195	provide_partial:toppings-3	und Käse	1
+dialogue_act	callee	25495	26030	provide_partial:toppings-0	Spinat	1
+dialogue_act	callee	26030	26660	provide_partial:toppings-1	Champignons	0.8363962769508362
+dialogue_act	callee	26675	27025	provide_partial:toppings-2	Tomaten	1
+dialogue_act	callee	27130	27370	provide_partial:toppings-3	und Käse	1
+dialogue_act	callee	29980	31350	provide_info:price	17 € für Tag	0.7011054158210754
+dialogue_act	callee	33875	36505	request_info:address	dann bräuchte noch mal kurz ihre Adresse und ihre Namen	0.7213853597640991
+dialogue_act	callee	41990	42450	confirm	Ja	1
+dialogue_act	callee	46550	46900	confirm	Ja	1
+dialogue_act	callee	50155	50595	confirm	Ja	1
+dialogue_act	callee	57265	60175	provide_info:delivery_duration	also 45 Minuten müssen sie mit rechnen	0.6040676832199097
+dialogue_act	callee	62070	62850	goodbye	tschüss	0.713247537612915
+dialogue_act.	callee	910	1390	greeting	Hallo	0.7764597535133362
+dialogue_act.	callee	1390	2370	provide_info:callee_name	Pizzeria Roma hier	0.9335916042327881
+dialogue_act.	callee	11965	16285	request_info:offer	okay also wir haben die Vegetaria mit Spinat Champignons Tomaten und Käse	0.8502141833305359

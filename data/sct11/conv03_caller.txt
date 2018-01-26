@@ -1,0 +1,30 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites/sct11/messages/conv03_caller.wav -- offset: 0, duration: 00:01:03.091 / 63.091 / 63091
+
+dialogue_act	caller	2850	4860	greeting:caller_name	wir haben Tag mein Name ist Jeremy klehm	0.8149881362915039
+dialogue_act	caller	4870	6820	provide_info:reason	ich hätte gerne eine große Pizza	0.9685503840446472
+dialogue_act	caller	6870	8550	provide_info:num_of_persons	für zwei Personen	0.9405243992805481
+dialogue_act	caller	8950	10690	provide_info:pizza_type	am besten wir Gitarre schon wieder eine	0.8097492456436157
+dialogue_act	caller	48455	48965	provide_partial:telephone-0,telephone-1	08	0.6397626996040344
+dialogue_act	caller	50895	52495	provide_partial:telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	73420	0.44989290833473206
+dialogue_act.	caller	2850	3360	greeting	irgend	0.8773609399795532
+dialogue_act.	caller	3360	4860	provide_info:caller_name	mein Name ist Jeremy Klemm	0.7580587863922119
+dialogue_act.	caller	4870	10680	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für zwei Personen und am besten vegetarisch an sie da eine	0.819150984287262
+dialogue_act.	caller	46240	48960	provide_partial:telephone-0,telephone-1	und die Telefonnummer 08	0.7298648953437805
+dialogue_act..	caller	4865	8455	provide_info:reason,num_of_persons	ich hätte gerne eine große Pizza für zwei Personen	0.7780714631080627
+dialogue_act..	caller	48960	49560	provide_partial:telephone-2,telephone-3	11	0.45717135071754456
+dialogue_act...	caller	6840	10700	provide_info:num_of_persons,pizza_type	für zwei Personen und am besten Sie Gitarre haben sie da eine	0.8615557551383972
+dialogue_act...	caller	17370	18180	confirm	okay	0.400913268327713
+dialogue_act...	caller	20815	23315	provide_info:offer	dann nehme ich dann nämlich die Vegetarier	0.8121176362037659
+dialogue_act...	caller	23335	24845	request_info:toppings	dann können wir kurz sagen was da drauf ist	0.8363277912139893
+dialogue_act...	caller	29030	30050	request_info:price	und wie teuer ist die	0.9155448079109192
+dialogue_act...	caller	32260	33520	confirm:price	okay dann nehme ich die	0.9537407755851746
+dialogue_act...	caller	36630	39070	provide_partial:address-0,address-1	das ist die Glücksburger Straße 41	0.9373396039009094
+dialogue_act...	caller	39530	40460	provide_partial:address-2	in Bochum	0.9753068685531616
+dialogue_act...	caller	42190	44430	provide_info:caller_name	mein Name ist Jeremy Clemens	0.916168212890625
+dialogue_act...	caller	46245	49565	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	und die Telefonnummer 0 811	0.7674517631530762
+dialogue_act...	caller	50890	51840	provide_partial:telephone-4,telephone-5,telephone-6	734	0.7392693758010864
+dialogue_act...	caller	51855	52495	provide_partial:telephone-7,telephone-8	20	0.9005655646324158
+dialogue_act...	caller	54535	55825	request_info:delivery_duration	wie lange dauert das ungefähr	0.6437211036682129
+dialogue_act...	caller	60180	61570	thanks	okay alles klar danke schön	0.9745030403137207
+dialogue_act...	caller	62525	62995	goodbye	tschüss	0.5551245212554932
+dialogue_act....	caller	48450	49560	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	0811	0.4254392981529236

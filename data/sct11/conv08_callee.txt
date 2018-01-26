@@ -1,0 +1,37 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/sct11/messages/conv08_callee.wav -- offset: 0, duration: 00:00:59.163 / 59.163 / 59163
+
+dialogue_act	callee	970	2620	greeting:callee_name	Pizza Roma guten Tag	0.7917293906211853
+dialogue_act	callee	12210	13010	confirm	okay	0.0
+dialogue_act	callee	13185	15395	request_confirm:num_of_persons	für zwei Personen	0.9343314170837402
+dialogue_act	callee	16875	17375	stalling	Ehm	1
+dialogue_act	callee	17400	18850	request_confirm:pizza_type	vegetarisch	0.9814176559448242
+dialogue_act	callee	19265	19575	stalling	Ehm	1
+dialogue_act	callee	20370	21440	provide_info:price	für 17 €	0.6209754347801208
+dialogue_act	callee	24095	24475	confirm	Ja	1
+dialogue_act	callee	26000	26450	stalling	Ehm	1
+
+dialogue_act	callee	29680	29980	confirm	Ja	1
+dialogue_act	callee	31415	33035	request_info:address	du sollst leben	0.6708311438560486
+dialogue_act	callee	34440	37030	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9711432456970215
+dialogue_act	callee	41160	43520	request_info:address	sage mir schnell Ihre Adresse wo ich hin liefern soll	0.7121568918228149
+dialogue_act	callee	46610	47090	confirm	ja	0.8502591252326965
+dialogue_act	callee	48805	49595	request_confirm:telephone-0,telephone-1	08	0.6397662162780762
+dialogue_act	callee	50735	51305	request_confirm:telephone-2,telephone-3	f	0.5248062014579773
+dialogue_act	callee	52455	52955	request_confirm:telephone-4	7	0.31614479422569275
+dialogue_act	callee	54290	55790	request_confirm:telephone-5,telephone-6	34	0.7638657093048096
+dialogue_act	callee	56405	57065	request_confirm:telephone-7,telephone-8	20	0.29664748907089233
+dialogue_act	callee	57280	57780	confirm	Ja	1
+dialogue_act	callee	58209	58919	welcome	bitte schön	0.5635591745376587
+dialogue_act	callee	58919	59164	goodbye	Auf Wiedersehen	1
+dialogue_act.	callee	970	1940	provide_info:callee_name	Pizza Roma	0.9530573487281799
+dialogue_act.	callee	1940	2620	greeting	guten Tag	0.9424264430999756
+dialogue_act.	callee	34440	34920	provide_partial:toppings-0	Spinat	1
+dialogue_act.	callee	34925	35965	provide_partial:toppings-1	Champignons	0.7454080581665039
+dialogue_act.	callee	35965	36365	provide_partial:toppings-2	Tomaten	1
+dialogue_act.	callee	36490	37030	provide_partial:toppings-3	Käse	0.9100109338760376
+dialogue_act.	callee	41165	42525	request_info:address	sag mir schnell Ihre Adresse	0.5280712246894836
+dialogue_act..	callee	34440	36360	provide_partial:toppings-0,toppings-1,toppings-2	Spinat Champignons	0.4656839072704315
+dialogue_act...	callee	34925	37035	provide_partial:toppings-1,toppings-2,toppings-3	Champignons Tomaten und Käse	0.9617151618003845
+dialogue_act....	callee	34445	35960	provide_partial:toppings-0,toppings-1	Spinat Champignons	0.8182412385940552
+dialogue_act....	callee	35960	37030	provide_partial:toppings-2,toppings-3	Tomaten und Käse	0.9293115735054016
+dialogue_act.....	callee	34920	36360	provide_partial:toppings-1,toppings-2	Champignons dummer	0.40408363938331604

@@ -1,0 +1,41 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/sct11/messages/conv05_caller.wav -- offset: 0, duration: 00:01:26.821 / 86.821 / 86821
+
+dialogue_act	caller	2520	4950	greeting:callee_name	schon wieder Jeremy Lin ist mein Name	0.7904626727104187
+dialogue_act	caller	4953	8913	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für 2 Personen vegetarisch wäre super	0.7855420112609863
+dialogue_act	caller	18810	19300	confirm	genau	0.9814176559448242
+dialogue_act	caller	23204	24804	request_confirm:price	17 € am	0.6281467080116272
+dialogue_act	caller	24809	25784	confirm:toppings-2	Tomaten	0.9252022504806519
+dialogue_act	caller	25784	26954	confirm:toppings-1	Champignons	0.8398644924163818
+dialogue_act	caller	26954	27514	stalling	Ehm	1
+dialogue_act	caller	29649	29904	confirm:toppings-3	Käse	1
+dialogue_act	caller	29904	30304	confirm:toppings-0	ich bin	0.4949151873588562
+dialogue_act	caller	30309	31109	confirm:toppings	das hört sich gut an	0.9218395352363586
+dialogue_act	caller	31614	32744	stalling	Ehm	1
+dialogue_act	caller	34170	36200	request_info:delivery_duration	wie lange dauert es ungefähr bis die Pizza geliefert wird	0.9320536851882935
+dialogue_act	caller	45160	45580	confirm	Ja	1
+dialogue_act	caller	45580	48810	provide_partial:address-0,address-1	das kommt dann in die Glücksburger Straße 41	0.9278708100318909
+dialogue_act	caller	53565	54105	provide_partial:address-2	Bochum	0.9814176559448242
+dialogue_act	caller	61705	61975	stalling	Ehm	1
+dialogue_act	caller	61977	63727	provide_partial:telephone-0,telephone-1	Jan das ist die 08	0.8205083608627319
+dialogue_act	caller	63727	64607	provide_partial:telephone-2,telephone-3	11	0.775566816329956
+dialogue_act	caller	68088	68663	stalling	Ehm	1
+dialogue_act	caller	68663	68962	provide-partial:telephone-4	7	0.47351589798927307
+dialogue_act	caller	68962	71842	provide_partial:telephone-5,telephone-6	drei	0.0
+dialogue_act	caller	71847	72467	provide_partial:telephone-7,telephone-8	20	0.9027277827262878
+dialogue_act	caller	82902	83332	confirm	perfekt	0.6466658115386963
+dialogue_act	caller	84752	85292	goodbye	tschüss	0.7225276827812195
+dialogue_act.	caller	2520	3510	greeting	schon wieder	0.909273624420166
+dialogue_act.	caller	3510	4950	provide_info:caller_name	Jeremy Lin ist mein Name	0.8404823541641235
+dialogue_act.	caller	4953	7883	provide_info:reason,num_of_persons	ich hätte gerne eine große Pizza für zwei Personen	0.7748636603355408
+dialogue_act.	caller	7883	8913	provide_info:pizza_type	die Gitarre schwer super	0.2626677453517914
+dialogue_act.	caller	31624	33374	stalling	Ehm	1
+dialogue_act.	caller	45160	48810	provide_partial:address-0,address-1	okay das kommt dann in die Glücksburger Straße 41	0.8430450558662415
+dialogue_act.	caller	62277	63727	provide_partial:telephone-0,telephone-1	das ist die 08	0.8890483379364014
+dialogue_act..	caller	4950	6570	provide_info:reason	ich hätte gerne eine große Pizza	0.9236242175102234
+dialogue_act..	caller	45580	47820	provide_partial:address-0	das kommt dann in die Glücksburger Straße	0.9045032858848572
+dialogue_act..	caller	47825	48815	provide_partial:address-1	41	0.7153967618942261
+dialogue_act..	caller	62717	63727	provide_partial:telephone-0,telephone-1	in 08	0.0
+dialogue_act...	caller	62722	63272	provide_partial:telephone-0	0	0.27793335914611816
+dialogue_act...	caller	63282	63732	provide_partial:telephone-1	8	0.2575143575668335
+dialogue_act...	caller	63737	63987	provide_partial:telephone-2	1	1
+dialogue_act...	caller	63992	64612	provide_partial:telephone-3	1	1

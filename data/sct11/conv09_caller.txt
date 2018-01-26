@@ -1,0 +1,22 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/sct11/messages/conv09_caller.wav -- offset: 0, duration: 00:00:50.401 / 50.401 / 50401
+
+dialogue_act	caller	3210	6210	greeting:caller_name	hallo hier ist Jeremy Clemens	0.9248722791671753
+dialogue_act	caller	6210	10380	provide_info:reason,num_of_persons	ich hätte gerne eine große Pizza für zwei Personen	0.8080210089683533
+dialogue_act	caller	13795	16575	provide_info:pizza_type	ja am besten der vegetarische	0.603459358215332
+dialogue_act	caller	25055	26415	request_info:toppings	was ist da drauf	0.9523932337760925
+dialogue_act	caller	30545	31515	confirm:toppings	alles klar	0.9150503873825073
+dialogue_act	caller	31824	34624	request_info:delivery_duration	wie lange dauert es eigentlich bis die Pizza geliefert wird	0.8082174062728882
+dialogue_act	caller	38959	44599	provide_partial:address-0,address-1,address-2	die Lieferadresse wären die Glücksburger Straße 41 in Bochum	0.747078001499176
+dialogue_act	caller	48010	48560	thanks	Killer	0.12158495932817459
+dialogue_act.	caller	3210	3590	greeting	Hallo	0.776277482509613
+dialogue_act.	caller	3590	6210	provide_info:caller_name	Jeremy Klemens	0.3836817443370819
+dialogue_act.	caller	6210	8740	provide_info:reason	ich hätte gerne eine große Pizza	0.9685377478599548
+dialogue_act.	caller	8740	10380	provide_info:num_of_persons	für zwei Personen	0.8829047083854675
+dialogue_act.	caller	14090	16570	provide_info:pizza_type	am besten der vegetarische	0.5355014204978943
+dialogue_act.	caller	40454	44594	provide_partial:address-0,address-1,address-2	Glücksburger Straße 41 in Bochum	0.8532586097717285
+dialogue_act..	caller	3590	10380	provide_info:caller_name,reason,num_of_persons	Jeremy Klemens ich hätte gerne eine große Pizza für zwei Personen	0.7642295956611633
+dialogue_act..	caller	40459	41894	provide_partial:address-0	Glücksburger Straße	0.8952236175537109
+dialogue_act..	caller	41894	43084	provide_partial:address-1	einen 14	0.32504400610923767
+dialogue_act..	caller	43084	44594	provide_partial:address-2	in Bochum	0.9477750658988953
+dialogue_act...	caller	40454	43084	provide_partial:address-0,address-1	Glücksburger Straße 41	0.9451567530632019
+dialogue_act....	caller	41894	44594	provide_partial:address-1,address-2	einen 14 in Bochum	0.541167676448822

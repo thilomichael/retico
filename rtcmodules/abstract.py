@@ -49,7 +49,7 @@ class IncrementalUnit():
             current one.
         grounded_in (IncrementalUnit): A link to the IU this IU is based on.
         created_at (float): The UNIX timestamp of the moment the IU is created.
-        meta_data (map): Meta data that offers optional meta information. This
+        meta_data (dict): Meta data that offers optional meta information. This
             field can be used to add information that is not available for all
             uses of the specific incremental unit.
     """
@@ -77,6 +77,8 @@ class IncrementalUnit():
         self.mutex = threading.Lock()
 
         self.meta_data = {}
+        if grounded_in:
+            self.meta_data = {**grounded_in.meta_data}
 
         self.created_at = time.time()
 

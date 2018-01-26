@@ -18,7 +18,7 @@ class AudioIncrementalUnit(abstract.IncrementalUnit):
         raw_audio (bytes[]): The raw audio of this IU
         rate (int): The frame rate of this IU
         nframes (int): The number of frames of this IU
-        sample_width (int): The bits per sample of this IU
+        sample_width (int): The bytes per sample of this IU
     """
 
     @staticmethod

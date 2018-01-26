@@ -47,12 +47,11 @@ class SpeakerModule(abstract.AbstractConsumingModule):
         print("FRAME DROP")
         return (b'0'*frame_count*self.s_width_bytes, pyaudio.paContinue)
 
-    def __init__(self, chunk_size, rate=44100, sample_width=16):
+    def __init__(self, chunk_size, rate=44100, sample_width=2):
         super().__init__()
         self.chunk_size = chunk_size
         self.rate = rate
         self.sample_width = sample_width
-        self.s_width_bytes = sample_width/8
 
         self._p = pyaudio.PyAudio()
 
@@ -68,7 +67,7 @@ class SpeakerModule(abstract.AbstractConsumingModule):
     def setup(self):
         """Set up the speaker for speaking...?"""
         p = self._p
-        self.stream = p.open(format=p.get_format_from_width(self.s_width_bytes),
+        self.stream = p.open(format=p.get_format_from_width(self.sample_width),
                              channels=CHANNELS,
                              rate=self.rate,
                              input=False,

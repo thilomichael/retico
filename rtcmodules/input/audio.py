@@ -45,7 +45,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
             self.audio_buffer.append(in_data)
         return (in_data, pyaudio.paContinue)
 
-    def __init__(self, chunk_size, rate=44100, sample_width=16):
+    def __init__(self, chunk_size, rate=44100, sample_width=2):
         """
         Initialize the Microphone Module.
 
@@ -53,7 +53,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
             chunk_size (int): The number of frames that should be stored in one
                 AudioIncrementalUnit
             rate (int): The frame rate of the recording
-            sample_width (int): The width of a single sample of audio in bits.
+            sample_width (int): The width of a single sample of audio in bytes.
         """
         super().__init__()
         self.chunk_size = chunk_size
@@ -79,8 +79,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
     def setup(self):
         """Set up the microphone for recording."""
         p = self._p
-        sample_width_bytes = self.sample_width / 8
-        self.stream = p.open(format=p.get_format_from_width(sample_width_bytes),
+        self.stream = p.open(format=p.get_format_from_width(self.sample_width),
                              channels=CHANNELS,
                              rate=self.rate,
                              input=True,
