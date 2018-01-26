@@ -471,7 +471,7 @@ class AbstractConsumingModule(AbstractModule):
 
     @staticmethod
     def output_iu():
-        raise NotImplementedError()
+        return None
 
     def subscribe(self, module, q=None):
         raise ValueError("Consuming Modules do not produce any output")

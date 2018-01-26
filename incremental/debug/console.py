@@ -17,10 +17,6 @@ class DebugModule(abstract.AbstractConsumingModule):
     def input_ius():
         return [abstract.IncrementalUnit]
 
-    @staticmethod
-    def output_iu():
-        return None
-
     def process_iu(self, input_iu):
         print("Debug:", input_iu)
         print("  PreviousIU:", input_iu.previous_iu)
