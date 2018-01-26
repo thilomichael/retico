@@ -3,7 +3,7 @@ This module redefines the abstract classes to fit the needs of automatic speech
 recognizer.
 """
 
-from rtcmodules import abstract
+from incremental import abstract
 
 class TextIU(abstract.IncrementalUnit):
     """An IU that contains text."""

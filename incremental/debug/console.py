@@ -1,6 +1,6 @@
 """A module for debug output."""
 
-from rtcmodules import abstract
+from incremental import abstract
 
 class DebugModule(abstract.AbstractConsumingModule):
     """A debug module that prints the IUs that are coming in."""

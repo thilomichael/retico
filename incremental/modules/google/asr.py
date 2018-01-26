@@ -1,12 +1,10 @@
 """
-A Module that utilizes the Google Speech API for incremental speech recognition.
-
-This module needs the Google Speech API
+A Module that offers different types of real time speech recognition.
 """
 
 import queue
 import threading
-from rtcmodules import abstract, speech, audio
+from incremental import abstract, audio, speech
 from google.cloud import speech as gspeech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -47,11 +45,11 @@ class GoogleASRModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [audio.AudioIncrementalUnit]
+        return [audio.common.AudioIncrementalUnit]
 
     @staticmethod
     def output_iu():
-        return speech.SpeechRecognitionIU
+        return speech.common.SpeechRecognitionIU
 
     def process_iu(self, input_iu):
         self.audio_buffer.put(input_iu.raw_audio)

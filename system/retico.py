@@ -1,10 +1,9 @@
-
-from rtcmodules import abstract
-from rtcmodules.input.audio import MicrophoneModule
-from rtcmodules.output.audio import SpeakerModule
-from rtcmodules.output.debug import DebugModule
-from rtcmodules.asr.google import GoogleASRModule
 import time
+
+from incremental import abstract
+from incremental.audio.io import MicrophoneModule, SpeakerModule
+from incremental.debug.console import DebugModule
+from incremental.modules.google.asr import GoogleASRModule
 
 def main():
     print("Hello World! oijoij")

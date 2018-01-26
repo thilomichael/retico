@@ -1,7 +1,7 @@
 """
 This module defines the information units concerning abstract concepts.
 """
-from rtcmodules import abstract
+from incremental import abstract
 
 
 class DialogueActIncrementalUnit(abstract.IncrementalUnit):

@@ -2,7 +2,7 @@
 This module redefines the abstract classes to fit the needs of audio processing.
 """
 
-from rtcmodules import abstract
+from incremental import abstract
 
 class AudioIncrementalUnit(abstract.IncrementalUnit):
     """An audio incremental unit that receives raw audio data from a source.

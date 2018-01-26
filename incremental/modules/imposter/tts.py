@@ -2,7 +2,7 @@
 Imposter Text to Speech
 """
 
-from rtcmodules import abstract, speech, audio
+from incremental import abstract, speech, audio
 
 class ImposterTTSModule(abstract.AbstractModule):
     """An Imposter TTS Module that uses meta information of incoming IUs to
@@ -19,11 +19,11 @@ class ImposterTTSModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [speech.TextIU]
+        return [speech.common.TextIU]
 
     @staticmethod
     def output_iu():
-        return audio.AudioIncrementalUnit
+        return audio.common.AudioIncrementalUnit
 
     def process_iu(self, input_iu):
         output_iu = self.create_iu(input_iu)

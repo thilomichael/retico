@@ -9,7 +9,7 @@ by taking in dialogue acts and concepts and producing a text.
 
 import random
 
-from rtcmodules import abstract, concept, speech
+from incremental import abstract, dialogue, speech
 from database.imposter import ImposterDB
 
 class ImposterNLGModule(abstract.AbstractModule):
@@ -27,11 +27,11 @@ class ImposterNLGModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [concept.DialogueActIncrementalUnit]
+        return [dialogue.common.DialogueActIncrementalUnit]
 
     @staticmethod
     def output_iu():
-        return speech.TextIU
+        return speech.common.TextIU
 
     def __init__(self, data_directory):
         self.data_directory = data_directory
