@@ -1,10 +1,10 @@
 import time
 
-from incremental.modules.simulation import nlg, tts, audio, asr, nlu
-from incremental.audio import io
-from incremental import abstract
-from incremental.dialogue.common import DispatchableActIU
-from incremental.debug.general import CallbackModule
+from retico.modules.simulation import nlg, tts, audio, asr, nlu
+from retico.audio import io
+from retico import abstract
+from retico.dialogue.common import DispatchableActIU
+from retico.debug.general import CallbackModule
 
 
 def main():
@@ -15,7 +15,7 @@ def main():
     m4 = io.StreamingSpeakerModule(5000)
     m5 = asr.SimulatedASRModule()
     m6 = nlu.SimulatedNLUModule()
-    m7 = CallbackModule(lambda x: print(x.previous_iu))
+    m7 = CallbackModule(lambda x: print(x.get_text()))
     m8 = io.AudioRecorderModule("test.wav")
     m1.subscribe(m2)
     m2.subscribe(m3)
@@ -37,6 +37,7 @@ def main():
     input()
     print("MOEP")
     iQ.put(DispatchableActIU(creator=None, act="provide_info", concepts={"reason":"","num_of_persons":"","pizza_type":""}, dispatch=True))
+    input()
     print("MOEP")
     iQ.put(DispatchableActIU(creator=None, act="greeting", dispatch=True))
     input()

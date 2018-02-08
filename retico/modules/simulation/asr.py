@@ -7,9 +7,9 @@ The simulation.asr module tries to mimic real automatic speech recognition
 modules by taking in audio and producing text.
 """
 
-from incremental import abstract
-from incremental.text.common import SpeechRecognitionIU
-from incremental.audio.common import AudioIU
+from retico import abstract
+from retico.text.common import SpeechRecognitionIU
+from retico.audio.common import AudioIU
 
 
 class SimulatedASRModule(abstract.AbstractModule):

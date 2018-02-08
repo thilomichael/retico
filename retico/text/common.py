@@ -3,7 +3,7 @@ This module redefines the abstract classes to fit the needs of automatic speech
 recognizer.
 """
 
-from incremental import abstract
+from retico import abstract
 
 
 class TextIU(abstract.IncrementalUnit):

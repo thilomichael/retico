@@ -1,6 +1,6 @@
 """A module for debug output to the console."""
 
-from incremental import abstract
+from retico import abstract
 
 
 class DebugModule(abstract.AbstractConsumingModule):

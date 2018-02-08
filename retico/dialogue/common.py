@@ -1,7 +1,7 @@
 """
 This module defines the information units concerning abstract concepts.
 """
-from incremental import abstract
+from retico import abstract
 
 
 class DialogueActIU(abstract.IncrementalUnit):

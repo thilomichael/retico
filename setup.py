@@ -10,7 +10,7 @@ The run the simulation:
 """
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
 except ImportError:
     from distutils.core import setup
 
@@ -22,10 +22,10 @@ config = {
     'author_email': 'thilo.michael@tu-berlin.de',
     'version': '0.1',
     'install_requires': ['pyaudio', 'google-cloud-speech'],
-    'packages': ["rtcmodules", "system"],
+    'packages': find_packages(),
     'entry_points': {
         'console_scripts': [
-            'retico=system.retico:main',
+            'retico-builder=retico_builder.main:main',
         ],
     },
     'name': 'ReTiCo',

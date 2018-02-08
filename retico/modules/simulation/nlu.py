@@ -1,8 +1,8 @@
 """Module for simulated natural language understanding."""
 
-from incremental import abstract
-from incremental.text.common import SpeechRecognitionIU
-from incremental.dialogue.common import DialogueActIU
+from retico import abstract
+from retico.text.common import SpeechRecognitionIU
+from retico.dialogue.common import DialogueActIU
 
 
 class SimulatedNLUModule(abstract.AbstractModule):

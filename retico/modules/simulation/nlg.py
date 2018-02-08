@@ -9,9 +9,9 @@ by taking in dialogue acts and concepts and producing a text.
 
 import random
 
-from incremental import abstract
-from incremental.text.common import GeneratedTextIU
-from incremental.dialogue.common import DispatchableActIU
+from retico import abstract
+from retico.text.common import GeneratedTextIU
+from retico.dialogue.common import DispatchableActIU
 from database.simulation import SimulatioDB
 
 

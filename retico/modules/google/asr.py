@@ -4,7 +4,7 @@ A Module that offers different types of real time speech recognition.
 
 import queue
 import threading
-from incremental import abstract, audio, text
+from retico import abstract, audio, text
 from google.cloud import speech as gspeech
 from google.cloud.speech import enums
 from google.cloud.speech import types
