@@ -35,8 +35,9 @@ class DialogueActIU(abstract.IncrementalUnit):
         self.concepts = {}
         if concepts:
             self.concepts = concepts
+        self.confidence = 0.0
 
-    def set_act(self, act, concepts=None):
+    def set_act(self, act, concepts=None, confidence=1.0):
         """Set the act and concept of the IU.
 
         Old acts or concepts will be overwritten.
@@ -44,10 +45,12 @@ class DialogueActIU(abstract.IncrementalUnit):
         Args:
             act (string): The act of the IU as a string.
             concepts (dict): A dictionary containing the new concepts.
+            confidence (float): Confidence of the act prediction
         """
         self.act = act
         if concepts:
             self.concepts = concepts
+        self.confidence = confidence
         self.payload = (act, concepts)
 
 
