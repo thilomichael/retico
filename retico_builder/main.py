@@ -5,6 +5,36 @@ from retico.core.audio import io
 from retico.core import abstract
 from retico.core.dialogue.common import DispatchableActIU
 from retico.core.debug.general import CallbackModule
+from retico.modules.google.asr import GoogleASRModule
+from retico.modules.rasa.nlu import RasaNLUModule
+
+def rasa_nlu():
+    m1 = io.MicrophoneModule(5000)
+    m2 = GoogleASRModule(nchunks=5)
+    m3 = RasaNLUModule("data/rasa/models/nlu/current", "data/rasa/nlu_model_config.json")
+    m4 = CallbackModule(lambda x: print(x.act, x.concepts, x.confidence))
+    # m5 = CallbackModule(lambda x: print(x.get_text()))
+
+    m1.subscribe(m2)
+    m2.subscribe(m3)
+    m3.subscribe(m4)
+    # m2.subscribe(m5)
+
+    m3.run()
+    print("NLU RUNNING")
+    m1.run()
+    m2.run()
+    m4.run()
+    # m5.run()
+
+    print("RUNNIGN")
+    input()
+
+    m1.stop()
+    m2.stop()
+    m3.stop()
+    m4.stop()
+    # m5.stop()
 
 
 def main():
@@ -55,4 +85,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    rasa_nlu()

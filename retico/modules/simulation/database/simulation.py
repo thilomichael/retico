@@ -80,7 +80,7 @@ class SimulationData():
         self.concepts = {}
         if len(splt) > 1:
             for concept in splt[1].split(","):
-                self.concepts[concept] = "???" #TODO: Insert actual values
+                self.concepts[concept] = "???"
 
     def set_audio(self, raw_audio, frame_rate, sample_width):
         """Set the audio given the raw audio, frame rate and sample width.
