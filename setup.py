@@ -21,7 +21,7 @@ config = {
     'download_url': '??',
     'author_email': 'thilo.michael@tu-berlin.de',
     'version': '0.1',
-    'install_requires': ['pyaudio', 'google-cloud-speech'],
+    'install_requires': ['pyaudio'],
     'packages': find_packages(),
     'entry_points': {
         'console_scripts': [
