@@ -4,7 +4,8 @@ This module redefines the abstract classes to fit the needs of audio processing.
 
 from incremental import abstract
 
-class AudioIncrementalUnit(abstract.IncrementalUnit):
+
+class AudioIU(abstract.IncrementalUnit):
     """An audio incremental unit that receives raw audio data from a source.
 
     The audio contained should be monaural.
@@ -25,9 +26,10 @@ class AudioIncrementalUnit(abstract.IncrementalUnit):
     def type():
         return "Audio IU"
 
-    def __init__(self, creator, iuid=0, previous_iu=None, grounded_in=None,
-                 rate=None, nframes=None, sample_width=None, raw_audio=None):
-        super().__init__(creator, iuid=iuid, previous_iu=previous_iu,
+    def __init__(self, creator=None, iuid=0, previous_iu=None, grounded_in=None,
+                 rate=None, nframes=None, sample_width=None, raw_audio=None,
+                 **kwargs):
+        super().__init__(creator=creator, iuid=iuid, previous_iu=previous_iu,
                          grounded_in=grounded_in, payload=raw_audio)
         self.raw_audio = raw_audio
         self.rate = rate
@@ -38,9 +40,9 @@ class AudioIncrementalUnit(abstract.IncrementalUnit):
         """Sets the audio content of the IU."""
         self.raw_audio = raw_audio
         self.payload = raw_audio
-        self.nframes = nframes
-        self.rate = rate
-        self.sample_width = self.sample_width
+        self.nframes = int(nframes)
+        self.rate = int(rate)
+        self.sample_width = int(sample_width)
 
     def audio_length(self):
         """Return the length of the audio IU in seconds.
@@ -49,3 +51,20 @@ class AudioIncrementalUnit(abstract.IncrementalUnit):
             float: Length of the audio in this IU in seconds.
         """
         return float(self.nframes) / float(self.rate)
+
+
+class SpeechIU(AudioIU):
+    """A type of audio incremental unit that contains a larger amount of audio
+    information and the information if the audio should be dispatched or not.
+
+    This IU can be processed by an AudioDispatcherModule which converts this
+    type of IU to AudioIU.
+    """
+
+    @staticmethod
+    def type():
+        return "Speech IU"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.disptach = False

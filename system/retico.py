@@ -1,33 +1,57 @@
 import time
 
+from incremental.modules.simulation import nlg, tts, audio, asr, nlu
+from incremental.audio import io
 from incremental import abstract
-from incremental.audio.io import MicrophoneModule, SpeakerModule
-from incremental.debug.console import DebugModule
-from incremental.modules.google.asr import GoogleASRModule
+from incremental.dialogue.common import DispatchableActIU
+from incremental.debug.general import CallbackModule
+
 
 def main():
     print("Hello World! oijoij")
-    # input_queue = abstract.IncrementalQueue(None, None)
-    m1 = MicrophoneModule(512)
-    m2 = SpeakerModule(512)
-    m25 = GoogleASRModule()
-    m3 = DebugModule()
-    m1.subscribe(m25)
+    m1 = nlg.SimulatedNLGModule("data/sct11")
+    m2 = tts.SimulatedTTSModule()
+    m3 = audio.SimulatedDispatcherModule(5000)
+    m4 = io.StreamingSpeakerModule(5000)
+    m5 = asr.SimulatedASRModule()
+    m6 = nlu.SimulatedNLUModule()
+    m7 = CallbackModule(lambda x: print(x.previous_iu))
+    m8 = io.AudioRecorderModule("test.wav")
     m1.subscribe(m2)
-    m25.subscribe(m3)
+    m2.subscribe(m3)
+    m3.subscribe(m4)
+    m3.subscribe(m5)
+    m5.subscribe(m6)
+    m5.subscribe(m7)
+    m3.subscribe(m8)
+    iQ = abstract.IncrementalQueue(None, m1)
+    m1.set_left_buffer(iQ)
     m1.run()
-    time.sleep(0.1)
     m2.run()
-    m25.run()
     m3.run()
-    time.sleep(10)
+    m4.run()
+    m5.run()
+    m6.run()
+    m7.run()
+    m8.run()
+    input()
+    print("MOEP")
+    iQ.put(DispatchableActIU(creator=None, act="provide_info", concepts={"reason":"","num_of_persons":"","pizza_type":""}, dispatch=True))
+    print("MOEP")
+    iQ.put(DispatchableActIU(creator=None, act="greeting", dispatch=True))
+    input()
+    print("MOEP")
+    iQ.put(DispatchableActIU(creator=None, act="greeting", dispatch=False))
+    input()
     m1.stop()
     m2.stop()
-    m25.stop()
     m3.stop()
-    # input_queue.put(abstract.IncrementalUnit(m))
-    # m.stop()
-    print(abstract.AbstractModule.__subclasses__())
+    m4.stop()
+    m5.stop()
+    m6.stop()
+    m7.stop()
+    m8.stop()
+
 
 if __name__ == '__main__':
     main()

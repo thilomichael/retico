@@ -1,5 +1,5 @@
 """
-A module providing data for the imposter modules.
+A module providing data for the simulation modules.
 
 The database contains the following information:
     - raw audio: The audio that corresponds to the text that is queried
@@ -14,7 +14,8 @@ from os import path
 import csv
 import wave
 
-class ImposterData():
+
+class SimulationData():
     """A data object containing information about the loaded data.
 
     Attributes:
@@ -27,7 +28,7 @@ class ImposterData():
         This can be used as meta data for an Incremental Unit.
 
         Returns:
-            dict: A dictionary containing all the fields of an ImposterData
+            dict: A dictionary containing all the fields of an SimulationData
             object
         """
         meta = {}
@@ -103,8 +104,9 @@ class ImposterData():
         self.transcription = transcription
         self.confidence = confidence
 
-class ImposterDB():
-    """A database for the imposter modules."""
+
+class SimulatioDB():
+    """A database for the Simulation modules."""
 
     @staticmethod
     def get_wave_data(wav_file, startpos, endpos):
@@ -122,9 +124,10 @@ class ImposterDB():
             bytes: A bytes array containing the utterance between startpos and
             endpos.
         """
-        wav_file.setpos(int((startpos/1000)*wav_file.getframerate()))
+        wav_file.setpos(int((startpos / 1000) * wav_file.getframerate()))
         duration = endpos - startpos
-        return wav_file.readframes(int(wav_file.getframerate()*(duration/1000)))
+        return wav_file.readframes(int(wav_file.getframerate() *
+                                       (duration / 1000)))
 
     @staticmethod
     def csv_wav_pair(data_directory):
@@ -137,7 +140,6 @@ class ImposterDB():
                 reader = csv.reader(csv_f, delimiter="\t")
                 yield reader, wav_f, csv_p, wav_p
 
-
     def read_data(self, data_directory):
         """Reads the data from file into a data structure."""
         for csv_f, wav_f, csv_p, wav_p in self.csv_wav_pair(data_directory):
@@ -146,14 +148,12 @@ class ImposterDB():
             for row in csv_f:
                 if len(row) != 7:
                     continue
-                data = ImposterData(wav_p, csv_p, row)
+                data = SimulationData(wav_p, csv_p, row)
                 data.set_transcription(row[5], float(row[6]))
                 data.set_dialogue_act(row[4])
                 wav_data = self.get_wave_data(wav_f, int(row[2]), int(row[3]))
                 data.set_audio(wav_data, current_rate, current_sample_width)
                 yield data
-
-
 
     def __init__(self, data_directory):
         self.data_directory = data_directory
@@ -178,18 +178,17 @@ class ImposterDB():
                 values.
 
         Returns:
-            ImposterData: Data structures that have the same dialogue_act and
+            SimulationData: Data structures that have the same dialogue_act and
             the same concept types as given in the arguments.
         """
-
-
         candidates = []
         for idata in self.act_db[dialogue_act]:
             if set(concepts.keys()) == set(idata.concepts.keys()):
                 candidates.append(idata)
         return candidates
 
+
 if __name__ == '__main__':
-    idb = ImposterDB("data/sct11")
-    for candidate in idb.query("provide_info", {"caller_name": "Jeremy Clemens"}):
+    idb = SimulatioDB("data/sct11")
+    for candidate in idb.query("provide_info", {"caller_name": "Jeremy Clems"}):
         print(candidate.generate_meta())

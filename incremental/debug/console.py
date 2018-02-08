@@ -1,6 +1,7 @@
-"""A module for debug output."""
+"""A module for debug output to the console."""
 
 from incremental import abstract
+
 
 class DebugModule(abstract.AbstractConsumingModule):
     """A debug module that prints the IUs that are coming in."""

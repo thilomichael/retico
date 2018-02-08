@@ -4,10 +4,11 @@ A Module that offers different types of real time speech recognition.
 
 import queue
 import threading
-from incremental import abstract, audio, speech
+from incremental import abstract, audio, text
 from google.cloud import speech as gspeech
 from google.cloud.speech import enums
 from google.cloud.speech import types
+
 
 class GoogleASRModule(abstract.AbstractModule):
     """A Module that recognizes speech by utilizing the Google Speech API."""
@@ -34,7 +35,6 @@ class GoogleASRModule(abstract.AbstractModule):
 
         self.latest_input_iu = None
 
-
     @staticmethod
     def name():
         return "Google ASR Module"
@@ -45,11 +45,11 @@ class GoogleASRModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [audio.common.AudioIncrementalUnit]
+        return [audio.common.AudioIU]
 
     @staticmethod
     def output_iu():
-        return speech.common.SpeechRecognitionIU
+        return text.common.SpeechRecognitionIU
 
     def process_iu(self, input_iu):
         self.audio_buffer.put(input_iu.raw_audio)
@@ -104,13 +104,11 @@ class GoogleASRModule(abstract.AbstractModule):
     def _produce_predictions_loop(self):
         for response in self.responses:
             p, t, s, c, f = self._extract_results(response)
-            print(p)
             if p:
                 output_iu = self.create_iu(self.latest_input_iu)
                 self.latest_input_iu = None
                 output_iu.set_asr_results(p, t, s, c, f)
                 self.append(output_iu)
-
 
     def setup(self):
         self.client = gspeech.SpeechClient()

@@ -5,6 +5,7 @@ recognizer.
 
 from incremental import abstract
 
+
 class TextIU(abstract.IncrementalUnit):
     """An IU that contains text."""
 
@@ -19,6 +20,21 @@ class TextIU(abstract.IncrementalUnit):
             str: The text contained in the IU.
         """
         return self.payload
+
+
+class GeneratedTextIU(TextIU):
+    """An IU that contains generated text.
+
+    This includes information about whether the text should be dispatched once it
+    has been transformed into speech."""
+
+    @staticmethod
+    def type():
+        return "Generated Text IU"
+
+    def __init__(self, dispatch=False, **kwargs):
+        super().__init__(**kwargs)
+        self.dispatch = dispatch
 
 
 class SpeechRecognitionIU(TextIU):
