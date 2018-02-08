@@ -7,8 +7,8 @@ import queue
 import time
 import wave
 import pyaudio
-from retico import abstract
-from retico.audio.common import AudioIU, SpeechIU
+from retico.core import abstract
+from retico.core.audio.common import AudioIU, SpeechIU
 
 CHANNELS = 1
 """Number of channels. Should never be changed. As soon as stereo telephony

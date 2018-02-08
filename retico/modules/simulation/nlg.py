@@ -9,10 +9,10 @@ by taking in dialogue acts and concepts and producing a text.
 
 import random
 
-from retico import abstract
-from retico.text.common import GeneratedTextIU
-from retico.dialogue.common import DispatchableActIU
-from database.simulation import SimulatioDB
+from retico.core import abstract
+from retico.core.text.common import GeneratedTextIU
+from retico.core.dialogue.common import DispatchableActIU
+from retico.modules.simulation.database.simulation import SimulatioDB
 
 
 class SimulatedNLGModule(abstract.AbstractModule):

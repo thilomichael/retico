@@ -1,6 +1,6 @@
 """A module for general debug modules."""
 
-from retico import abstract
+from retico.core import abstract
 
 
 class CallbackModule(abstract.AbstractConsumingModule):

@@ -2,7 +2,7 @@
 Simulated Text to Speech
 """
 
-from retico import abstract, text, audio
+from retico.core import abstract, text, audio
 
 
 class SimulatedTTSModule(abstract.AbstractModule):

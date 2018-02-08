@@ -1,10 +1,10 @@
 import time
 
 from retico.modules.simulation import nlg, tts, audio, asr, nlu
-from retico.audio import io
-from retico import abstract
-from retico.dialogue.common import DispatchableActIU
-from retico.debug.general import CallbackModule
+from retico.core.audio import io
+from retico.core import abstract
+from retico.core.dialogue.common import DispatchableActIU
+from retico.core.debug.general import CallbackModule
 
 
 def main():

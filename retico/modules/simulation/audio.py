@@ -2,7 +2,7 @@
 A Module mainly for adding the turn relevant places to the audio dispatching.
 """
 
-from retico.audio.io import AudioDispatcherModule
+from retico.core.audio.io import AudioDispatcherModule
 
 
 class SimulatedDispatcherModule(AudioDispatcherModule):

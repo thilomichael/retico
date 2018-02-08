@@ -2,7 +2,7 @@
 This module redefines the abstract classes to fit the needs of audio processing.
 """
 
-from retico import abstract
+from retico.core import abstract
 
 
 class AudioIU(abstract.IncrementalUnit):
