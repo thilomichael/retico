@@ -68,3 +68,32 @@ class SpeechIU(AudioIU):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.disptach = False
+
+
+class DispatchedAudioIU(AudioIU):
+    """A type of audio incremental unit that is dispatched by an
+    AudioDispatcherModule. It has the information of the percentual completion
+    of the dispatched audio. This may be useful for a dialogue manager that
+    wants to track the status of the current dispatched audio.
+    """
+
+    @staticmethod
+    def type():
+        return "Dispatched Audio IU"
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.completion = 0.0
+        self.is_dispatching = False
+
+    def set_dispatching(self, completion, is_dispatching):
+        """Set the completion percentage and the is_dispatching flag.
+
+        Args:
+            completion (float): The degree of completion of the current
+                utterance.
+            is_dispatching (bool): Whether or not the dispatcher is currently
+                dispatching
+        """
+        self.completion = completion
+        self.is_dispatching = is_dispatching

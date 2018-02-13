@@ -1,12 +1,13 @@
 import time
 
-from retico.modules.simulation import nlg, tts, audio, asr, nlu
+from retico.modules.simulation import nlg, tts, asr, nlu, dm, eot
 from retico.core.audio import io
 from retico.core import abstract
 from retico.core.dialogue.common import DispatchableActIU
 from retico.core.debug.general import CallbackModule
 from retico.modules.google.asr import GoogleASRModule
 from retico.modules.rasa.nlu import RasaNLUModule
+
 
 def rasa_nlu():
     m1 = io.MicrophoneModule(5000)
@@ -36,12 +37,107 @@ def rasa_nlu():
     m4.stop()
     # m5.stop()
 
+def simulation():
+    print("SIMULATION")
+    m1 = dm.SimulatedDialogueManagerModule("data/callerfile.ini", "data/sct11",
+                                           "caller", True)
+    m2 = nlg.SimulatedNLGModule("data/sct11")
+    m3 = tts.SimulatedTTSModule()
+    m4 = io.AudioDispatcherModule(5000)
+    m5 = io.SpeakerModule()
+    m6 = asr.SimulatedASRModule()
+    m7 = nlu.SimulatedNLUModule()
+    m8 = eot.SimulatedEoTModule()
+    m9 = dm.SimulatedDialogueManagerModule("data/calleefile.ini", "data/sct11",
+                                           "callee", False)
+    m10 = nlg.SimulatedNLGModule("data/sct11")
+    m11 = tts.SimulatedTTSModule()
+    m12 = io.AudioDispatcherModule(5000)
+    m13 = io.SpeakerModule()
+    m14 = asr.SimulatedASRModule()
+    m15 = nlu.SimulatedNLUModule()
+    m16 = eot.SimulatedEoTModule()
+
+    m1.subscribe(m2)
+    m2.subscribe(m3)
+    m3.subscribe(m4)
+    m4.subscribe(m5)
+    m4.subscribe(m1)
+    m4.subscribe(m6)
+    m4.subscribe(m8)
+    m6.subscribe(m7)
+    m8.subscribe(m9)
+    m7.subscribe(m9)
+    m9.subscribe(m10)
+    m10.subscribe(m11)
+    m12.subscribe(m9)
+    m12.subscribe(m13)
+    m12.subscribe(m14)
+    m14.subscribe(m15)
+    m15.subscribe(m1)
+    m12.subscribe(m16)
+    m16.subscribe(m1)
+
+    m1.setup()
+    m2.setup()
+    m3.setup()
+    m4.setup()
+    m5.setup()
+    m6.setup()
+    m7.setup()
+    m8.setup()
+    m9.setup()
+    m10.setup()
+    m11.setup()
+    m12.setup()
+    m13.setup()
+    m14.setup()
+    m15.setup()
+    m16.setup()
+
+    input()
+
+    m1.run(run_setup=False)
+    m2.run(run_setup=False)
+    m3.run(run_setup=False)
+    m4.run(run_setup=False)
+    m5.run(run_setup=False)
+    m6.run(run_setup=False)
+    m7.run(run_setup=False)
+    m8.run(run_setup=False)
+    m9.run(run_setup=False)
+    m10.run(run_setup=False)
+    m11.run(run_setup=False)
+    m12.run(run_setup=False)
+    m13.run(run_setup=False)
+    m14.run(run_setup=False)
+    m15.run(run_setup=False)
+    m16.run(run_setup=False)
+
+    input()
+
+    m1.stop()
+    m2.stop()
+    m3.stop()
+    m4.stop()
+    m5.stop()
+    m6.stop()
+    m7.stop()
+    m8.stop()
+    m9.stop()
+    m10.stop()
+    m11.stop()
+    m12.stop()
+    m13.stop()
+    m14.stop()
+    m15.stop()
+    m16.stop()
 
 def main():
     print("Hello World! oijoij")
     m1 = nlg.SimulatedNLGModule("data/sct11")
     m2 = tts.SimulatedTTSModule()
-    m3 = audio.SimulatedDispatcherModule(5000)
+    m3 = io.AudioDispatcherModule(5000)
     m4 = io.StreamingSpeakerModule(5000)
     m5 = asr.SimulatedASRModule()
     m6 = nlu.SimulatedNLUModule()
@@ -83,6 +179,11 @@ def main():
     m7.stop()
     m8.stop()
 
+def test():
+    gasr = GoogleASRModule()
+    gasr.setup()
+    input()
+
 
 if __name__ == '__main__':
-    rasa_nlu()
+    simulation()

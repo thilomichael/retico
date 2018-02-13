@@ -9,7 +9,7 @@ modules by taking in audio and producing text.
 
 from retico.core import abstract
 from retico.core.text.common import SpeechRecognitionIU
-from retico.core.audio.common import AudioIU
+from retico.core.audio.common import DispatchedAudioIU
 
 
 class SimulatedASRModule(abstract.AbstractModule):
@@ -35,13 +35,13 @@ class SimulatedASRModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [AudioIU]
+        return [DispatchedAudioIU]
 
     def process_iu(self, input_iu):
         # output_iu = self.create_iu(input_iu)
         transcription = input_iu.meta_data.get("transcription")
         if transcription:
-            completion = input_iu.meta_data.get("completion")
+            completion = input_iu.completion
 
             # Calculating the current text by only taking [completion] % of the
             # whole text

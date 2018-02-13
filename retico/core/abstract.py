@@ -264,8 +264,11 @@ class AbstractModule():
             q (IncrementalQueue): A optional queue that is used. If q is None,
                 the a new queue will be used"""
         if not q:
-            q = self.queue_class(self, module)
-            module.set_left_buffer(q)
+            if not module.left_buffer():
+                q = self.queue_class(self, module)
+                module.set_left_buffer(q)
+            else:
+                q = module.left_buffer()
         self._right_buffers.append(q)
         return q
 
@@ -326,7 +329,7 @@ class AbstractModule():
                         input_iu = None
                     if input_iu:
                         if not self.is_valid_input_iu(input_iu):
-                            raise TypeError("This module can't handle this"
+                            raise TypeError("This module can't handle this "
                                             "type of IU")
                         output_iu = self.process_iu(input_iu)
                         input_iu.set_processed(self)

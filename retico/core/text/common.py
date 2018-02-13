@@ -25,8 +25,8 @@ class TextIU(abstract.IncrementalUnit):
 class GeneratedTextIU(TextIU):
     """An IU that contains generated text.
 
-    This includes information about whether the text should be dispatched once it
-    has been transformed into speech."""
+    This includes information about whether the text should be dispatched once
+    it has been transformed into speech."""
 
     @staticmethod
     def type():

@@ -8,7 +8,7 @@ import time
 import wave
 import pyaudio
 from retico.core import abstract
-from retico.core.audio.common import AudioIU, SpeechIU
+from retico.core.audio.common import AudioIU, SpeechIU, DispatchedAudioIU
 
 CHANNELS = 1
 """Number of channels. Should never be changed. As soon as stereo telephony
@@ -276,7 +276,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
 
     @staticmethod
     def output_iu():
-        return AudioIU
+        return DispatchedAudioIU
 
     def __init__(self, target_chunk_size, rate=44100, sample_width=2,
                  speed=1.0, continuous=True, silence=None):
@@ -338,7 +338,14 @@ class AudioDispatcherModule(abstract.AbstractModule):
                 data = input_iu.raw_audio[cur_pos:cur_pos + cur_width]
                 distance = cur_width - len(data)
                 data += b'\0' * distance
+
+                completion = float((i + self.target_chunk_size)
+                                   / input_iu.nframes)
+                if completion > 1:
+                    completion = 1
+
                 current_iu = self.create_iu(input_iu)
+                current_iu.set_dispatching(completion, True)
                 current_iu.set_audio(data, self.target_chunk_size, self.rate,
                                      self.sample_width)
                 self.audio_buffer.append(current_iu)
@@ -359,6 +366,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
                         current_iu.set_audio(self.silence,
                                              self.target_chunk_size,
                                              self.rate, self.sample_width)
+                        current_iu.set_dispatching(0.0, False)
                         self.append(current_iu)
             time.sleep((self.target_chunk_size / self.rate) / self.speed)
 
