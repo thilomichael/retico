@@ -2,6 +2,7 @@
 
 import time
 import threading
+import random
 
 from retico.core import abstract
 from retico.core.dialogue.common import DialogueActIU, DispatchableActIU
@@ -55,26 +56,52 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
             right_now = time.time()
             ts_last_utterance = right_now - self.last_utterance
             ts_last_interl_utterance = right_now - self.last_interl_utterance
+            is_silence = not self.is_dispatching and not self.interlocutor_talking
+            i_spoke_last = ts_last_utterance < ts_last_interl_utterance
 
-            if self.agent_class == "caller":
-                print("ts_last_utterance", ts_last_utterance)
-                print("ts_last_interl_utterance", ts_last_interl_utterance)
-                print("me talking", self.is_dispatching)
-                print("he talking", self.interlocutor_talking)
-                print("disp completion", self.dispatching_completion)
-                print("eot  completion", self.eot_prediction)
-                print("")
-                print("")
+            # if self.agent_class == "callee":
+            #     print("ts_last_utterance", ts_last_utterance)
+            #     print("ts_last_interl_utterance", ts_last_interl_utterance)
+            #     print("me talking", self.is_dispatching)
+            #     print("he talking", self.interlocutor_talking)
+            #     print("disp completion", self.dispatching_completion)
+            #     print("eot  completion", self.eot_prediction)
+            #     print("")
+            #     print("is silence", is_silence)
+            #     print("i spoke last", i_spoke_last)
+            #     print("")
+            #     print("")
 
-            if self.fu and self.first_utterance:
-                da = self.dialogue_manager.next_act()
-                output_iu = self.create_iu(None)
-                output_iu.set_act(da.act, da.concepts)
-                output_iu.dispatch = True
-                self.append(output_iu)
-                self.fu = False
-                self.is_dispatching = True
-                self.last_interl_utterance = time.time()
+            if self.fu:
+                if self.first_utterance:
+                    da = self.dialogue_manager.next_act()
+                    output_iu = self.create_iu(None)
+                    output_iu.set_act(da.act, da.concepts)
+                    output_iu.dispatch = True
+                    self.append(output_iu)
+                    self.fu = False
+                    self.is_dispatching = True
+                    self.last_interl_utterance = time.time()
+            else:
+                if is_silence:
+                    if i_spoke_last:
+                        if random.random()<0.01:
+                            da = self.dialogue_manager.next_act()
+                            output_iu = self.create_iu(None)
+                            output_iu.set_act(da.act, da.concepts)
+                            output_iu.dispatch = True
+                            self.append(output_iu)
+                            self.is_dispatching = True
+                    else:
+                        if random.random()<0.1:
+                            iu = self.current_incoming_da
+                            self.dialogue_manager.process_act(iu.act, iu.concepts)
+                            da = self.dialogue_manager.next_act()
+                            output_iu = self.create_iu(None)
+                            output_iu.set_act(da.act, da.concepts)
+                            output_iu.dispatch = True
+                            self.append(output_iu)
+                            self.is_dispatching = True
             time.sleep(0.5)
 
     def process_iu(self, input_iu):

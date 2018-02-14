@@ -4,7 +4,9 @@ A Module that offers different types of real time speech recognition.
 
 import queue
 import threading
-from retico.core import abstract, audio, text
+from retico.core import abstract
+from retico.core.text.common import SpeechRecognitionIU
+from retico.core.audio.common import AudioIU
 from google.cloud import speech as gspeech
 from google.cloud.speech import enums
 from google.cloud.speech import types
@@ -45,11 +47,11 @@ class GoogleASRModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [audio.common.AudioIU]
+        return [AudioIU]
 
     @staticmethod
     def output_iu():
-        return text.common.SpeechRecognitionIU
+        return SpeechRecognitionIU
 
     def process_iu(self, input_iu):
         self.audio_buffer.put(input_iu.raw_audio)

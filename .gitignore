@@ -88,3 +88,4 @@ py3/
 *.db
 *.sh
 *.wav
+.ropeproject

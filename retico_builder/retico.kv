@@ -1,0 +1,133 @@
+#: kivy 1.10.0
+
+#:import la kivy.adapters.listadapter
+#:import ListItemButton kivy.uix.listview.ListItemButton
+#:import Gridlayout kivy.uix.gridlayout
+
+<ModuleWidget>:
+  ScatterLayout:
+    drag_rectangle: self.x, self.y, self.width, self.height
+    drag_timeout: 10000000
+    drag_distance: 0
+    size_hint: None, None
+    size: 300, 300
+    id: layout
+    Widget:
+      id: mc
+      canvas.before:
+        Color:
+          rgb: 0.4, 0.4, 0.4
+        Rectangle:
+          pos: self.pos
+          size: self.size
+        Color:
+          rgb: 1, 1, 1
+        Rectangle:
+          pos: self.x+1, self.y+1
+          size: self.height-2, self.width-2
+        Color:
+          rgba: 0, 0, 1, 0.1
+        Rectangle:
+          pos: self.x, self.y + self.height - 40
+          size: self.width, 40
+      size: 1, 1
+      Label:
+        id: title
+        color: 0, 0, 0, 1
+        text: "Module Title"
+        halign: 'center'
+        text_size: self.size
+        font_size: 20
+        pos: self.parent.x, self.parent.height-35
+        size: self.parent.width, 50
+      Button:
+        id: in_button
+        background_color: 0.6, 0.8, 0.6, 1
+        background_normal: ''
+        color: 0, 0, 0, 1
+        text: "in"
+        size_hint: None, None
+        size: 50, 50
+        pos: self.parent.x+1, self.parent.height-90
+        on_press: root.in_button_pressed()
+      Button:
+        id: out_button
+        background_color: 0.6, 0.8, 0.6, 1
+        background_normal: ''
+        color: 0, 0, 0, 1
+        text: "out"
+        size_hint: None, None
+        size: 50, 50
+        pos: self.parent.x+self.parent.width-51, self.parent.height-90
+        on_press: root.out_button_pressed()
+
+<DebugModuleWidget>
+
+<MyListItemButton>:
+  selected_color: 0.8, 0.8, 0.8, 1
+  deselected_color: 0, 0, 0, 1
+  size_hint_y: None
+  height: 50
+
+<ModulePane>:
+  canvas.before:
+    Color:
+      rgb: 0.9, 0.9, 0.9
+    Rectangle:
+      pos: self.pos
+      size: self.width, self.height
+
+<MenuWidget>:
+  canvas.before:
+    Color:
+      rgb: 1, 1, 1
+    Rectangle:
+      pos: self.pos
+      size: self.width, self.height
+    Color:
+      rgb: 0.8, 0.8, 0.8
+    Rectangle:
+      pos: self.pos
+      size: 2, self.height
+  ListView:
+    canvas.before:
+      Color:
+        rgb: 0.8, 0.8, 0.8
+      Rectangle:
+        pos: self.x, self.y
+        size: self.width, self.height
+    adapter: root.list_adapter
+    size: 380, 400
+    pos: self.parent.x+10, self.parent.height - self.height - 10
+    id: module_list
+  Button:
+    text: "Add"
+    size: 380, 50
+    pos: self.parent.x+10, self.parent.height - 470
+    on_press: root.add_module()
+  Button:
+    id: run_button
+    text: "Run"
+    size: 380, 50
+    pos: self.parent.x+10, self.parent.height - 600
+    background_color: 0.6, 0.8, 0.6, 1
+    background_normal: ''
+    on_press: root.run()
+  Button:
+    id: stop_button
+    text: "Stop"
+    size: 380, 50
+    pos: self.parent.x+10, self.parent.height - 660
+    background_color: 0.8, 0.6, 0.6, 1
+    background_normal: ''
+    disabled: True
+    on_press: root.stop()
+
+<ReticoBuilder>:
+  ModulePane:
+    size: root.width-400, root.height
+    pos: self.parent.pos
+    id: module_pane
+  MenuWidget:
+    pos: root.width-400, 0
+    size: 400, root.height
