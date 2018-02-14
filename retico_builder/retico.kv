@@ -47,8 +47,8 @@
         color: 0, 0, 0, 1
         text: "in"
         size_hint: None, None
-        size: 50, 50
-        pos: self.parent.x+1, self.parent.height-90
+        size: 50, 30
+        pos: self.parent.x+1, self.parent.height-70
         on_press: root.in_button_pressed()
       Button:
         id: out_button
@@ -57,9 +57,19 @@
         color: 0, 0, 0, 1
         text: "out"
         size_hint: None, None
-        size: 50, 50
-        pos: self.parent.x+self.parent.width-51, self.parent.height-90
+        size: 50, 30
+        pos: self.parent.x+self.parent.width-51, self.parent.height-70
         on_press: root.out_button_pressed()
+      Button:
+        id: del_button
+        background_color: 0.8, 0.6, 0.6, 1
+        background_normal: ''
+        color: 0, 0, 0, 1
+        text: "delete"
+        size_hint: None, None
+        size: 100, 30
+        pos: self.parent.x+(self.parent.width/2)-50, self.parent.height-70
+        on_press: root.del_button_pressed()
 
 <DebugModuleWidget>
 
@@ -127,7 +137,20 @@
   ModulePane:
     size: root.width-400, root.height
     pos: self.parent.pos
-    id: module_pane
+    ScatterLayout:
+      canvas.before:
+        Color:
+          rgb: 0.85, 0.85, 0.85, 1
+        Rectangle:
+          pos: 0, 0
+          size: self.width, self.height
+      drag_rectangle: self.x, self.y, self.width, self.height
+      drag_timeout: 10000000
+      drag_distance: 0
+      size: self.parent.width*3, self.parent.height*3
+      center: self.parent.center_x, -self.parent.center_y
+      Widget:
+        id: module_pane
   MenuWidget:
     pos: root.width-400, 0
     size: 400, root.height

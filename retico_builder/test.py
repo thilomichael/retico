@@ -1,5 +1,5 @@
 import sys
-from retico.core.audio.io import MicrophoneModule, SpeakerModule, AudioDispatcherModule
+from retico.core.audio.io import MicrophoneModule, SpeakerModule, AudioDispatcherModule, StreamingSpeakerModule
 from retico.core.debug.general import CallbackModule
 
 from retico.modules.google.asr import GoogleASRModule
@@ -14,7 +14,7 @@ from retico.modules.simulation.eot import SimulatedEoTModule
 
 def audio_demo():
     m1 = MicrophoneModule(5000)
-    m2 = SpeakerModule()
+    m2 = StreamingSpeakerModule(5000)
 
     m1.subscribe(m2)
 
@@ -26,10 +26,20 @@ def audio_demo():
     m1.stop()
     m2.stop()
 
+    input()
+
+    m1.run()
+    m2.run()
+
+    input()
+
+    m1.stop()
+    m2.stop()
+
 def google_asr():
     m1 = MicrophoneModule(5000)
-    m2 = GoogleASRModule() # en-US or de-DE or ....
-    m3 = CallbackModule(callback=lambda x: print("%s (%f) - %s" % (x.text, x.confidence, x.final)))
+    m2 = GoogleASRModule("de-DE") # en-US or de-DE or ....
+    m3 = CallbackModule(callback=lambda x: print("%s (%f) - %s" % (x.text, x.stability, x.final)))
 
     m1.subscribe(m2)
     m2.subscribe(m3)

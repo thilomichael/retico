@@ -38,7 +38,6 @@ class ModuleWidget(Widget, DragBehavior):
                  show_popup=True, **kwargs):
         super().__init__(**kwargs)
         self.retico_builder = retico_builder
-        self.is_setup = False
         self.is_running = False
         if retico_class:
             self.retico_class = retico_class
@@ -63,6 +62,9 @@ class ModuleWidget(Widget, DragBehavior):
         self.ids.out_button.background_color = (0.9, 0.9, 0.8, 1)
         self.retico_builder.connect_module(self, "out")
 
+    def del_button_pressed(self):
+        self.retico_builder.delete_module(self)
+
     def reset_connection_indicator(self):
         self.ids.out_button.background_color = (0.6, 0.8, 0.6, 1)
         self.ids.in_button.background_color = (0.6, 0.8, 0.6, 1)
@@ -85,28 +87,25 @@ class ModuleWidget(Widget, DragBehavior):
             self.ids.in_button.disabled = True
 
     def setup(self):
-        if self.is_setup:
-            self.module = self.retico_class(**self.args)
         self.module.setup()
-        self.is_setup = True
 
     def update_info(self):
         pass
 
     def _run(self):
+        self.is_running = True
         while self.is_running:
             self.update_info()
             time.sleep(0.1)
 
     def run(self):
-        self.is_running = True
         t = threading.Thread(target=self._run)
         t.start()
         self.module.run(run_setup=False)
 
     def stop(self):
-        self.is_running = False
         self.module.stop()
+        self.is_running = False
 
     def output_connection_indicator(self, iu_types):
         may_connect = False
