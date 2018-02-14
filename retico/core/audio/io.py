@@ -60,8 +60,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
                 microphone
             frame_count (int): The number of frames that are stored in in_data
         """
-        with self.audio_mutex:
-            self.audio_buffer.append(in_data)
+        self.audio_buffer.put(in_data)
         return (in_data, pyaudio.paContinue)
 
     def __init__(self, chunk_size, rate=44100, sample_width=2):
@@ -81,19 +80,17 @@ class MicrophoneModule(abstract.AbstractProducingModule):
 
         self._p = pyaudio.PyAudio()
 
-        self.audio_mutex = threading.Lock()
-        self.audio_buffer = []
+        self.audio_buffer = queue.Queue()
         self.stream = None
 
     def process_iu(self, input_iu):
-        with self.audio_mutex:
-            if not self.audio_buffer:
-                return None
-            sample = self.audio_buffer.pop(0)
-            output_iu = self.create_iu()
-            output_iu.set_audio(sample, self.chunk_size, self.rate,
-                                self.sample_width)
-            return output_iu
+        if not self.audio_buffer:
+            return None
+        sample = self.audio_buffer.get()
+        output_iu = self.create_iu()
+        output_iu.set_audio(sample, self.chunk_size, self.rate,
+                            self.sample_width)
+        return output_iu
 
     def setup(self):
         """Set up the microphone for recording."""
@@ -109,11 +106,10 @@ class MicrophoneModule(abstract.AbstractProducingModule):
 
     def shutdown(self):
         """Close the audio stream."""
-        with self.audio_mutex:
-            self.stream.stop_stream()
-            self.stream.close()
-            self.stream = None
-            self.audio_buffer = []
+        self.stream.stop_stream()
+        self.stream.close()
+        self.stream = None
+        self.audio_buffer = queue.Queue()
 
 
 class SpeakerModule(abstract.AbstractConsumingModule):
@@ -230,7 +226,7 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
         self.stream.stop_stream()
         self.stream.close()
         self.stream = None
-        self.audio_buffer = []
+        self.audio_buffer = queue.Queue()
 
 
 class AudioDispatcherModule(abstract.AbstractModule):
