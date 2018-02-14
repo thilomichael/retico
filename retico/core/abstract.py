@@ -385,6 +385,9 @@ class AbstractModule():
         """
         if run_setup:
             self.setup()
+        for q in self.right_buffers():
+            with q.mutex:
+                q.queue.clear()
         t = threading.Thread(target=self._run)
         t.start()
 
@@ -473,6 +476,7 @@ class AbstractProducingModule(AbstractModule):
                     else:
                         raise TypeError("This module should not produce IUs of "
                                         "this type.")
+        self.shutdown()
 
     def process_iu(self, input_iu):
         raise NotImplementedError()
