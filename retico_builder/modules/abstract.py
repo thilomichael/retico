@@ -1,23 +1,28 @@
+"""A python module containing the abstract module widget definitions."""
+
 import time
 import threading
 
+from retico.core import abstract
+
 from kivy.uix.widget import Widget
 from kivy.uix.behaviors import DragBehavior
-from kivy.uix.button import Button
-
-from retico.core.debug.general import CallbackModule
-from retico.core.abstract import AbstractModule, AbstractProducingModule, AbstractConsumingModule
-from retico.core.audio.io import SpeakerModule, MicrophoneModule, AudioRecorderModule, AudioDispatcherModule
-from retico.modules.google.asr import GoogleASRModule
-from retico.modules.rasa.nlu import RasaNLUModule
+from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
-from kivy.uix.label import Label
+
 
 class ModuleWidget(Widget, DragBehavior):
+    """An abstract module handling the visualization of the module itself and
+    the connection to other modules."""
 
-    retico_class = AbstractModule
+    retico_class = abstract.AbstractModule
     args = {}
+
+    @classmethod
+    def name(cls):
+        """The name of the widget."""
+        return cls.__name__
 
     def popup_callback(self, instance):
         thing = eval(self.popup_content.text)
@@ -70,9 +75,9 @@ class ModuleWidget(Widget, DragBehavior):
         self.ids.in_button.background_color = (0.6, 0.8, 0.6, 1)
         self.ids.out_button.disabled = False
         self.ids.in_button.disabled = False
-        if isinstance(self.module, AbstractConsumingModule):
+        if isinstance(self.module, abstract.AbstractConsumingModule):
             self.ids.out_button.disabled = True
-        elif isinstance(self.module, AbstractProducingModule):
+        elif isinstance(self.module, abstract.AbstractProducingModule):
             self.ids.in_button.disabled = True
 
     def input_connection_indicator(self, iu_type):
@@ -118,7 +123,10 @@ class ModuleWidget(Widget, DragBehavior):
         if not may_connect:
             self.ids.out_button.disabled = True
 
+
 class InfoLabelWidget(ModuleWidget):
+    """A widget containing an info label. This label may be accessed by the
+    `update_info` method by referencing `self.info_label`."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -131,56 +139,3 @@ class InfoLabelWidget(ModuleWidget):
         self.info_label.halign = 'center'
         self.info_label.valign = 'middle'
         self.info_label.color = (0, 0, 0, 1)
-
-
-class DebugModuleWidget(InfoLabelWidget):
-
-    retico_class = CallbackModule
-
-    def callback(self, input_iu):
-        self.info_label.text = str(input_iu.payload)
-
-    def __init__(self, **kwargs):
-        super().__init__(retico_args={"callback": self.callback},
-                         show_popup=False,
-                         **kwargs)
-
-class SpeakerModuleWidget(ModuleWidget):
-
-    retico_class = SpeakerModule
-
-class MicrophoneModuleWidget(ModuleWidget):
-
-    retico_class = MicrophoneModule
-    args = {"chunk_size": 5000}
-
-class GoogleASRModuleWidget(InfoLabelWidget):
-
-    retico_class = GoogleASRModule
-    args = {"language": "en-US", "nchunks": 20}
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = iu.get_text()
-
-class RasaNLUModuleWidget(InfoLabelWidget):
-
-    retico_class = RasaNLUModule
-    args = {"model_dir": "data/rasa/models/nlu/current",
-            "config_file": "data/rasa/nlu_model_config.json"}
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = "%s - %s" % (iu.act, iu.concepts)
-
-class AudioRecorderModuleWidget(ModuleWidget):
-
-    retico_class = AudioRecorderModule
-    args = {"filename": "recording.wav"}
-
-class AudioDispatcherModuleWidget(ModuleWidget):
-
-    retico_class = AudioDispatcherModule
-    args = {"target_chunk_size": 5000}

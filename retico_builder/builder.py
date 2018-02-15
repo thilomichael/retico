@@ -8,17 +8,6 @@ from kivy.clock import Clock
 
 from retico_builder import modules
 
-AVAILABLE_MODULES = {
-    "Debug Module": modules.DebugModuleWidget,
-    "Speaker Module": modules.SpeakerModuleWidget,
-    "Microphone Module": modules.MicrophoneModuleWidget,
-    "Google ASR Module": modules.GoogleASRModuleWidget,
-    "Rasa NLU Module": modules.RasaNLUModuleWidget,
-    "Audio Recorder Module": modules.AudioRecorderModuleWidget,
-    "Audio Dispatcher Module": modules.AudioDispatcherModuleWidget
-}
-
-
 class ReticoApp(App):
     def build(self):
         rb = ReticoBuilder()
@@ -57,7 +46,7 @@ class ReticoBuilder(Widget):
         self.connecting = None
 
     def add_module(self, module_name):
-        w = AVAILABLE_MODULES[module_name](retico_builder=self)
+        w = modules.AVAILABLE_MODULES[module_name](retico_builder=self)
         self.module_list.append(w)
         layout = self.ids.module_pane.parent.parent
         w.ids.layout.center = (-layout.x + (layout.parent.width / 2),
@@ -128,7 +117,7 @@ class MenuWidget(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.list_adapter = ListAdapter(data=AVAILABLE_MODULES.keys(),
+        self.list_adapter = ListAdapter(data=modules.AVAILABLE_MODULES.keys(),
                                         cls=MyListItemButton)
 
     def add_module(self):
