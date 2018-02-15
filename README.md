@@ -30,3 +30,6 @@ Start the ReTiCo Builder with:
 ```
 $ retico-builder
 ```
+
+But not really, because dependency management is broken ATM. :(
+You need to install `google-cloud-speech` and `rasa_nlu` before everything works...
