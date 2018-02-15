@@ -43,10 +43,16 @@ class SimulatedNLGModule(abstract.AbstractModule):
 
     def process_iu(self, input_iu):
         candidates = self.db.query(input_iu.act, input_iu.concepts)
+        if not candidates:
+            candidates = self.db.query(input_iu.act, {})
+            print(input_iu.act, input_iu.concepts)
+        if not candidates:
+            return None
         candidate = random.choice(candidates)  # Random choice
         output_iu = self.create_iu(input_iu)
         output_iu.payload = candidate.transcription
         output_iu.meta_data = candidate.generate_meta()
+        output_iu.meta_data["concepts"] = input_iu.concepts
         output_iu.dispatch = input_iu.dispatch
         return output_iu
 
