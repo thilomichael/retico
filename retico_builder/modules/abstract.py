@@ -2,6 +2,7 @@
 
 import time
 import threading
+import pprint
 
 from retico.core import abstract
 
@@ -38,10 +39,12 @@ class ModuleWidget(Widget, DragBehavior):
         self.reset_connection_indicator()
 
     def show_popup(self):
-        std_text = str(self.args)
+        pp = pprint.PrettyPrinter(indent=4)
+        std_text = pp.pformat(self.args)
         self.popup_content = TextInput(text=std_text)
+        self.popup_content.font_name = "Inconsolata"
         popup = Popup(title="Arguments", content=self.popup_content,
-                      size_hint=(None, None), size=(400, 400))
+                      size_hint=(None, None), size=(1000, 800))
         popup.bind(on_dismiss=self.popup_callback)
         popup.open()
 

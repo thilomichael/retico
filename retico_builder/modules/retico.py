@@ -29,6 +29,12 @@ class SpeakerModuleWidget(ModuleWidget):
 
     retico_class = io.SpeakerModule
 
+class StreamingSpeakerModuleWidget(ModuleWidget):
+    """A streaming speaker module."""
+
+    retico_class = io.StreamingSpeakerModule
+    args = {"chunk_size": 5000}
+
 
 class MicrophoneModuleWidget(ModuleWidget):
     """A microphone module."""

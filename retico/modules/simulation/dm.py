@@ -19,7 +19,7 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
 
     @staticmethod
     def name():
-        return "Simulated Dialogue Manager"
+        return "Simulated DM Module"
 
     @staticmethod
     def description():

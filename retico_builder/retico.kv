@@ -71,14 +71,6 @@
         pos: self.parent.x+(self.parent.width/2)-50, self.parent.height-70
         on_press: root.del_button_pressed()
 
-<DebugModuleWidget>
-
-<MyListItemButton>:
-  selected_color: 0.8, 0.8, 0.8, 1
-  deselected_color: 0, 0, 0, 1
-  size_hint_y: None
-  height: 50
-
 <ModulePane>:
   canvas.before:
     Color:
@@ -99,17 +91,19 @@
     Rectangle:
       pos: self.pos
       size: 2, self.height
-  ListView:
+  ScrollView:
     canvas.before:
       Color:
-        rgb: 0.8, 0.8, 0.8
+        rgb: 0.2, 0.2, 0.2
       Rectangle:
         pos: self.x, self.y
         size: self.width, self.height
-    adapter: root.list_adapter
     size: 380, 400
     pos: self.parent.x+10, self.parent.height - self.height - 10
-    id: module_list
+    TreeView:
+      size: self.parent.size
+      pos: 0, 0
+      id: module_list
   Button:
     text: "Add"
     size: 380, 50

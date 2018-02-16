@@ -1,12 +1,11 @@
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.uix.listview import ListItemButton
 from kivy.properties import ObjectProperty
-from kivy.adapters.listadapter import ListAdapter
 from kivy.graphics import Line, Color, InstructionGroup, Triangle, Fbo, ClearColor, ClearBuffers, Scale, Translate, Rectangle
 from kivy.clock import Clock
 from kivy.config import Config
 from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.treeview import TreeViewLabel
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.core.window import Window
@@ -30,6 +29,8 @@ class ReticoApp(App):
         Clock.schedule_interval(rb.drag_guard, 1.0 / 60.0)
         rb.ids.menu_widget.ids.minimap.bind(on_touch_down=rb.ids.menu_widget.minimap_touch)
         rb.ids.menu_widget.ids.minimap.bind(on_touch_move=rb.ids.menu_widget.minimap_touch)
+        rb.ids.menu_widget.load_module_list()
+        self.title = "ReTiCo Builder"
         return rb
 
 
@@ -264,33 +265,37 @@ class ReticoBuilder(Widget):
             id_dict[idb].module.subscribe(id_dict[ida].module)
 
 
-
 class ModulePane(Widget):
     pass
-
-
-class MyListItemButton(ListItemButton):
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.height = 40
 
 
 class MenuWidget(Widget):
 
     module_list = ObjectProperty()
-    module_list_adapter = ObjectProperty()
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        data = []
-        data.extend(modules.AVAILABLE_MODULES.keys())
-        self.list_adapter = ListAdapter(data=data,
-                                        cls=MyListItemButton)
+    def load_module_list(self):
+        new_dict = {}
+        tv = self.ids.module_list
+        tv.hide_root = True
+        for k, v in modules.AVAILABLE_MODULES.items():
+            modname = str(v.__module__)
+            if not new_dict.get(modname):
+                new_dict[modname] = []
+            new_dict[modname].append(k)
+        for group, mlist in new_dict.items():
+            label = TreeViewLabel(text="  "+group)
+            label.no_selection = True
+            item = tv.add_node(label)
+            mlist.sort()
+            for m in mlist:
+                tv.add_node(TreeViewLabel(text=m.replace(" Module", "")), parent=item)
+        tv.size_hint = 1, None
+        tv.bind(minimum_height=tv.setter('height'))
 
     def add_module(self):
-        if self.list_adapter.selection:
-            self.parent.add_module(self.list_adapter.selection[0].text)
+        if self.ids.module_list.selected_node:
+            self.parent.add_module(self.ids.module_list.selected_node.text +
+                                   " Module")
 
     def run(self):
         self.ids.run_button.disabled = True
@@ -323,10 +328,8 @@ class MenuWidget(Widget):
             relativey = (touch.pos[1] - instance.y) / instance.height
             layout = self.parent.ids.module_pane.parent.parent
             screen = layout.parent
-            print(layout.size)
             layout.pos = ((-layout.width * relativex) + (screen.width/2),
                           (-layout.width * relativey) + (screen.height/2))
-            # print(relativex, relativey)
             self.parent.minimap_drawer(0)
 
 
