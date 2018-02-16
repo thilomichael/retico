@@ -230,7 +230,8 @@ class ReticoBuilder(Widget):
             save_dict = {}
             save_dict["retico_class"] = m.retico_class
             save_dict["args"] = m.get_args()
-            save_dict["widget"] = m.__class__
+            save_dict["retico_args"] = m.args
+            save_dict["widget"] = str(m.__class__)
             save_dict["x"] = m.ids.layout.x
             save_dict["y"] = m.ids.layout.y
             save_dict["id"] = id(m)
