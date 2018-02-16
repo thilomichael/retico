@@ -89,3 +89,4 @@ py3/
 *.sh
 *.wav
 .ropeproject
+**/*.rtc

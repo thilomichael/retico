@@ -22,7 +22,13 @@ class ModuleWidget(Widget, DragBehavior):
     @classmethod
     def name(cls):
         """The name of the widget."""
-        return cls.__name__
+        try:
+            return cls.retico_class.name()
+        except NotImplementedError:
+            return cls.__name__
+
+    def get_args(self):
+        return self.args
 
     def popup_callback(self, instance):
         thing = eval(self.popup_content.text)
@@ -126,7 +132,7 @@ class ModuleWidget(Widget, DragBehavior):
 
 class InfoLabelWidget(ModuleWidget):
     """A widget containing an info label. This label may be accessed by the
-    `update_info` method by referencing `self.info_label`."""
+    update_info method by referencing self.info_label."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

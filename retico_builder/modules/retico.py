@@ -15,10 +15,14 @@ class DebugModuleWidget(InfoLabelWidget):
         self.info_label.text = str(input_iu.payload)
 
     def __init__(self, **kwargs):
+        del kwargs["retico_args"]
+        del kwargs["show_popup"]
         super().__init__(retico_args={"callback": self.callback},
                          show_popup=False,
                          **kwargs)
 
+    def get_args(self):
+        return {}
 
 class SpeakerModuleWidget(ModuleWidget):
     """A speaker module."""
@@ -33,11 +37,19 @@ class MicrophoneModuleWidget(ModuleWidget):
     args = {"chunk_size": 5000}
 
 
-class AudioRecorderModuleWidget(ModuleWidget):
+class AudioRecorderModuleWidget(InfoLabelWidget):
     """An audio recorder module."""
 
     retico_class = io.AudioRecorderModule
     args = {"filename": "recording.wav"}
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.info_label.text = "Saving to file: %s" % self.args["filename"]
+
+    def popup_callback(self, instance):
+        super().popup_callback(instance)
+        self.info_label.text = "Saving to file: %s" % self.args["filename"]
 
 
 class AudioDispatcherModuleWidget(ModuleWidget):
