@@ -9,6 +9,7 @@ from kivy.config import Config
 from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
+from kivy.core.window import Window
 
 
 import pickle
@@ -22,17 +23,20 @@ from retico_builder import modules
 class ReticoApp(App):
     def build(self):
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
+        Window.size = (1000, 700)
         rb = ReticoBuilder()
         Clock.schedule_interval(rb.line_drawer, 1.0 / 60.0)
         Clock.schedule_interval(rb.minimap_drawer, 2.0)
         Clock.schedule_interval(rb.drag_guard, 1.0 / 60.0)
+        rb.ids.menu_widget.ids.minimap.bind(on_touch_down=rb.ids.menu_widget.minimap_touch)
+        rb.ids.menu_widget.ids.minimap.bind(on_touch_move=rb.ids.menu_widget.minimap_touch)
         return rb
 
 
 class ReticoBuilder(Widget):
 
     def minimap_drawer(self, dt):
-        """Updates the minimnap.
+        """Updates the minimap.
 
         For this, a fbo is used to capture an image of the module pane widget.
         Additionally a rectangle is added where the current window is located.
@@ -240,6 +244,8 @@ class ReticoBuilder(Widget):
         popup.open()
 
     def _load_callback(self, instance):
+        if not instance.content.selection:
+            return
         filename = instance.content.selection[0]
         print(filename)
         self.module_list = []
@@ -310,6 +316,18 @@ class MenuWidget(Widget):
     def load(self):
         self.stop()
         self.parent.load()
+
+    def minimap_touch(self, instance, touch):
+        if instance.collide_point(*touch.pos):
+            relativex = (touch.pos[0] - instance.x) / instance.width
+            relativey = (touch.pos[1] - instance.y) / instance.height
+            layout = self.parent.ids.module_pane.parent.parent
+            screen = layout.parent
+            print(layout.size)
+            layout.pos = ((-layout.width * relativex) + (screen.width/2),
+                          (-layout.width * relativey) + (screen.height/2))
+            # print(relativex, relativey)
+            self.parent.minimap_drawer(0)
 
 
 def main():
