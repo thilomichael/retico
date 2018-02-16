@@ -1,7 +1,12 @@
+"""The module for the gui of the retico builder."""
+
+import pickle
+import os
+
 from kivy.app import App
 from kivy.uix.widget import Widget
-from kivy.properties import ObjectProperty
-from kivy.graphics import Line, Color, InstructionGroup, Triangle, Fbo, ClearColor, ClearBuffers, Scale, Translate, Rectangle
+from kivy.graphics import (Line, Color, InstructionGroup, Triangle, Fbo,
+                           ClearColor, ClearBuffers, Rectangle)
 from kivy.clock import Clock
 from kivy.config import Config
 from kivy.uix.filechooser import FileChooserListView
@@ -10,16 +15,11 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.core.window import Window
 
-
-import pickle
-import threading
-import time
-import os
-
 from retico_builder import modules
 
 
 class ReticoApp(App):
+    """The main application retico builder."""
     def build(self):
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
         Window.size = (1000, 700)
@@ -27,14 +27,16 @@ class ReticoApp(App):
         Clock.schedule_interval(rb.line_drawer, 1.0 / 60.0)
         Clock.schedule_interval(rb.minimap_drawer, 2.0)
         Clock.schedule_interval(rb.drag_guard, 1.0 / 60.0)
-        rb.ids.menu_widget.ids.minimap.bind(on_touch_down=rb.ids.menu_widget.minimap_touch)
-        rb.ids.menu_widget.ids.minimap.bind(on_touch_move=rb.ids.menu_widget.minimap_touch)
-        rb.ids.menu_widget.load_module_list()
+        menu_widget = rb.ids.menu_widget
+        menu_widget.ids.minimap.bind(on_touch_down=menu_widget.minimap_touch)
+        menu_widget.ids.minimap.bind(on_touch_move=menu_widget.minimap_touch)
+        menu_widget.load_module_list()
         self.title = "ReTiCo Builder"
         return rb
 
 
 class ReticoBuilder(Widget):
+    """The main widget of the application."""
 
     def minimap_drawer(self, dt):
         """Updates the minimap.
@@ -42,8 +44,6 @@ class ReticoBuilder(Widget):
         For this, a fbo is used to capture an image of the module pane widget.
         Additionally a rectangle is added where the current window is located.
         """
-        # self.ids.module_pane.parent.parent.export_to_png(".mm.png")
-        # self.ids.menu_widget.ids.minimap.reload()
         thing = self.ids.module_pane
         layout = self.ids.module_pane.parent.parent
         screen = thing.parent.parent.parent
@@ -73,10 +73,6 @@ class ReticoBuilder(Widget):
         self.line_ig.clear()
         self.line_ig.add(Color(0, 0, 0, 0.8))
         for in_mod, out_mod in self.connection_list:
-            # self.line_ig.add(Line(points=[in_mod.ids.layout.x - 15,
-            #                  in_mod.ids.layout.y + 245,
-            #                  out_mod.ids.layout.x + 300,
-            #                  out_mod.ids.layout.y + 245], width=2))
             outx = out_mod.ids.layout.x
             outy = out_mod.ids.layout.y
             inx = in_mod.ids.layout.x
@@ -130,6 +126,8 @@ class ReticoBuilder(Widget):
                                               iny + 245], width=2))
 
     def drag_guard(self, dt):
+        """Method that continously checks if the screen or a module is out of
+        bounds and enforces the bounds."""
         max_width = self.ids.module_pane.width
         max_height = self.ids.module_pane.height
         screen = self.ids.module_pane.parent.parent.parent
@@ -164,6 +162,7 @@ class ReticoBuilder(Widget):
         self.exit = False
 
     def add_module(self, module_name, args=None, show_popup=True):
+        """Adds a module to the module pane."""
         w = modules.AVAILABLE_MODULES[module_name](retico_builder=self,
                                                    retico_args=args,
                                                    show_popup=show_popup)
@@ -175,6 +174,7 @@ class ReticoBuilder(Widget):
         return w
 
     def delete_module(self, module):
+        """Deletes a module."""
         self.module_list.remove(module)
         self.ids.module_pane.remove_widget(module)
         ncl = []
@@ -184,6 +184,7 @@ class ReticoBuilder(Widget):
         self.connection_list = ncl
 
     def connect_module(self, module, in_out):
+        """Connects a module."""
         if not self.connecting:
             self.connecting = module
             for m in self.module_list:
@@ -210,16 +211,19 @@ class ReticoBuilder(Widget):
                 m.reset_connection_indicator()
 
     def run(self):
+        """Runs all modules."""
         for m in self.module_list:
             m.setup()
         for m in self.module_list:
             m.run()
 
     def stop(self):
+        """Stops all modules."""
         for m in self.module_list:
             m.stop()
 
     def save(self, filename):
+        """Saves the current graph to file."""
         m_list = []
         c_list = []
         for m in self.module_list:
@@ -237,6 +241,7 @@ class ReticoBuilder(Widget):
         pickle.dump([m_list, c_list], open("%s.rtc" % filename, "wb"))
 
     def load(self):
+        """Opens a File Chooser and loads the chosen graph."""
         fc = FileChooserListView()
         fc.path = os.getcwd()
         popup = Popup(title="Load", content=fc)
@@ -265,15 +270,11 @@ class ReticoBuilder(Widget):
             id_dict[idb].module.subscribe(id_dict[ida].module)
 
 
-class ModulePane(Widget):
-    pass
-
-
 class MenuWidget(Widget):
-
-    module_list = ObjectProperty()
+    """The widget containing the menu."""
 
     def load_module_list(self):
+        """Loads the module list and displays it in a tree view."""
         new_dict = {}
         tv = self.ids.module_list
         tv.hide_root = True
@@ -283,31 +284,36 @@ class MenuWidget(Widget):
                 new_dict[modname] = []
             new_dict[modname].append(k)
         for group, mlist in new_dict.items():
-            label = TreeViewLabel(text="  "+group)
+            label = TreeViewLabel(text="  " + group)
             label.no_selection = True
             item = tv.add_node(label)
             mlist.sort()
             for m in mlist:
-                tv.add_node(TreeViewLabel(text=m.replace(" Module", "")), parent=item)
+                tv.add_node(TreeViewLabel(text=m.replace(" Module", "")),
+                            parent=item)
         tv.size_hint = 1, None
         tv.bind(minimum_height=tv.setter('height'))
 
     def add_module(self):
+        """Add module callback."""
         if self.ids.module_list.selected_node:
             self.parent.add_module(self.ids.module_list.selected_node.text +
                                    " Module")
 
     def run(self):
+        """Run button callback."""
         self.ids.run_button.disabled = True
         self.ids.stop_button.disabled = False
         self.parent.run()
 
     def stop(self):
+        """Stop button callback."""
         self.ids.run_button.disabled = False
         self.ids.stop_button.disabled = True
         self.parent.stop()
 
     def save(self):
+        """Save button callback. Displays a message."""
         self.stop()
         if self.ids.file_field.text:
             self.parent.save(self.ids.file_field.text)
@@ -319,22 +325,24 @@ class MenuWidget(Widget):
         popup.open()
 
     def load(self):
+        """Load button callback."""
         self.stop()
         self.parent.load()
 
     def minimap_touch(self, instance, touch):
+        """Callback for clicks and drags on the mini map."""
         if instance.collide_point(*touch.pos):
             relativex = (touch.pos[0] - instance.x) / instance.width
             relativey = (touch.pos[1] - instance.y) / instance.height
             layout = self.parent.ids.module_pane.parent.parent
             screen = layout.parent
-            layout.pos = ((-layout.width * relativex) + (screen.width/2),
-                          (-layout.width * relativey) + (screen.height/2))
+            layout.pos = ((-layout.width * relativex) + (screen.width / 2),
+                          (-layout.width * relativey) + (screen.height / 2))
             self.parent.minimap_drawer(0)
 
 
 def main():
-    print("Hello World")
+    """Runs the retico builder."""
     ReticoApp().run()
 
 

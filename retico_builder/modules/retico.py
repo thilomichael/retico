@@ -12,6 +12,7 @@ class DebugModuleWidget(InfoLabelWidget):
     retico_class = CallbackModule
 
     def callback(self, input_iu):
+        """The callback of the debug module."""
         self.info_label.text = str(input_iu.payload)
 
     def __init__(self, **kwargs):
@@ -24,10 +25,12 @@ class DebugModuleWidget(InfoLabelWidget):
     def get_args(self):
         return {}
 
+
 class SpeakerModuleWidget(ModuleWidget):
     """A speaker module."""
 
     retico_class = io.SpeakerModule
+
 
 class StreamingSpeakerModuleWidget(ModuleWidget):
     """A streaming speaker module."""

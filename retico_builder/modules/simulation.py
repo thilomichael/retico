@@ -54,6 +54,7 @@ class SimulatedNLGWidget(InfoLabelWidget):
             self.info_label.text = "%s (%s)" % (iu.get_text(),
                                                 iu.is_dispatching)
 
+
 class SimulatedNLUWidget(InfoLabelWidget):
     """A simulated NLU module."""
 
@@ -63,6 +64,7 @@ class SimulatedNLUWidget(InfoLabelWidget):
         iu = self.module.latest_iu()
         if iu:
             self.info_label.text = "%s (%s)" % (iu.act, iu.concepts)
+
 
 class SimulatedTTSWidget(InfoLabelWidget):
     """A simulated EOT module."""
