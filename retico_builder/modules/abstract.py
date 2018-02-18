@@ -20,6 +20,14 @@ class ModuleWidget(Widget, DragBehavior):
     retico_class = abstract.AbstractModule
     args = {}
 
+    def touch_down(self, instance, touch):
+        if self.ids.layout.collide_point(*touch.pos):
+            self.is_dragged = True
+
+    def touch_up(self, instance, touch):
+        if self.ids.layout.collide_point(*touch.pos):
+            self.is_dragged = False
+
     @classmethod
     def name(cls):
         """The name of the widget."""
@@ -53,6 +61,7 @@ class ModuleWidget(Widget, DragBehavior):
         super().__init__(**kwargs)
         self.retico_builder = retico_builder
         self.is_running = False
+        self.is_dragged = False
         if retico_class:
             self.retico_class = retico_class
         if retico_args:

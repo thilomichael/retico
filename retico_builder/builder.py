@@ -68,62 +68,78 @@ class ReticoBuilder(Widget):
 
         thing.parent.canvas.insert(canvas_parent_index, thing.canvas)
 
+    def _draw_line(self, in_mod, out_mod):
+        outx = out_mod.ids.layout.x
+        outy = out_mod.ids.layout.y
+        inx = in_mod.ids.layout.x
+        iny = in_mod.ids.layout.y
+        halfx = outx + 300 + (((inx - 15) - (outx + 300)) / 2)
+        halfy = outy + 245 + (((iny + 245) - (outy + 245 + 190)) / 2)
+
+        # Draw line stubs
+        self.line_ig.add(Line(points=[inx - 15,
+                                      iny + 245,
+                                      inx - 25,
+                                      iny + 245], width=2))
+        self.line_ig.add(Line(points=[outx + 300,
+                                      outy + 245,
+                                      outx + 310,
+                                      outy + 245], width=2))
+        # Draw the arrow
+        self.line_ig.add(Triangle(points=[inx,
+                                          iny + 245,
+                                          inx - 15,
+                                          iny + 255,
+                                          inx - 15,
+                                          iny + 235]))
+
+        # Draw the line depending on relative position
+        if outx + 300 + 30 >= inx:
+            self.line_ig.add(Line(points=[outx + 310,
+                                          outy + 245,
+                                          outx + 310,
+                                          halfy], width=2))
+            self.line_ig.add(Line(points=[inx - 25,
+                                          halfy,
+                                          outx + 310,
+                                          halfy], width=2))
+            self.line_ig.add(Line(points=[inx - 25,
+                                          iny + 245,
+                                          inx - 25,
+                                          halfy], width=2))
+        else:
+            self.line_ig.add(Line(points=[outx + 310,
+                                          outy + 245,
+                                          halfx,
+                                          outy + 245], width=2))
+            self.line_ig.add(Line(points=[halfx,
+                                          outy + 245,
+                                          halfx,
+                                          iny + 245], width=2))
+            self.line_ig.add(Line(points=[halfx,
+                                          iny + 245,
+                                          inx - 25,
+                                          iny + 245], width=2))
+
     def line_drawer(self, dt):
         """This routine draws the arrows between the modules."""
         self.line_ig.clear()
         self.line_ig.add(Color(0, 0, 0, 0.8))
+        in_dragged = []
+        out_dragged = []
         for in_mod, out_mod in self.connection_list:
-            outx = out_mod.ids.layout.x
-            outy = out_mod.ids.layout.y
-            inx = in_mod.ids.layout.x
-            iny = in_mod.ids.layout.y
-            halfx = outx + 300 + (((inx - 15) - (outx + 300)) / 2)
-            halfy = outy + 245 + (((iny + 245) - (outy + 245 + 190)) / 2)
-
-            # Draw line stubs
-            self.line_ig.add(Line(points=[inx - 15,
-                                          iny + 245,
-                                          inx - 25,
-                                          iny + 245], width=2))
-            self.line_ig.add(Line(points=[outx + 300,
-                                          outy + 245,
-                                          outx + 310,
-                                          outy + 245], width=2))
-            # Draw the arrow
-            self.line_ig.add(Triangle(points=[inx,
-                                              iny + 245,
-                                              inx - 15,
-                                              iny + 255,
-                                              inx - 15,
-                                              iny + 235]))
-
-            # Draw the line depending on relative position
-            if outx + 300 + 30 >= inx:
-                self.line_ig.add(Line(points=[outx + 310,
-                                              outy + 245,
-                                              outx + 310,
-                                              halfy], width=2))
-                self.line_ig.add(Line(points=[inx - 25,
-                                              halfy,
-                                              outx + 310,
-                                              halfy], width=2))
-                self.line_ig.add(Line(points=[inx - 25,
-                                              iny + 245,
-                                              inx - 25,
-                                              halfy], width=2))
+            if in_mod.is_dragged:
+                in_dragged.append((in_mod, out_mod))
+            elif out_mod.is_dragged:
+                out_dragged.append((in_mod, out_mod))
             else:
-                self.line_ig.add(Line(points=[outx + 310,
-                                              outy + 245,
-                                              halfx,
-                                              outy + 245], width=2))
-                self.line_ig.add(Line(points=[halfx,
-                                              outy + 245,
-                                              halfx,
-                                              iny + 245], width=2))
-                self.line_ig.add(Line(points=[halfx,
-                                              iny + 245,
-                                              inx - 25,
-                                              iny + 245], width=2))
+                self._draw_line(in_mod, out_mod)
+        self.line_ig.add(Color(0, 1, 0, 1))
+        for in_mod, out_mod in in_dragged:
+            self._draw_line(in_mod, out_mod)
+        self.line_ig.add(Color(1, 0, 0, 1))
+        for in_mod, out_mod in out_dragged:
+            self._draw_line(in_mod, out_mod)
 
     def drag_guard(self, dt):
         """Method that continously checks if the screen or a module is out of
@@ -166,6 +182,8 @@ class ReticoBuilder(Widget):
         w = modules.AVAILABLE_MODULES[module_name](retico_builder=self,
                                                    retico_args=args,
                                                    show_popup=show_popup)
+        w.bind(on_touch_down=w.touch_down)
+        w.bind(on_touch_up=w.touch_up)
         self.module_list.append(w)
         layout = self.ids.module_pane.parent.parent
         w.ids.layout.center = (-layout.x + (layout.parent.width / 2),
