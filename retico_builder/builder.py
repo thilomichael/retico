@@ -45,8 +45,8 @@ class ReticoBuilder(Widget):
         Additionally a rectangle is added where the current window is located.
         """
         thing = self.ids.module_pane
-        layout = self.ids.module_pane.parent.parent
-        screen = thing.parent.parent.parent
+        layout = self.ids.layout
+        screen = self.ids.screen
 
         canvas_parent_index = thing.parent.canvas.indexof(thing.canvas)
         thing.parent.canvas.remove(thing.canvas)
@@ -146,7 +146,7 @@ class ReticoBuilder(Widget):
         bounds and enforces the bounds."""
         max_width = self.ids.module_pane.width
         max_height = self.ids.module_pane.height
-        screen = self.ids.module_pane.parent.parent.parent
+        screen = self.ids.screen
 
         for module in self.module_list:
             if module.ids.layout.x < 0:
@@ -157,7 +157,7 @@ class ReticoBuilder(Widget):
                 module.ids.layout.y = 0
             elif module.ids.layout.y > max_height - 300:
                 module.ids.layout.y = max_height - 300
-        layout = self.ids.module_pane.parent.parent
+        layout = self.ids.layout
 
         if layout.x > 300:
             layout.x = 300
@@ -185,9 +185,10 @@ class ReticoBuilder(Widget):
         w.bind(on_touch_down=w.touch_down)
         w.bind(on_touch_up=w.touch_up)
         self.module_list.append(w)
-        layout = self.ids.module_pane.parent.parent
-        w.ids.layout.center = (-layout.x + (layout.parent.width / 2),
-                               -layout.y + (layout.parent.height / 2))
+        layout = self.ids.layout
+        screen = self.ids.screen
+        w.ids.layout.center = (-layout.x + (screen.width / 2),
+                               -layout.y + (screen.height / 2))
         self.ids.module_pane.add_widget(w)
         return w
 
