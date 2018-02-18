@@ -12,6 +12,8 @@ from retico.modules.simulation.asr import SimulatedASRModule
 from retico.modules.simulation.nlu import SimulatedNLUModule
 from retico.modules.simulation.eot import SimulatedEoTModule
 
+from retico import headless
+
 def audio_demo():
     m1 = MicrophoneModule(5000)
     m2 = StreamingSpeakerModule(5000)
@@ -35,6 +37,7 @@ def audio_demo():
 
     m1.stop()
     m2.stop()
+
 
 def google_asr():
     m1 = MicrophoneModule(5000)
@@ -182,6 +185,8 @@ def simulation():
     callee_nlu.stop()
     callee_eot.stop()
     callee_speaker.stop()
+
+    headless.save(caller_dm, "savetest")
 
 
 if __name__ == '__main__':

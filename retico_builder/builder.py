@@ -263,8 +263,9 @@ class ReticoBuilder(Widget):
         for m in mc_list[0]:
             w = self.add_module(m["widget_name"], args=m["args"],
                                 show_popup=False)
-            w.ids.layout.x = m["x"]
-            w.ids.layout.y = m["y"]
+            if m.get("x") and m.get("y"):
+                w.ids.layout.x = m["x"]
+                w.ids.layout.y = m["y"]
             id_dict[m["id"]] = w
         for ida, idb in mc_list[1]:
             self.connection_list.append((id_dict[ida], id_dict[idb]))
