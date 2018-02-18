@@ -41,7 +41,6 @@ def save(module, filename):
         current_module = undiscovered.pop()
         discovered.append(current_module)
         lbs, rbs = discover_all_modules(current_module)
-        print(lbs, rbs)
         for mod in lbs:
             if mod not in discovered:
                 undiscovered.add(mod)
