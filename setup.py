@@ -23,6 +23,8 @@ config = {
     'version': '0.1',
     'install_requires': ['pyaudio', 'pySDL2', 'kivy'],
     'packages': find_packages(),
+    'package_data': {'retico_builder': ['*.kv']},
+    'include_package_data': True,
     'entry_points': {
         'console_scripts': [
             'retico-builder=retico_builder.builder:main',

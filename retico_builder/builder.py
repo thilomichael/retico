@@ -14,6 +14,7 @@ from kivy.uix.treeview import TreeViewLabel
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.core.window import Window
+from kivy.lang import Builder
 
 from retico_builder import modules
 
@@ -22,6 +23,8 @@ class ReticoApp(App):
     """The main application retico builder."""
     def build(self):
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
+        path = os.path.dirname(__file__)
+        Builder.load_file('%s/retico.kv' % path)
         Window.size = (1000, 700)
         rb = ReticoBuilder()
         Clock.schedule_interval(rb.line_drawer, 1.0 / 60.0)
