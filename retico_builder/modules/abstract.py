@@ -2,6 +2,7 @@
 
 import time
 import threading
+import os
 import pprint
 
 from retico.core import abstract
@@ -50,7 +51,8 @@ class ModuleWidget(Widget, DragBehavior):
         pp = pprint.PrettyPrinter(indent=4)
         std_text = pp.pformat(self.args)
         self.popup_content = TextInput(text=std_text)
-        self.popup_content.font_name = "Inconsolata"
+        path = os.path.dirname(__file__)
+        self.popup_content.font_name = "%s/../data/Inconsolata" % path
         popup = Popup(title="Arguments", content=self.popup_content,
                       size_hint=(None, None), size=(1000, 800))
         popup.bind(on_dismiss=self.popup_callback)

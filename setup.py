@@ -15,7 +15,7 @@ except ImportError:
     from distutils.core import setup
 
 config = {
-    'description': 'A RealTimeConversation Framework',
+    'description': 'A real time conversation framework',
     'author': 'Thilo Michael',
     'url': '??',
     'download_url': '??',
@@ -23,14 +23,14 @@ config = {
     'version': '0.1',
     'install_requires': ['pyaudio', 'pySDL2', 'kivy'],
     'packages': find_packages(),
-    'package_data': {'retico_builder': ['*.kv']},
+    'package_data': {'retico_builder': ['data/*']},
     'include_package_data': True,
     'entry_points': {
         'console_scripts': [
             'retico-builder=retico_builder.builder:main',
         ],
     },
-    'name': 'ReTiCo',
+    'name': 'retico',
 }
 
 setup(**config)

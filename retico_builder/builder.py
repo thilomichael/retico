@@ -24,7 +24,7 @@ class ReticoApp(App):
     def build(self):
         Config.set('input', 'mouse', 'mouse,disable_multitouch')
         path = os.path.dirname(__file__)
-        Builder.load_file('%s/retico.kv' % path)
+        Builder.load_file('%s/data/retico.kv' % path)
         Window.size = (1000, 700)
         rb = ReticoBuilder()
         Clock.schedule_interval(rb.line_drawer, 1.0 / 60.0)
