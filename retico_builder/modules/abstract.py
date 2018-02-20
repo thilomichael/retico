@@ -148,6 +148,14 @@ class InfoLabelWidget(ModuleWidget):
     """A widget containing an info label. This label may be accessed by the
     update_info method by referencing self.info_label."""
 
+    def popup_callback(self, instance):
+        super().popup_callback(instance)
+        self.update_label()
+
+    def stop(self):
+        super().stop()
+        self.update_label()
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.info_label = Label()
@@ -159,3 +167,11 @@ class InfoLabelWidget(ModuleWidget):
         self.info_label.halign = 'center'
         self.info_label.valign = 'middle'
         self.info_label.color = (0, 0, 0, 1)
+        self.update_label()
+
+    def update_label(self):
+        """Updates the info of the label. This function is called when the
+        module widget is initialized. It can be overwritten to provide info that
+        should be displayed before and after execution of the network. During
+        execution the update_info method can be used to update info."""
+        pass

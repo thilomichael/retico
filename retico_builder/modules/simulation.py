@@ -30,6 +30,10 @@ class SimulatedDialogueManagerWidget(InfoLabelWidget):
             self.info_label.text = "%s - %s (%s)" % (iu.act, iu.concepts,
                                                      iu.dispatching)
 
+    def update_label(self):
+        if self.module:
+            self.info_label.text = str(self.module.agent_class)
+
 
 class SimulatedEOTWidget(InfoLabelWidget):
     """A simulated EOT module."""
@@ -46,7 +50,7 @@ class SimulatedNLGWidget(InfoLabelWidget):
     """A simulated NLG module."""
 
     retico_class = nlg.SimulatedNLGModule
-    args = {"data_directory": "data/sct11"}
+    args = {"data_directory": "data/sct11", "agent_type": "caller"}
 
     def update_info(self):
         iu = self.module.latest_iu()
