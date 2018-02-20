@@ -148,6 +148,8 @@ class SimulatioDB():
             for row in csv_f:
                 if len(row) != 7:
                     continue
+                if row[1] != self.agent_type:
+                    continue
                 data = SimulationData(wav_p, csv_p, row)
                 data.set_transcription(row[5], float(row[6]))
                 data.set_dialogue_act(row[4])
@@ -155,8 +157,9 @@ class SimulatioDB():
                 data.set_audio(wav_data, current_rate, current_sample_width)
                 yield data
 
-    def __init__(self, data_directory):
+    def __init__(self, data_directory, agent_type):
         self.data_directory = data_directory
+        self.agent_type = agent_type
         self.act_db = {}
 
         for idata in self.read_data(data_directory):
@@ -189,6 +192,6 @@ class SimulatioDB():
 
 
 if __name__ == '__main__':
-    idb = SimulatioDB("data/sct11")
+    idb = SimulatioDB("data/sct11", "caller")
     for candidate in idb.query("provide_info", {"caller_name": "Jeremy Clems"}):
         print(candidate.generate_meta())

@@ -36,13 +36,28 @@ class SimulatedNLGModule(abstract.AbstractModule):
     def output_iu():
         return GeneratedTextIU
 
-    def __init__(self, data_directory):
+    def __init__(self, data_directory, agent_type="caller"):
         super().__init__()
         self.data_directory = data_directory
+        self.agent_type = agent_type
         self.db = None
 
     def process_iu(self, input_iu):
-        candidates = self.db.query(input_iu.act, input_iu.concepts)
+        if input_iu.act == "":
+            output_iu = self.create_iu(input_iu)
+            output_iu.payload("<silence>")
+            output_iu.dispatch = False
+            output_iu.meta_data["raw_audio"] = b""
+            output_iu.meta_data["frame_rate"] = 44100
+            output_iu.meta_data["sample_width"] = 2
+        msg_data = input_iu.meta_data["message_data"].split(":")
+        act = msg_data[0]
+        concepts = {}
+        if len(msg_data) > 1:
+            c = msg_data[1].split(",")
+            for thing in c:
+                concepts[thing] = ""
+        candidates = self.db.query(act, concepts)
         if not candidates:
             candidates = self.db.query(input_iu.act, {})
             print(input_iu.act, input_iu.concepts)
@@ -57,7 +72,7 @@ class SimulatedNLGModule(abstract.AbstractModule):
         return output_iu
 
     def setup(self):
-        self.db = SimulatioDB(self.data_directory)
+        self.db = SimulatioDB(self.data_directory, self.agent_type)
 
     def shutdown(self):
         pass

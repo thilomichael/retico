@@ -52,6 +52,14 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         self.fu = True
         self.ready = False
 
+    def speak(self):
+        da, fd = self.dialogue_manager.next_act()
+        output_iu = self.create_iu(None)
+        output_iu.set_act(da.act, da.concepts)
+        output_iu.meta_data["message_data"] = fd
+        output_iu.dispatch = True
+        self.append(output_iu)
+
     def continous_loop(self):
         while not self.dialogue_finished:
             while not self.ready:
@@ -78,38 +86,26 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
 
             if self.fu:
                 if self.first_utterance:
-                    da = self.dialogue_manager.next_act()
-                    output_iu = self.create_iu(None)
-                    output_iu.set_act(da.act, da.concepts)
-                    output_iu.dispatch = True
-                    self.append(output_iu)
+                    self.speak()
                     self.fu = False
                     self.is_dispatching = True
                     self.last_interl_utterance = time.time()
             else:
                 if is_silence:
                     if i_spoke_last:
-                        if random.random()<0.6:
-                            da = self.dialogue_manager.next_act()
-                            output_iu = self.create_iu(None)
-                            output_iu.set_act(da.act, da.concepts)
-                            output_iu.dispatch = True
-                            self.append(output_iu)
+                        if random.random() < 0.002:
+                            self.speak()
                             self.is_dispatching = True
                     else:
-                        if random.random()<0.9:
+                        if random.random() < 0.2:
                             iu = self.current_incoming_da
                             self.dialogue_manager.process_act(iu.act, iu.concepts)
-                            da = self.dialogue_manager.next_act()
-                            output_iu = self.create_iu(None)
-                            output_iu.set_act(da.act, da.concepts)
-                            output_iu.dispatch = True
-                            self.append(output_iu)
+                            self.speak()
                             self.is_dispatching = True
                 else:
                     if self.is_dispatching and self.interlocutor_talking:
                         output_iu = self.create_iu(None)
-                        output_iu.set_act(da.act, da.concepts)
+                        output_iu.set_act("", {})
                         output_iu.dispatch = False
                     # elif self.interlocutor_talking and self.eot_prediction > 0.90:
                     #     if random.random()<0.8:
@@ -121,7 +117,7 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                     #         output_iu.dispatch = True
                     #         self.append(output_iu)
                     #         self.is_dispatching = True
-            time.sleep(0.5)
+            time.sleep(0.05)
 
     def process_iu(self, input_iu):
         self.ready = True
@@ -183,13 +179,15 @@ class SimulatedDM(AbstractDialogueManager):
 
     def next_act(self):
         message, _ = self.agent.act_out_turn()
+        print(message.message_data.full_tag)
+        print(message.speech_act.value, message.parameters)
         act = message.speech_act.value
         parameters = message.parameters
         params = {}
         for p in parameters:
             params[p] = ""
         print("%s: %s - %s" % (self.agent.name(), act, params))
-        return DialogueAct(act, params)
+        return DialogueAct(act, params), message.message_data.full_tag
 
     @staticmethod
     def get_agent_class(agent_type):
