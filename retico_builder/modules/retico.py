@@ -30,6 +30,7 @@ class SpeakerModuleWidget(ModuleWidget):
     """A speaker module."""
 
     retico_class = io.SpeakerModule
+    args = {"rate": 44100, "sample_width": 2, "use_speaker": "both"}
 
 
 class StreamingSpeakerModuleWidget(ModuleWidget):
@@ -56,8 +57,7 @@ class AudioRecorderModuleWidget(InfoLabelWidget):
         super().__init__(**kwargs)
         self.info_label.text = "Saving to file: %s" % self.args["filename"]
 
-    def popup_callback(self, instance):
-        super().popup_callback(instance)
+    def update_info(self):
         self.info_label.text = "Saving to file: %s" % self.args["filename"]
 
 

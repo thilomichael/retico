@@ -28,7 +28,7 @@ class SimulatedDialogueManagerWidget(InfoLabelWidget):
         iu = self.module.latest_iu()
         if iu:
             self.info_label.text = "%s - %s (%s)" % (iu.act, iu.concepts,
-                                                     iu.dispatching)
+                                                     iu.dispatch)
 
     def update_label(self):
         if self.module:
@@ -56,7 +56,7 @@ class SimulatedNLGWidget(InfoLabelWidget):
         iu = self.module.latest_iu()
         if iu:
             self.info_label.text = "%s (%s)" % (iu.get_text(),
-                                                iu.is_dispatching)
+                                                iu.dispatch)
 
 
 class SimulatedNLUWidget(InfoLabelWidget):
