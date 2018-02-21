@@ -133,10 +133,11 @@ class SpeakerModule(abstract.AbstractConsumingModule):
     def output_iu():
         return None
 
-    def __init__(self, rate=44100, sample_width=2):
+    def __init__(self, rate=44100, sample_width=2, use_speaker="both"):
         super().__init__()
         self.rate = rate
         self.sample_width = sample_width
+        self.use_speaker = use_speaker
 
         self._p = pyaudio.PyAudio()
 
@@ -150,10 +151,18 @@ class SpeakerModule(abstract.AbstractConsumingModule):
     def setup(self):
         """Set up the speaker for speaking...?"""
         p = self._p
+        if self.use_speaker == "left":
+            stream_info = pyaudio.PaMacCoreStreamInfo(channel_map=(0, -1))
+        elif self.use_speaker == "right":
+            stream_info = pyaudio.PaMacCoreStreamInfo(channel_map=(-1, 0))
+        else:
+            stream_info = pyaudio.PaMacCoreStreamInfo(channel_map=(0, 0))
+
         self.stream = p.open(format=p.get_format_from_width(self.sample_width),
                              channels=CHANNELS,
                              rate=self.rate,
                              input=False,
+                             output_host_api_specific_stream_info=stream_info,
                              output=True)
 
     def shutdown(self):
