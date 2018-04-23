@@ -90,3 +90,4 @@ py3/
 *.wav
 .ropeproject
 **/*.rtc
+sims/
