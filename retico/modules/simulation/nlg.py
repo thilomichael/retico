@@ -60,8 +60,9 @@ class SimulatedNLGModule(abstract.AbstractModule):
         candidates = self.db.query(act, concepts)
         if not candidates:
             candidates = self.db.query(input_iu.act, {})
-            print(input_iu.act, input_iu.concepts)
+            print("FALLBACK TO ACT:",input_iu.act, input_iu.concepts)
         if not candidates:
+            print("NO CANDIDATE", input_iu.act)
             return None
         candidate = random.choice(candidates)  # Random choice
         output_iu = self.create_iu(input_iu)

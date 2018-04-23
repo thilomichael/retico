@@ -1,0 +1,29 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv09/conv09_callee.wav -- offset: 0, duration: 00:00:54.971 / 54.971 / 54971
+
+dialogue_act	callee	5560	6040	confirm:string0-0	ja	0.9312412738800049
+dialogue_act	callee	7420	7880	confirm:string0-1	ja	0.9312412738800049
+dialogue_act	callee	8980	9520	confirm:string0-2	ja	0.9312406778335571
+dialogue_act	callee	11100	11450	confirm:string0-3	ja	0.7591451406478882
+dialogue_act	callee	12865	13425	confirm:string0-4	nein	0.9394062757492065
+dialogue_act	callee	14905	15335	confirm:string0-5	ja	0.9312398433685303
+dialogue_act	callee	16440	17390	provide_partial:string1-0	41	0.8761341571807861
+dialogue_act	callee	17935	18475	provide_partial:string1-1	7	0.6359800100326538
+dialogue_act	callee	19255	20155	provide_partial:string1-2	86	0.9048411846160889
+dialogue_act	callee	21115	22065	provide_partial:string1-3	24	0.8601583242416382
+dialogue_act	callee	22580	23790	provide_partial:string1-4	56	0.8191338777542114
+dialogue_act	callee	24735	25865	provide_partial:string1-5	38	0.9107238054275513
+dialogue_act	callee	27200	27980	misunderstanding	wie bitte	1
+dialogue_act	callee	30335	30645	confirm:string2-0	Ja	1
+dialogue_act	callee	32720	32980	stalling:string2-1	Ehm	1
+dialogue_act	callee	32985	33435	confirm:string2-1	nein	0.9418882131576538
+dialogue_act	callee	34750	35200	confirm:string2-2	ja	0.9312418699264526
+dialogue_act	callee	37375	37855	confirm:string2-3	ja	0.9312412738800049
+dialogue_act	callee	38975	39355	confirm:string2-4	ja	0.9112310409545898
+dialogue_act	callee	40885	41275	confirm:string2-5	ja	0.9041192531585693
+dialogue_act	callee	42450	43230	provide_partial:string3-0	17	0.6710025668144226
+dialogue_act	callee	44245	45315	provide_partial:string3-1	56	0.8204418420791626
+dialogue_act	callee	46440	47590	provide_partial:string3-2	76	0.8531111478805542
+dialogue_act	callee	48685	49545	provide_partial:string3-3	20	0.6414246559143066
+dialogue_act	callee	50475	51455	provide_partial:string3-4	77	0.9187890291213989
+dialogue_act	callee	52215	53165	provide_partial:string3-5	34	0.8059165477752686
+dialogue_act.	callee	27200	29670	misunderstanding	11 nicht tschuldigung	0.7989939451217651

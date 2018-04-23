@@ -1,0 +1,26 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv01/conv01_caller.wav -- offset: 0, duration: 00:00:43.385 / 43.385 / 43385
+
+dialogue_act	caller	2220	3220	provide_partial:string0-0	31	0.9154559373855591
+dialogue_act	caller	3850	5010	provide_partial:string0-1	85	0.8999179601669312
+dialogue_act	caller	5390	6210	provide_partial:string0-2	17	0.6710060238838196
+dialogue_act	caller	6650	7900	provide_partial:string0-3	73	0.8402038812637329
+dialogue_act	caller	8200	9400	provide_partial:string0-4	44	0.914540708065033
+dialogue_act	caller	9720	11070	provide_partial:string0-5	59	0.8483661413192749
+dialogue_act	caller	12835	13485	confirm:string1-0	ja	0.931240975856781
+dialogue_act	caller	14100	14700	confirm:string1-1	nein	0.9421718716621399
+dialogue_act	caller	15750	16460	confirm:string1-2	ja	0.931240439414978
+dialogue_act	caller	17445	18145	confirm	ja	0.9003583192825317
+dialogue_act	caller	19165	19855	confirm:string1-4	ja	0.9285053014755249
+dialogue_act	caller	20590	21110	confirm:string1-5	ja	0.7123305797576904
+dialogue_act	caller	21590	22290	provide_partial:string2-0	11	0.7268944382667542
+dialogue_act	caller	23120	24270	provide_partial:string2-1	81	0.893288254737854
+dialogue_act	caller	24915	26055	provide_partial:string2-2	85	0.8999055624008179
+dialogue_act	caller	27085	28435	provide_partial:string2-3	36	0.8543207049369812
+dialogue_act	caller	28760	30040	provide_partial:string2-4	37	0.8817873001098633
+dialogue_act	caller	30360	31710	provide_partial:string2-5	78	0.8977080583572388
+dialogue_act	caller	33425	34125	confirm:string3-0	ja	0.9312406778335571
+dialogue_act	caller	35115	35655	confirm:string3-1	ja	0.9312412738800049
+dialogue_act	caller	36615	37325	confirm:string3-2	ja	0.9312418699264526
+dialogue_act	caller	37925	38605	confirm:string3-3	nein	0.9421718716621399
+dialogue_act	caller	39735	40495	confirm:string3-4	ja	0.9312396049499512
+dialogue_act	caller	41285	41785	confirm:string3-5	ja	0.8947429656982422

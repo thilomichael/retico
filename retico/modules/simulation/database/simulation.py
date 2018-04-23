@@ -185,6 +185,8 @@ class SimulatioDB():
             the same concept types as given in the arguments.
         """
         candidates = []
+        if not self.act_db.get(dialogue_act):
+            return []
         for idata in self.act_db[dialogue_act]:
             if set(concepts.keys()) == set(idata.concepts.keys()):
                 candidates.append(idata)

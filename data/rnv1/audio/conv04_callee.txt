@@ -1,0 +1,26 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv04/conv04_callee.wav -- offset: 0, duration: 00:00:43.360 / 43.360 / 43360
+
+dialogue_act	callee	2430	2870	confirm:string0-0	ja	0.6798572540283203
+dialogue_act	callee	4120	4580	confirm:string0-1	Ja	1
+dialogue_act	callee	5590	5940	confirm:string0-2	Ja	1
+dialogue_act	callee	7180	7610	confirm:string0-3	ja	0.9297125339508057
+dialogue_act	callee	8860	9340	confirm:string0-4	nein	0.6037958264350891
+dialogue_act	callee	10830	11270	confirm:string0-5	ja	0.8450688123703003
+dialogue_act	callee	12370	13350	provide_partial:string1-0	41	0.8761345148086548
+dialogue_act	callee	14050	14740	provide_partial:string1-1	7	0.6361712217330933
+dialogue_act	callee	15575	16635	provide_partial:string1-2	86	0.8937724828720093
+dialogue_act	callee	17605	18625	provide_partial:string1-3	24	0.862952709197998
+dialogue_act	callee	19315	20435	provide_partial:string1-4	56	0.8191338777542114
+dialogue_act	callee	21005	21885	provide_partial:string1-5	38	0.8562925457954407
+dialogue_act	callee	23515	24025	confirm:string2-0	Ja	1
+dialogue_act	callee	25200	25720	confirm:string2-1	nein	0.9367639422416687
+dialogue_act	callee	26980	27290	confirm:string2-2	Ja	1
+dialogue_act	callee	28435	28955	confirm:string2-3	Ja	1
+dialogue_act	callee	30045	30415	confirm:string2-4	Ja	1
+dialogue_act	callee	31520	31940	confirm:string2-5	Ja	1
+dialogue_act	callee	32800	33490	provide_partial:string3-0	17	0.6710050106048584
+dialogue_act	callee	34205	35265	provide_partial:string3-1	56	0.8191338777542114
+dialogue_act	callee	35925	37075	provide_partial:string3-2	76	0.8529688119888306
+dialogue_act	callee	37530	38320	provide_partial:string3-3	20	0.6414608955383301
+dialogue_act	callee	39240	40360	provide_partial:string3-4	77	0.9377899169921875
+dialogue_act	callee	40860	41780	provide_partial:string3-5	34	0.7998965978622437

@@ -1,0 +1,40 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv07/conv07_callee.wav -- offset: 0, duration: 00:00:53.613 / 53.613 / 53613
+
+dialogue_act	callee	280	1130	greeting	hallihallo	0.823001503944397
+dialogue_act	callee	3810	4380	confirm:string0-0	grau	0.7799792289733887
+dialogue_act	callee	5520	5940	confirm:string0-1	ja	0.9171382188796997
+dialogue_act	callee	7130	7600	confirm:string0-2	ja	0.9312398433685303
+dialogue_act	callee	9240	9720	confirm:string0-3	ja	0.7999796271324158
+dialogue_act	callee	10930	11490	confirm:string0-4	nein	0.9421719908714294
+dialogue_act	callee	13100	13610	confirm:string0-5	genau	0.9700291156768799
+dialogue_act	callee	14475	15975	provide_partial:string1-0	jetzt kommt die 41	0.9451457262039185
+dialogue_act	callee	16575	17495	provide_partial:string1-1	die sieben	0.6006640791893005
+dialogue_act	callee	18280	19190	provide_partial:string1-2	86	0.8937745690345764
+dialogue_act	callee	19885	22200	provide_partial:string1-3	42-24	0.6562566161155701
+dialogue_act	callee	23172	24182	provide_partial:string1-4	56	0.8156408071517944
+dialogue_act	callee	25347	26647	provide_partial:string1-5	33	0.755126953125
+dialogue_act	callee	28922	29502	confirm:string2-0	ja	0.9176867008209229
+dialogue_act	callee	30592	31082	confirm:string2-1	nein	0.8406219482421875
+dialogue_act	callee	32777	33307	confirm:string2-2	ja	0.9270217418670654
+dialogue_act	callee	34672	35162	confirm:string2-3	ja	0.9312412738800049
+dialogue_act	callee	36617	37157	confirm:string2-4	ja	0.931240975856781
+dialogue_act	callee	39227	39677	confirm:string2-5	ja	0.931240975856781
+dialogue_act	callee	40582	42032	provide_partial:string3-0	als erstes die 17	0.9195892214775085
+dialogue_act	callee	42767	44027	provide_partial:string3-1	dann die 56	0.6324375867843628
+dialogue_act	callee	44537	45757	provide_partial:string3-2	76	0.8670611381530762
+dialogue_act	callee	46347	47147	provide_partial:string3-3	20	0.6412413120269775
+dialogue_act	callee	47907	48977	provide_partial:string3-4	77	0.9391178488731384
+dialogue_act	callee	49472	50662	provide_partial:string3-5	und 34	0.8805108070373535
+dialogue_act	callee	52747	53337	goodbye	super	0.8272184133529663
+dialogue_act.	callee	15075	15975	provide_partial:string1-0	1 40	0.5008843541145325
+dialogue_act.	callee	16865	17495	provide_partial:string1-1	7	0.6356807947158813
+dialogue_act.	callee	21042	21442	stalling	Ehm	1
+dialogue_act.	callee	21442	22212	provide_partial:string1-3	24	0.8609102964401245
+dialogue_act.	callee	25357	25847	stalling:string1-5	Ehm	1
+dialogue_act.	callee	25847	26657	provide_partial:string1-5	30	0.8942255973815918
+dialogue_act.	callee	41307	42047	provide_partial:string3-0	17	0.6132566928863525
+dialogue_act.	callee	43017	44037	provide_partial:string3-1	56	0.8191338777542114
+dialogue_act.	callee	49877	50677	provide_partial:string3-5	34	0.8043858408927917
+dialogue_act..	callee	19892	21452	stalling:string1-3	42	0.8508598804473877
+dialogue_act..	callee	41387	42047	provide_partial:string3-0	17	0.670601487159729
+dialogue_act..	callee	42937	44037	provide_partial:string3-1	die 56	0.4976995289325714

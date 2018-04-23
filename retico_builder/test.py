@@ -1,5 +1,5 @@
 import sys
-from retico.core.audio.io import MicrophoneModule, SpeakerModule, AudioDispatcherModule, StreamingSpeakerModule
+from retico.core.audio.io import MicrophoneModule, SpeakerModule, AudioDispatcherModule, StreamingSpeakerModule, AudioRecorderModule
 from retico.core.debug.general import CallbackModule
 
 from retico.modules.google.asr import GoogleASRModule
@@ -91,32 +91,34 @@ def rasa_nlu():
     m4.stop()
     m5.stop()
 
-def simulation():
-    caller_dm  = SimulatedDialogueManagerModule("data/callerfile.ini", "data/sct11", "caller", True)
-    caller_nlg = SimulatedNLGModule("data/sct11")
+def simulation(thing):
+    caller_dm  = SimulatedDialogueManagerModule("data/%s/callerfile.ini" % thing, "data/%s/audio" % thing, "caller", False)
+    caller_nlg = SimulatedNLGModule("data/%s/audio" % thing, agent_type="caller")
     caller_tts = SimulatedTTSModule()
     caller_io  = AudioDispatcherModule(5000)
     caller_asr = SimulatedASRModule()
     caller_nlu = SimulatedNLUModule()
     caller_eot = SimulatedEoTModule()
-    caller_speaker = SpeakerModule()
+    caller_speaker = SpeakerModule(use_speaker="left")
+    caller_recorder = AudioRecorderModule("recording_caller.wav")
 
-    callee_dm  = SimulatedDialogueManagerModule("data/calleefile.ini", "data/sct11", "callee", False)
-    callee_nlg = SimulatedNLGModule("data/sct11")
+    callee_dm  = SimulatedDialogueManagerModule("data/%s/calleefile.ini" % thing, "data/%s/audio" % thing, "callee", True)
+    callee_nlg = SimulatedNLGModule("data/%s/audio" % thing, agent_type="callee")
     callee_tts = SimulatedTTSModule()
     callee_io  = AudioDispatcherModule(5000)
     callee_asr = SimulatedASRModule()
     callee_nlu = SimulatedNLUModule()
     callee_eot = SimulatedEoTModule()
-    callee_speaker = SpeakerModule()
+    callee_speaker = SpeakerModule(use_speaker="right")
+    callee_recorder = AudioRecorderModule("recording_callee.wav")
 
     caller_dm.subscribe(caller_nlg)
     caller_nlg.subscribe(caller_tts)
     caller_tts.subscribe(caller_io)
     caller_io.subscribe(callee_asr)
-    caller_io.subscribe(caller_dm)
     caller_io.subscribe(callee_eot)
     caller_io.subscribe(caller_speaker)
+    caller_io.subscribe(caller_recorder)
     callee_asr.subscribe(callee_nlu)
     callee_nlu.subscribe(callee_dm)
     callee_eot.subscribe(callee_dm)
@@ -127,6 +129,7 @@ def simulation():
     callee_io.subscribe(caller_eot)
     callee_io.subscribe(callee_dm)
     callee_io.subscribe(callee_speaker)
+    callee_io.subscribe(callee_recorder)
     caller_asr.subscribe(caller_nlu)
     caller_nlu.subscribe(caller_dm)
     caller_eot.subscribe(caller_dm)
@@ -139,6 +142,7 @@ def simulation():
     caller_nlu.setup()
     caller_eot.setup()
     caller_speaker.setup()
+    caller_recorder.setup()
     callee_dm.setup()
     callee_nlg.setup()
     callee_tts.setup()
@@ -147,6 +151,7 @@ def simulation():
     callee_nlu.setup()
     callee_eot.setup()
     callee_speaker.setup()
+    callee_recorder.setup()
 
     print("READY")
 
@@ -158,6 +163,7 @@ def simulation():
     caller_nlu.run(run_setup=False)
     caller_eot.run(run_setup=False)
     caller_speaker.run(run_setup=False)
+    caller_recorder.run(run_setup=False)
     callee_dm.run(run_setup=False)
     callee_nlg.run(run_setup=False)
     callee_tts.run(run_setup=False)
@@ -166,6 +172,7 @@ def simulation():
     callee_nlu.run(run_setup=False)
     callee_eot.run(run_setup=False)
     callee_speaker.run(run_setup=False)
+    callee_recorder.run(run_setup=False)
 
     input()
 
@@ -177,6 +184,7 @@ def simulation():
     caller_nlu.stop()
     caller_eot.stop()
     caller_speaker.stop()
+    caller_recorder.stop()
     callee_dm.stop()
     callee_nlg.stop()
     callee_tts.stop()
@@ -185,8 +193,9 @@ def simulation():
     callee_nlu.stop()
     callee_eot.stop()
     callee_speaker.stop()
+    callee_recorder.stop()
 
-    headless.save(caller_dm, "savetest")
+    headless.save(caller_dm, "simulation_%s" % thing)
 
 
 if __name__ == '__main__':
@@ -197,4 +206,4 @@ if __name__ == '__main__':
     elif sys.argv[1] == "rasa":
         rasa_nlu()
     elif sys.argv[1] == "simulation":
-        simulation()
+        simulation(sys.argv[2])

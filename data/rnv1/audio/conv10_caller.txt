@@ -1,0 +1,32 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv10/conv10_caller.wav -- offset: 0, duration: 00:00:45.671 / 45.671 / 45671
+
+dialogue_act	caller	2810	5060	greeting	Hallo also ich fange an	0.848966121673584
+dialogue_act	caller	5530	5880	stalling:string0-0	Ehm	1
+dialogue_act	caller	5880	6650	provide_partial:string0-0	31	0.7379594445228577
+dialogue_act	caller	7080	8000	provide_partial:string0-1	85	0.8607324957847595
+dialogue_act	caller	8570	9200	provide_partial:string0-2	17	0.6709845066070557
+dialogue_act	caller	9835	10795	provide_partial:string0-3	73	0.8382219076156616
+dialogue_act	caller	11305	12165	provide_partial:string0-4	44	0.9145404100418091
+dialogue_act	caller	12835	13785	provide_partial:string0-5	950	0.8426289558410645
+dialogue_act	caller	15930	16320	confirm:string1-0	ja	0.9123103618621826
+dialogue_act	caller	17335	17735	confirm:string1-1	nein	0.937010645866394
+dialogue_act	caller	19125	19485	confirm:string1-2	Ja	1
+dialogue_act	caller	20585	20865	confirm:string1-3	Ja	1
+dialogue_act	caller	22035	22425	confirm:string1-4	Ja	1
+dialogue_act	caller	23570	23910	confirm:string1-5	Ja	1
+dialogue_act	caller	24800	25040	stalling:string2-0	Ehm	1
+dialogue_act	caller	25040	25460	provide_partial:string2-0	-1	1
+dialogue_act	caller	26090	26830	provide_partial:string2-1	an 18	0.3753548860549927
+dialogue_act	caller	27550	28470	provide_partial:string2-2	65	0.8122889995574951
+dialogue_act	caller	29160	30270	provide_partial:string2-3	436	0.581468403339386
+dialogue_act	caller	30835	31765	provide_partial:string2-4	37	0.8724592924118042
+dialogue_act	caller	32340	33240	provide_partial:string2-5	78	0.9033346176147461
+dialogue_act	caller	35530	35950	confirm:string3-0	Ja	1
+dialogue_act	caller	37190	37570	confirm:string3-1	Ja	1
+dialogue_act	caller	39690	39960	confirm:string3-2	Ja	1
+dialogue_act	caller	41065	41515	confirm:string3-3	nein	0.9316003322601318
+dialogue_act	caller	42670	43090	confirm:string3-4	ja	0.9026328325271606
+dialogue_act	caller	44060	44490	confirm:string3-5	Ja	1
+dialogue_act.	caller	2810	3350	greeting	Hallo	0.8813629746437073
+dialogue_act.	caller	4260	6650	provide_partial:string0-0	also ich fange dann an es ist 31	0.8645917773246765
+dialogue_act...	caller	5150	6650	provide_partial:string0-0	was ist ein 31	0.8220710754394531

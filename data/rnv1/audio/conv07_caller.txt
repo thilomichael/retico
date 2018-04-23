@@ -1,0 +1,27 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv07/conv07_caller.wav -- offset: 0, duration: 00:00:53.613 / 53.613 / 53613
+
+dialogue_act	caller	1150	2020	greeting	hallöchen	0.9320107698440552
+dialogue_act	caller	2680	3770	provide_partial:string0-0	31	0.9154568314552307
+dialogue_act	caller	4490	5650	provide_partial:string0-1	85	0.8716897964477539
+dialogue_act	caller	6220	7020	provide_partial:string0-2	17	0.6709348559379578
+dialogue_act	caller	7880	9310	provide_partial:string0-3	73	0.8402152061462402
+dialogue_act	caller	9935	11095	provide_partial:string0-4	44	0.9148545265197754
+dialogue_act	caller	11925	13355	provide_partial:string0-5	59	0.8504230976104736
+dialogue_act	caller	15930	16590	confirm:string1-0	ja	0.9312412738800049
+dialogue_act	caller	17360	18120	confirm:string1-1	nein	0.9364916086196899
+dialogue_act	caller	19260	19840	confirm:string1-2	ja	0.9196778535842896
+dialogue_act	caller	22170	22780	confirm:string1-3	ja	0.9312418699264526
+dialogue_act	caller	24555	25225	confirm:string1-4	ja	0.9253037571907043
+dialogue_act	caller	26610	27170	confirm:string1-5	ja	0.8916106224060059
+dialogue_act	caller	28150	28880	provide_partial:string2-0	11	0.7279165983200073
+dialogue_act	caller	29465	30605	provide_partial:string2-1	81	0.8932889699935913
+dialogue_act	caller	31585	32815	provide_partial:string2-2	65	0.8477882146835327
+dialogue_act	caller	33320	34560	provide_partial:string2-3	36	0.854320764541626
+dialogue_act	caller	35290	36650	provide_partial:string2-4	37	0.8724615573883057
+dialogue_act	caller	37810	39320	provide_partial:string2-5	78	0.8977065682411194
+dialogue_act	caller	41995	42545	confirm:string3-0	ja	0.9281694889068604
+dialogue_act	caller	43860	44360	confirm:string3-1	ja	0.9312398433685303
+dialogue_act	caller	45550	46170	confirm:string3-2	ja	0.9312421083450317
+dialogue_act	caller	47050	47660	confirm:string3-3	nein	0.941132664680481
+dialogue_act	caller	48875	49395	confirm:string3-4	ja	0.9312418699264526
+dialogue_act	caller	51505	51965	confirm:string3-5	ja	0.9254963397979736

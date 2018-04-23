@@ -1,0 +1,29 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv02/conv02_caller.wav -- offset: 0, duration: 00:00:54.618 / 54.618 / 54618
+
+dialogue_act	caller	1640	3670	greeting	Hallo schläfst du mal vorher	0.6788638234138489
+dialogue_act	caller	4380	5760	provide_partial:string0-0	31	0.9154566526412964
+dialogue_act	caller	6270	7470	provide_partial:string0-1	85	0.8695310354232788
+dialogue_act	caller	7940	8930	provide_partial:string0-2	17	0.671005368232727
+dialogue_act	caller	9495	10895	provide_partial:string0-3	73	0.839297890663147
+dialogue_act	caller	11495	12725	provide_partial:string0-4	44	0.9145402908325195
+dialogue_act	caller	14220	15440	provide_partial:string0-5	59	0.8493770956993103
+dialogue_act	caller	19170	20020	confirm:string1-0	ja	0.9312424063682556
+dialogue_act	caller	20585	21275	confirm:string1-1	nein	0.9421719312667847
+dialogue_act	caller	22810	23380	confirm:string1-2	ja	0.9235019087791443
+dialogue_act	caller	24485	25165	confirm:string1-3	Herr	0.6979127526283264
+dialogue_act	caller	26115	26835	confirm:string1-4	ja	0.9138538837432861
+dialogue_act	caller	27705	28225	confirm:string1-5	ja	0.9372639656066895
+dialogue_act	caller	29155	30175	provide_partial:string2-0	11	0.7187656164169312
+dialogue_act	caller	30785	32165	provide_partial:string2-1	81	0.8905553221702576
+dialogue_act	caller	33015	34455	provide_partial:string2-2	65	0.8477838635444641
+dialogue_act	caller	35195	36725	provide_partial:string2-3	36	0.8543200492858887
+dialogue_act	caller	37210	38720	provide_partial:string2-4	Simon 30	0.8503617644309998
+dialogue_act	caller	39185	40515	provide_partial:string2-5	78	0.8989290595054626
+dialogue_act	caller	42910	43600	confirm:string3-0	Ja	1
+dialogue_act	caller	45565	45965	confirm:string3-1	ja	0.9312398433685303
+dialogue_act	caller	47475	48015	confirm:string3-2	ja	0.9312418699264526
+dialogue_act	caller	49075	49675	confirm:string3-3	nein	0.9421719312667847
+dialogue_act	caller	50875	51665	confirm:string3-4	ja	0.9312424063682556
+dialogue_act	caller	52520	52980	confirm:string3-5	ja	0.9312412738800049
+dialogue_act	caller	53700	54360	goodbye	Auf Wiedersehen	1
+dialogue_act.	caller	1640	2570	greeting	Hallo	0.8811556696891785

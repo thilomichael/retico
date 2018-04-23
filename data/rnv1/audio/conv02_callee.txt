@@ -1,0 +1,28 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv02/conv02_callee.wav -- offset: 0, duration: 00:00:54.618 / 54.618 / 54618
+
+dialogue_act	callee	970	1930	greeting	Hallo	0.8786429762840271
+dialogue_act	callee	5510	5950	confirm:string0-0	ja	0.9312398433685303
+dialogue_act	callee	7370	7790	confirm:string0-1	ja	0.8956711292266846
+dialogue_act	callee	8950	9320	confirm:string0-2	ja	0.8450763821601868
+dialogue_act	callee	10785	11205	confirm:string0-3	Ja	1
+dialogue_act	callee	12675	13125	confirm:string0-4	nein	0.9421719908714294
+dialogue_act	callee	15465	15885	confirm:string0-5	Ja	1
+dialogue_act	callee	18105	18995	provide_partial:string1-0	41	0.8787578344345093
+dialogue_act	callee	19890	20530	provide_partial:string1-1	7	0.6359654068946838
+dialogue_act	callee	21540	22480	provide_partial:string1-2	86	0.8937708735466003
+dialogue_act	callee	23520	24400	provide_partial:string1-3	24	0.8610147833824158
+dialogue_act	callee	25080	26100	provide_partial:string1-4	56	0.8191317915916443
+dialogue_act	callee	26720	27640	provide_partial:string1-5	38	0.910720705986023
+dialogue_act	callee	29990	30450	confirm:string2-0	ja	0.7140324115753174
+dialogue_act	callee	31970	32440	confirm:string2-1	nein	0.9411158561706543
+dialogue_act	callee	34275	34755	confirm:string2-2	ja	0.9254197478294373
+dialogue_act	callee	36475	36855	confirm:string2-3	Ja	1
+dialogue_act	callee	38615	39035	confirm:string2-4	Ja	1
+dialogue_act	callee	40365	40805	confirm:string2-5	ja	0.8075597286224365
+dialogue_act	callee	41965	42865	provide_partial:string3-0	17 Uhr	0.7253326177597046
+dialogue_act	callee	43575	44725	provide_partial:string3-1	56	0.8191308379173279
+dialogue_act	callee	46380	47290	provide_partial:string3-2	76	0.8530688285827637
+dialogue_act	callee	48015	48735	provide_partial:string3-3	20	0.6414772868156433
+dialogue_act	callee	49785	50785	provide_partial:string3-4	77	0.9404596090316772
+dialogue_act	callee	51565	52405	provide_partial:string3-5	34	0.8042484521865845
+dialogue_act	callee	53205	53815	goodbye	okay	0.9399295449256897

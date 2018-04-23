@@ -1,0 +1,29 @@
+#file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv08/conv08_caller.wav -- offset: 0, duration: 00:01:04.453 / 64.453 / 64453
+
+dialogue_act	caller	1560	2890	greeting	ich vergleiche	0.9814176559448242
+dialogue_act	caller	2960	3770	provide_partial:string0-0	31	0.9079307317733765
+dialogue_act	caller	4450	5330	provide_partial:string0-1	85	0.8123646974563599
+dialogue_act	caller	5980	7000	provide_partial:string0-2	17	0.940021276473999
+dialogue_act	caller	7550	8460	provide_partial:string0-3	73	0.7482209205627441
+dialogue_act	caller	9125	9945	provide_partial:string0-4	44	0.7651912569999695
+dialogue_act	caller	11495	12405	provide_partial:string0-5	59	0.913476288318634
+dialogue_act	caller	15470	15970	confirm:string1-0	ja	0.8915091753005981
+dialogue_act	caller	18140	18780	stalling	Ehm	1
+dialogue_act	caller	29180	30040	confirm:string1-4	richtig	0.9814176559448242
+dialogue_act	caller	30810	32160	provide_partial:string2-0	11	0.7219680547714233
+dialogue_act	caller	33015	34855	provide_partial:string2-1	81	0.8969234228134155
+dialogue_act	caller	36985	38075	provide_partial:string2-1	1	0.5998972058296204
+dialogue_act	caller	39610	40600	provide_partial:string2-2	65	0.8141021728515625
+dialogue_act	caller	41425	42545	provide_partial:string2-3	36	0.8951184749603271
+dialogue_act	caller	43095	44405	provide_partial:string2-4	37	0.8801997900009155
+dialogue_act	caller	44790	45770	provide_partial:string2-5	7a	0.5778445601463318
+dialogue_act	caller	48020	48680	confirm:string3-0	ja	0.9204699993133545
+dialogue_act	caller	49690	50280	confirm:string3-1	Ja	1
+dialogue_act	caller	52125	52765	confirm:string3-2	ja	0.9283143877983093
+dialogue_act	caller	54455	55135	confirm:string3-3	nein	0.9421718716621399
+dialogue_act	caller	56805	57395	confirm:string3-4	ja	0.9312421083450317
+dialogue_act	caller	59170	60310	confirm:string3-5	ja richtig	0.9814176559448242
+dialogue_act.	callee	1560	3770	provide_partial:string0-1	ich vergleiche 31	0.8850587606430054
+dialogue_act.	callee	36270	38070	request_confirm:string2-1	A81	0.863683819770813
+dialogue_act.	callee	59170	59640	confirm:string3-5	ja	0.9014003872871399
+dialogue_act.	callee	59655	60315	confirm:string3-5	richtig	0.9246572852134705
