@@ -121,8 +121,26 @@ class IncrementalUnit():
         Args:
             module (AbstractModule): The module that has processed this IU.
         """
+        if not isinstance(module, AbstractModule):
+            raise TypeError("Given object is not a module!")
         with self.mutex:
             self._processed_list.append(module)
+
+    def is_processed_by(self, module):
+        """Return True if the IU is processed by the given module.
+
+        If the given object is a module that has not processed this IU or is not
+        a module it returns False.
+
+        Args:
+            module (AbstractModule): The module to test whether or not it has
+                processed the IU
+
+        Returns:
+            bool: Whether or not the module has processed the IU.
+        """
+        with self.mutex:
+            return module in self._processed_list
 
     def __repr__(self):
         return "%s - (%s): %s" % (self.type(), self.creator.name(),
@@ -246,8 +264,8 @@ class AbstractModule():
         if not iu:
             return
         if not isinstance(iu, IncrementalUnit):
-            raise ValueError("IU is of type %s but should be IncrementalUnit" %
-                             type(iu))
+            raise TypeError("IU is of type %s but should be IncrementalUnit" %
+                            type(iu))
         for q in self._right_buffers:
             q.put(iu)
 
