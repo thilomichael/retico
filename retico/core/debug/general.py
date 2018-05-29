@@ -19,8 +19,8 @@ class CallbackModule(abstract.AbstractConsumingModule):
     def input_ius():
         return [abstract.IncrementalUnit]
 
-    def __init__(self, callback):
-        super().__init__()
+    def __init__(self, callback, **kwargs):
+        super().__init__(**kwargs)
         self.callback = callback
 
     def process_iu(self, input_iu):

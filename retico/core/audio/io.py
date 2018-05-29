@@ -63,7 +63,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
         self.audio_buffer.put(in_data)
         return (in_data, pyaudio.paContinue)
 
-    def __init__(self, chunk_size, rate=44100, sample_width=2):
+    def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
         """
         Initialize the Microphone Module.
 
@@ -73,7 +73,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
             rate (int): The frame rate of the recording
             sample_width (int): The width of a single sample of audio in bytes.
         """
-        super().__init__()
+        super().__init__(**kwargs)
         self.chunk_size = chunk_size
         self.rate = rate
         self.sample_width = sample_width
@@ -133,8 +133,9 @@ class SpeakerModule(abstract.AbstractConsumingModule):
     def output_iu():
         return None
 
-    def __init__(self, rate=44100, sample_width=2, use_speaker="both"):
-        super().__init__()
+    def __init__(self, rate=44100, sample_width=2, use_speaker="both",
+                 **kwargs):
+        super().__init__(**kwargs)
         self.rate = rate
         self.sample_width = sample_width
         self.use_speaker = use_speaker
@@ -203,8 +204,8 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
                 pass
         return (b'\0' * frame_count * self.sample_width, pyaudio.paContinue)
 
-    def __init__(self, chunk_size, rate=44100, sample_width=2):
-        super().__init__()
+    def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
+        super().__init__(**kwargs)
         self.chunk_size = chunk_size
         self.rate = rate
         self.sample_width = sample_width
@@ -284,7 +285,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
         return DispatchedAudioIU
 
     def __init__(self, target_chunk_size, rate=44100, sample_width=2,
-                 speed=1.0, continuous=True, silence=None):
+                 speed=1.0, continuous=True, silence=None, **kwargs):
         """Initialize the AudioDispatcherModule with the given arguments.
 
         Args:
@@ -300,7 +301,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
                 of silence. If this argument is set to None, a default silence
                 of all zeros will be set.
         """
-        super().__init__()
+        super().__init__(**kwargs)
         self.target_chunk_size = target_chunk_size
         if not silence:
             self.silence = generate_silence(target_chunk_size, sample_width)
@@ -373,6 +374,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
                                              self.rate, self.sample_width)
                         current_iu.set_dispatching(0.0, False)
                         self.append(current_iu)
+                        # print([x.consumer for x in self._right_buffers if isinstance(x.consumer, retico.modules.simulation.dm.SimulatedDialogueManagerModule)])
             time.sleep((self.target_chunk_size / self.rate) / self.speed)
 
     def setup(self):

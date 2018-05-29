@@ -36,8 +36,8 @@ class SimulatedNLGModule(abstract.AbstractModule):
     def output_iu():
         return GeneratedTextIU
 
-    def __init__(self, data_directory, agent_type="caller"):
-        super().__init__()
+    def __init__(self, data_directory, agent_type="caller", **kwargs):
+        super().__init__(**kwargs)
         self.data_directory = data_directory
         self.agent_type = agent_type
         self.db = None

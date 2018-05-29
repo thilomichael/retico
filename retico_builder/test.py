@@ -119,6 +119,7 @@ def simulation(thing):
     caller_io.subscribe(callee_eot)
     caller_io.subscribe(caller_speaker)
     caller_io.subscribe(caller_recorder)
+    caller_io.subscribe(caller_dm)
     callee_asr.subscribe(callee_nlu)
     callee_nlu.subscribe(callee_dm)
     callee_eot.subscribe(callee_dm)
@@ -133,6 +134,8 @@ def simulation(thing):
     caller_asr.subscribe(caller_nlu)
     caller_nlu.subscribe(caller_dm)
     caller_eot.subscribe(caller_dm)
+
+    headless.save(caller_dm, "simulation_%s" % thing)
 
     caller_dm.setup()
     caller_nlg.setup()
@@ -194,8 +197,6 @@ def simulation(thing):
     callee_eot.stop()
     callee_speaker.stop()
     callee_recorder.stop()
-
-    headless.save(caller_dm, "simulation_%s" % thing)
 
 
 if __name__ == '__main__':

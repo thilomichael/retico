@@ -15,7 +15,7 @@ from google.cloud.speech import types
 class GoogleASRModule(abstract.AbstractModule):
     """A Module that recognizes speech by utilizing the Google Speech API."""
 
-    def __init__(self, language="en-US", nchunks=20, rate=44100):
+    def __init__(self, language="en-US", nchunks=20, rate=44100, **kwargs):
         """Initialize the GoogleASRModule with the given arguments.
 
         Args:
@@ -24,7 +24,7 @@ class GoogleASRModule(abstract.AbstractModule):
                 prediction.
             rate (int): The framerate of the input audio
         """
-        super().__init__()
+        super().__init__(**kwargs)
         self.language = language
         self.nchunks = nchunks
         self.rate = rate

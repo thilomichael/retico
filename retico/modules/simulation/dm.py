@@ -34,8 +34,9 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def output_iu():
         return DispatchableActIU
 
-    def __init__(self, agenda_file, conv_folder, agent_class, first_utterance):
-        super().__init__()
+    def __init__(self, agenda_file, conv_folder, agent_class, first_utterance,
+                 **kwargs):
+        super().__init__(**kwargs)
         self.agenda_file = agenda_file
         self.conv_folder = conv_folder
         self.agent_class = agent_class
