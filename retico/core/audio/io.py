@@ -45,10 +45,6 @@ class MicrophoneModule(abstract.AbstractProducingModule):
         return "A prodicing module that records audio from microphone."
 
     @staticmethod
-    def input_ius():
-        return []
-
-    @staticmethod
     def output_iu():
         return AudioIU
 

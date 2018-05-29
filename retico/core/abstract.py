@@ -513,7 +513,7 @@ class AbstractProducingModule(AbstractModule):
 
     @staticmethod
     def input_ius():
-        raise NotImplementedError()
+        return []
 
     @staticmethod
     def output_iu():
