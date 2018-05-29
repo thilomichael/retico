@@ -207,19 +207,24 @@ class AbstractModule():
             the current instance of the module.
         """
         d = {}
-        the_types = (int, float, bool, str)
+        valid_types = (int, float, bool, str, dict) # Only serializable types.
         for k, v in self.__dict__.items():
-            if type(v) in the_types:
+            if isinstance(v, valid_types):
                 d[k] = v
         return d
 
-    def __init__(self, queue_class=IncrementalQueue,
+    def __init__(self, queue_class=IncrementalQueue, meta_data={},
                  **kwargs):
         """Initialize the module with a default IncrementalQueue.
 
         Args:
             queue_class (IncrementalQueue): A queue class that should be used
-                instead of the standard queue class.
+                instead of the standard queue class. If the given object does
+                not inherit from IncrementalQueue, the standard IncrementalQueue
+                is used.
+            meta_data (dict): A dict with meta data about the module. This may
+                be coordinates of the visualization of this module or other
+                auxiliary information.
         """
         self._right_buffers = []
         self.is_running = False
@@ -227,7 +232,13 @@ class AbstractModule():
         self._left_buffers = []
         self.mutex = threading.Lock()
 
-        self.queue_class = queue_class
+        self.meta_data = {}
+        if meta_data:
+            self.meta_data = meta_data
+
+        self.queue_class = IncrementalQueue
+        if issubclass(queue_class, IncrementalQueue):
+            self.queue_class = queue_class
 
         self.iu_counter = 0
 
