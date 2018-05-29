@@ -198,46 +198,74 @@ class AbstractModule():
         """
         raise NotImplementedError()
 
-    def __init__(self, left_buffer=None, queue_class=IncrementalQueue):
+    def get_init_arguments(self):
+        """Returns the arguments of the init function to create the current
+        instance of the Module.
+
+        Returns:
+            dict: A dictionary containing all the necessary arguments to create
+            the current instance of the module.
+        """
+        d = {}
+        the_types = (int, float, bool, str)
+        for k, v in self.__dict__.items():
+            if type(v) in the_types:
+                d[k] = v
+        return d
+
+    def __init__(self, queue_class=IncrementalQueue,
+                 **kwargs):
         """Initialize the module with a default IncrementalQueue.
 
         Args:
-            left_buffer (IncrementalQueue): An optioal parameter that sets the
-                input queue.
             queue_class (IncrementalQueue): A queue class that should be used
                 instead of the standard queue class.
         """
         self._right_buffers = []
         self.is_running = False
         self._previous_iu = None
-        self._left_buffer = None
+        self._left_buffers = []
         self.mutex = threading.Lock()
 
         self.queue_class = queue_class
 
         self.iu_counter = 0
 
-        self.set_left_buffer(left_buffer)
-
-    def set_left_buffer(self, left_buffer):
-        """Set a new left buffer for the module.
+    def add_left_buffer(self, left_buffer):
+        """Add a new left buffer for the module.
 
         This method stops the execution of the module pipeline if it is running.
 
         Args:
-            left_buffer (IncrementalQueue): The new left buffer of the module.
+            left_buffer (IncrementalQueue): The left buffer to add to the
+                module.
+        """
+        if not left_buffer or not isinstance(left_buffer, IncrementalQueue):
+            return
+        if self.is_running:
+            self.stop()
+        self._left_buffers.append(left_buffer)
+
+    def remove_left_buffer(self, left_buffer):
+        """Remove a left buffer from the module.
+
+        This method stops the execution of the module pipeline if it is running.
+
+        Args:
+            left_buffer (IncrementalQueue): The left buffer to remove from the
+                module.
         """
         if self.is_running:
             self.stop()
-        self._left_buffer = left_buffer
+        self._left_buffers.remove(left_buffer)
 
-    def left_buffer(self):
-        """Returns the left buffer of the module.
+    def left_buffers(self):
+        """Returns the list of left buffers of the module.
 
         Returns:
-            IncrementalQueue: The left buffer of the module.
+            list: The left buffers of the module.
         """
-        return self._left_buffer
+        return list(self._left_buffers)
 
     def right_buffers(self):
         """Return the right buffers of the module.
@@ -282,11 +310,8 @@ class AbstractModule():
             q (IncrementalQueue): A optional queue that is used. If q is None,
                 the a new queue will be used"""
         if not q:
-            if not module.left_buffer():
-                q = self.queue_class(self, module)
-                module.set_left_buffer(q)
-            else:
-                q = module.left_buffer()
+            q = self.queue_class(self, module)
+            module.add_left_buffer(q)
         self._right_buffers.append(q)
         return q
 
@@ -300,6 +325,8 @@ class AbstractModule():
         Args:
             q (IncrementalQueue): The queue that should be deleted from the list
                 of output queues"""
+        if q.consumer:
+            q.consumer.remove_left_buffer(q)
         self._right_buffers.remove(q)
 
     def unsubscribe_all(self, module):
@@ -313,6 +340,8 @@ class AbstractModule():
         for q in self._right_buffers:
             if q.consumer != module:
                 new_right_buffers.append(q)
+            elif q.consumer:
+                q.consumer.remove_left_buffer(q)
         self._right_buffers.append = new_right_buffers
 
     def process_iu(self, input_iu):
@@ -339,10 +368,10 @@ class AbstractModule():
     def _run(self):
         self.is_running = True
         while self.is_running:
-            if self._left_buffer:
+            for buffer in self._left_buffers:
                 with self.mutex:
                     try:
-                        input_iu = self._left_buffer.get(timeout=QUEUE_TIMEOUT)
+                        input_iu = buffer.get(timeout=QUEUE_TIMEOUT)
                     except queue.Empty:
                         input_iu = None
                     if input_iu:
