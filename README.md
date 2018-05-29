@@ -14,14 +14,6 @@ The ReTiCo Builder provides a graphical user interface for building networks wit
 You need to have portaudio installed.
 
 ```
-$ pip install Cython==0.26.1
-```
-
-```
-$ pip install https://github.com/kivy/kivy/archive/master.zip
-```
-
-```
 $ python setup.py
 ```
 
