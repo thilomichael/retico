@@ -21,7 +21,7 @@ config = {
     'download_url': '??',
     'author_email': 'thilo.michael@tu-berlin.de',
     'version': '0.1',
-    'install_requires': ['pyaudio'],
+    'install_requires': ['pyaudio', 'flexx'],
     'packages': find_packages(),
     'package_data': {'retico_builder': ['data/*']},
     'include_package_data': True,
