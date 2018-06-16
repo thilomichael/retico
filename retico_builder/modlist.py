@@ -2,9 +2,15 @@ import inspect
 
 from retico_builder.modules import core
 from retico_builder.modules import abstract
+from retico_builder.modules import google
+from retico_builder.modules import rasa
+from retico_builder.modules import simulation
 
 INSPECT_MODULES = {
-    "ReTiCo": core
+    "ReTiCo": core,
+    "Google": google,
+    "Rasa": rasa,
+    "Simulation": simulation
 }
 
 # MODULE_LIST = {
@@ -28,7 +34,7 @@ def generate_module_list():
     for name, module in INSPECT_MODULES.items():
         current_dict = {}
         for n, obj in inspect.getmembers(module):
-            if inspect.isclass(obj) and issubclass(obj, abstract.AbstractModule):
+            if inspect.isclass(obj) and issubclass(obj, abstract.AbstractModule) and obj is not abstract.AbstractModule:
                 current_dict[n] = obj
         m_list[name] = current_dict
     return m_list

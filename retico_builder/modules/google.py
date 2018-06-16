@@ -1,0 +1,24 @@
+from flexx import flx
+from retico_builder.modules.abstract import AbstractModule
+
+try:
+    from retico.modules.google import asr
+
+    class GoogleASRModule(AbstractModule):
+
+        MODULE = asr.GoogleASRModule
+        PARAMETERS = {"language": "en-US", "nchunks": 20, "rate": 44100}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Language: %s" % self.retico_module.language)
+            self.gui.add_info("Number of chunks: %d" % self.retico_module.nchunks)
+            self.gui.add_info("Rate: %d" % self.retico_module.rate)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Recognized Speech:<br>%s (confidence: %.2f)" % (latest_iu.text, latest_iu.confidence))
+
+except ImportError:
+    pass

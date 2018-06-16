@@ -1,12 +1,11 @@
 """The module for the gui of the retico builder."""
 
-from flexx import flx
+import json
 
+from flexx import flx
 from pscript import RawJS
 
 from retico_builder import modlist
-
-import json
 
 flx.assets.associate_asset(__name__, "http://code.interactjs.io/v1.3.4/interact.js")
 
@@ -18,12 +17,17 @@ class ReticoBuilder(flx.PyComponent):
         module_list = modlist.get_module_list()
         self.widget = ReticoWidget(self, module_list)
         self.modules = {}
+        self.running = False
         self.set_connecting_state(False)
         self.connecting_module = None
         self.connecting_direction = None
 
     @flx.action
     def register_module(self, type, parent, gui, params):
+        if self.running:
+            gui.set_parent(None)
+            gui.dispose()
+            return
         pymodule = modlist.MODULE_LIST[parent][type](gui, params, flx_session=self.session)
         self.modules[id(gui)] = pymodule
         gui.set_mtitle(pymodule.retico_module.name())
@@ -35,6 +39,8 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def init_out_click(self, gui):
+        if self.running:
+            return
         module = self.modules[id(gui)]
         out_iu = module.MODULE.output_iu()
 
@@ -42,12 +48,15 @@ class ReticoBuilder(flx.PyComponent):
         self.connecting_module = gui
         self.connecting_direction = 'out'
 
+        gui.highlight(True, "border")
         for m in self.modules.values():
             if gui != m.gui:
                 m.enable_output_iu(out_iu)
 
     @flx.action
     def init_in_click(self, gui):
+        if self.running:
+            return
         module = self.modules[id(gui)]
         in_ius = module.MODULE.input_ius()
 
@@ -55,13 +64,15 @@ class ReticoBuilder(flx.PyComponent):
         self.connecting_module = gui
         self.connecting_direction = 'in'
 
+        gui.highlight(True, "border")
         for m in self.modules.values():
             if gui != m.gui:
                 m.enable_input_ius(in_ius)
 
     @flx.action
     def connect_to(self, gui):
-
+        if self.running:
+            return
         if gui != self.connecting_module:
             if self.connecting_direction == 'in':
                 in_module = self.modules[id(self.connecting_module)]
@@ -82,23 +93,51 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def delete_module(self, gui):
+        if self.running:
+            return
+        self.widget.delete_module(gui)
         pymod = self.modules[id(gui)]
         del self.modules[id(gui)]
+        self.set_connecting_state(False)
+        self.connecting_module = None
+        self.connecting_direction = None
+
+        for m in self.modules.values():
+            m.enable_buttons()
+
+        gui.set_parent(None)
+        gui.dispose()
         # TODO: actually remove the underlying module...
 
     @flx.action
     def run(self):
+        self.running = True
+        self.widget.set_running("yellow")
         for m in self.modules.values():
-            m.retico_module.setup()
+            m.setup()
 
+        self.widget.set_running("red")
         for m in self.modules.values():
             print("Running", m.retico_module)
-            m.retico_module.run(run_setup=False)
+            m.run()
 
     @flx.action
     def stop(self):
+        self.running = False
+        self.widget.set_running(None)
         for m in self.modules.values():
-            m.retico_module.stop()
+            m.stop()
+
+    @flx.action
+    def update_module_info(self):
+        print("Updaing module info")
+        for m in self.modules.values():
+            m.update_running_info()
+
+    @flx.action
+    def set_module_content(self):
+        for m in self.modules.values():
+            m.set_content()
 
 
 class ReticoWidget(flx.Widget):
@@ -112,17 +151,32 @@ class ReticoWidget(flx.Widget):
     def init(self, model, module_list):
         self.model = model
         self.connection_list = []
+        self.running = False
         with flx.HSplit():
             self.mpane = ModulePane(self, flex=3)
             self.menu = MenuPane(self, self.mpane, module_list, flex=1)
 
+    def update_periodically(self):
+        if self.running:
+            self.model.update_module_info()
+            setTimeout(self.update_periodically, 1000)
+        else:
+            self.model.set_module_content()
+
     def run(self):
-        self.mpane.set_running(True)
         self.model.run()
+        self.running = True
+        self.update_periodically()
 
     def stop(self):
-        self.mpane.set_running(False)
         self.model.stop()
+        self.running = False
+
+    @flx.action
+    def set_running(self, active):
+        self.mpane.set_running(active)
+        if active == "red":
+            self.menu.stop_button.set_disabled(False)
 
     @flx.action
     def create_dialogue(self, parameters, module, parent):
@@ -130,16 +184,18 @@ class ReticoWidget(flx.Widget):
 
     @flx.action
     def add_connection(self, from_gui, to_gui):
+        if (from_gui, to_gui) in self.connection_list:
+            return
         self.connection_list.append((from_gui, to_gui))
         self.draw_strokes()
 
+    @flx.action
     def delete_module(self, gui):
         new_clist = []
         for (f, t) in self.connection_list:
             if f != gui and t != gui:
                 new_clist.append((f, t))
         self.connection_list = new_clist
-        self.model.delete_module(gui)
         self.draw_strokes()
 
     def draw_strokes(self):
@@ -153,10 +209,12 @@ class ReticoWidget(flx.Widget):
             f_rect_right = f_rect.right + mpanenode.scrollLeft
             f_rect_left = f_rect.left + mpanenode.scrollLeft
             f_rect_top = f_rect.top + mpanenode.scrollTop
+            f_rect_bottom = f_rect.bottom + mpanenode.scrollTop
 
             t_rect_left = t_rect.left + mpanenode.scrollLeft
             t_rect_right = t_rect.right + mpanenode.scrollLeft
             t_rect_bottom = t_rect.bottom + mpanenode.scrollTop
+            t_rect_top = t_rect.top + mpanenode.scrollTop
 
             from_x, from_y = f.in_pos()
             if f_rect_right < t_rect_left-40:
@@ -171,7 +229,10 @@ class ReticoWidget(flx.Widget):
                 to_x = t_rect_left
                 to_arrow_direction = -1
             half_x = from_x + ((to_x - from_x) / 2)
-            half_y = f_rect_top + ((t_rect_bottom - f_rect_top)/2)
+            if t_rect_top > f_rect_top:
+                half_y = t_rect_top + ((f_rect_bottom - t_rect_top)/2)
+            else:
+                half_y = f_rect_top + ((t_rect_bottom - f_rect_top)/2)
             canvas.beginPath()
             canvas.strokeStyle = '#fff'
             canvas.lineWidth = 3
@@ -246,7 +307,6 @@ class MenuPane(flx.Widget):
     @flx.reaction("run_button.pointer_click")
     def run_click(self):
         self.run_button.set_disabled(True)
-        self.stop_button.set_disabled(False)
         self.retico_widget.run()
 
     @flx.reaction("stop_button.pointer_click")
@@ -265,9 +325,6 @@ class ModulePane(flx.PinboardLayout):
         width: 100%;
         height: 100%;
         overflow: scroll;
-    }
-    .running {
-        background-color: #822;
     }
     """
 
@@ -295,10 +352,12 @@ class ModulePane(flx.PinboardLayout):
         self.retico_widget.draw_strokes()
 
     def set_running(self, active):
-        if active:
-            self.set_css_class(self.css_class + " running")
+        if active == "red":
+            self.node.style["background-color"] = "#822"
+        elif active == "yellow":
+            self.node.style["background-color"] = "#552"
         else:
-            self.set_css_class(self.css_class.replace(" running", ""))
+            self.node.style["background-color"] = None
 
     def init_moving(self):
         RawJS("interact")(".flx-ReticoModule").draggable({
@@ -311,12 +370,20 @@ class ModulePane(flx.PinboardLayout):
             "restrictSize": {"min": {"width": 150, "height": 150 }}
         }).on('resizemove', self.dragMoveListener)
 
+    def center_view(self):
+        rect = self.node.getBoundingClientRect()
+        h = rect.height/2
+        w = rect.width/2
+        self.node.scrollTop = 1500 - h
+        self.node.scrollLeft = 1500 - w
+
     def init(self, retico_widget):
         self.retico_widget = retico_widget
         with flx.PinboardLayout(style="height: 3000px; width: 3000px;") as self.mcontainer:
             self.canvas = flx.CanvasWidget(style="left: 0; top: 0; height:100%; width: 100%;")
         self.modules = []
         self.init_moving()
+        setTimeout(self.center_view, 10)
 
     def create_module(self, type, parent, params):
         init_x = self.node.scrollLeft + (self.node.getBoundingClientRect().width/2) - 75
@@ -431,9 +498,32 @@ class ReticoModule(flx.Widget):
         self.in_button_r = flx.Button(text="◀", css_class="in-button right-button")
 
     @flx.action
-    def set_content(self, content_list):
-        for element in content_list:
-            element.set_parent(self.content_box)
+    def clear_content(self):
+        for child in self.content_box.children:
+            child.set_parent(None)
+            child.dispose()
+
+    @flx.action
+    def add_info(self, text):
+        style = "font-size: 10pt; text-align: center;"
+        lbl = flx.Label(style=style, parent=self.content_box)
+        lbl.set_html(text)
+
+    @flx.action
+    def update_info(self, text):
+        style = "font-size: 10pt; text-align: center;"
+        if len(self.content_box.children) > 1:
+            self.clear_content()
+            flx.Label(style=style, parent=self.content_box)
+        self.content_box.children[0].set_html(text)
+
+    # @flx.action
+    # def set_content(self, content_list):
+    #     for child in self.content_box.children:
+    #         child.set_parent(None)
+    #         child.dispose()
+    #     for element in content_list:
+    #         element.set_parent(self.content_box)
 
     @flx.action
     def disable_input_buttons(self):
@@ -456,14 +546,25 @@ class ReticoModule(flx.Widget):
         self.out_button_r.set_disabled(False)
 
     @flx.action
-    def highlight(self, active):
-        c_list = self.css_class.split(" ")
+    def enable_close_button(self):
+        self.close_button.set_disabled(False)
+
+    @flx.action
+    def disable_close_button(self):
+        self.close_button.set_disabled(True)
+
+    @flx.action
+    def highlight(self, active, color="#ffd"):
+        self.node.style["box-shadow"] = None
         if active:
-            if "highlight" not in c_list:
-                c_list.append("highlight")
+            if color == "border":
+                self.node.style["box-shadow"] = "rgba(255, 255, 255, 0.6) 0px 0px 20px"
+            elif color == "red-border":
+                self.node.style["box-shadow"] = "rgba(255, 0, 0, 0.6) 0px 0px 20px"
+            else:
+                self.node.style["background-color"] = color
         else:
-            c_list = [a for a in c_list if a != "highlight"]
-        self.set_css_class(" ".join(c_list))
+            self.node.style["background-color"] = "#fff"
 
     @flx.reaction('out_button_l.pointer_click', 'out_button_r.pointer_click')
     def out_button_click(self):
@@ -481,9 +582,7 @@ class ReticoModule(flx.Widget):
 
     @flx.reaction('close_button.pointer_click')
     def _close(self):
-        self.retico_widget.delete_module(self)
-        self.set_parent(None)
-        self.dispose()
+        self.retico_widget.model.delete_module(self)
 
     @flx.action
     def set_mtitle(self, thing):
@@ -496,6 +595,18 @@ class ReticoModule(flx.Widget):
     def out_pos(self):
         rect = self.node.getBoundingClientRect()
         return(rect.left+(rect.width/2)+self.retico_widget.mpane.node.scrollLeft, rect.top+45+self.retico_widget.mpane.node.scrollTop)
+
+    @flx.action
+    def setup(self):
+        self.disable_input_buttons()
+        self.disable_output_buttons()
+        self.disable_close_button()
+        self.highlight(True, "red-border")
+
+    @flx.action
+    def stop(self):
+        self.enable_close_button()
+        self.highlight(False)
 
 class ParameterBox(flx.Widget):
 
