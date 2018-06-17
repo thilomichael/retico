@@ -56,6 +56,8 @@ class IncrementalUnit():
             uses of the specific incremental unit.
     """
 
+    MAX_DEPTH = 10
+
     def __init__(self, creator=None, iuid=0, previous_iu=None, grounded_in=None,
                  payload=None, **kwargs):
         """Initialize an abstract IU. Takes the module that created the IU as an
@@ -83,6 +85,23 @@ class IncrementalUnit():
             self.meta_data = {**grounded_in.meta_data}
 
         self.created_at = time.time()
+        self._remove_old_links()
+
+    def _remove_old_links(self):
+        current_depth = 0
+        previous_iu = self.previous_iu
+        while previous_iu:
+            if current_depth == self.MAX_DEPTH:
+                previous_iu.previous_iu = None
+            previous_iu = previous_iu.previous_iu
+            current_depth += 1
+        current_depth = 0
+        grounded_in = self.grounded_in
+        while grounded_in:
+            if current_depth == self.MAX_DEPTH:
+                grounded_in.grounded_in = None
+            grounded_in = grounded_in.grounded_in
+            current_depth += 1
 
     def age(self):
         """Returns the age of the IU in seconds.
