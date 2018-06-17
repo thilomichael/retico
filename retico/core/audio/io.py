@@ -56,8 +56,7 @@ class MicrophoneModule(abstract.AbstractProducingModule):
                 microphone
             frame_count (int): The number of frames that are stored in in_data
         """
-        if self.running():
-            self.audio_buffer.put(in_data)
+        self.audio_buffer.put(in_data)
         return (in_data, pyaudio.paContinue)
 
     def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
