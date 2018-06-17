@@ -121,6 +121,8 @@ class GoogleASRModule(abstract.AbstractModule):
         self.streaming_config = types.StreamingRecognitionConfig(
             config=config,
             interim_results=True)
+
+    def prepare_run(self):
         requests = (types.StreamingRecognizeRequest(audio_content=content)
                     for content in self._generator())
         self.responses = self.client.streaming_recognize(self.streaming_config,

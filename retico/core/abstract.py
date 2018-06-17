@@ -377,6 +377,7 @@ class AbstractModule():
         raise NotImplementedError()
 
     def _run(self):
+        self.prepare_run()
         self.is_running = True
         while self.is_running:
             for buffer in self._left_buffers:
@@ -425,7 +426,23 @@ class AbstractModule():
 
     def setup(self):
         """This method is called before the module is run. This method can be
-        used to set up the pipeline needed for processing the IUs."""
+        used to set up the pipeline needed for processing the IUs.
+
+        However, after the setup method is called, the module may not
+        immediately be run. For code that should be executed immediately before
+        a module is run use the `prepare_run` method.
+        """
+        pass
+
+    def prepare_run(self):
+        """A method that is executed just before the module is being run.
+
+        While this method may seem similar to `setup`, it is called immediately
+        before the run routine. This method may be used in producing modules to
+        initialize the generation of output IUs. Other than the `setup` method,
+        this method makes sure that other modules in the network are also
+        already setup.
+        """
         pass
 
     def shutdown(self):
@@ -523,6 +540,7 @@ class AbstractProducingModule(AbstractModule):
         super().__init__(queue_class=IncrementalQueue, **kwargs)
 
     def _run(self):
+        self.prepare_run()
         self.is_running = True
         while self.is_running:
             with self.mutex:

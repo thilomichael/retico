@@ -56,7 +56,8 @@ class MicrophoneModule(abstract.AbstractProducingModule):
                 microphone
             frame_count (int): The number of frames that are stored in in_data
         """
-        self.audio_buffer.put(in_data)
+        if self.running():
+            self.audio_buffer.put(in_data)
         return (in_data, pyaudio.paContinue)
 
     def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
@@ -90,6 +91,11 @@ class MicrophoneModule(abstract.AbstractProducingModule):
 
     def setup(self):
         """Set up the microphone for recording."""
+        pass
+
+    def prepare_run(self):
+        # TODO: Fix this when pyaudio is fixed
+        # See https://stackoverflow.com/questions/50897510/
         p = self._p
         self.stream = p.open(format=p.get_format_from_width(self.sample_width),
                              channels=CHANNELS,
@@ -98,7 +104,8 @@ class MicrophoneModule(abstract.AbstractProducingModule):
                              output=False,
                              stream_callback=self.callback,
                              frames_per_buffer=self.chunk_size)
-        self.stream.start_stream()
+        if self.stream:
+            self.stream.start_stream()
 
     def shutdown(self):
         """Close the audio stream."""
