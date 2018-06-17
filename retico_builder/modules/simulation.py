@@ -1,81 +1,95 @@
-"""A module for simulation module widgets."""
+from flexx import flx
+from retico_builder.modules.abstract import AbstractModule
 
-from retico.modules.simulation import asr, dm, eot, nlg, nlu, tts
-from retico_builder.modules.abstract import InfoLabelWidget
+try:
+    from retico.modules.simulation import asr, dm, eot, nlg, nlu, tts
+
+    class SimulatedASRModule(AbstractModule):
+
+        MODULE = asr.SimulatedASRModule
+        PARAMETERS = {}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Simulated ASR Module")
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Recognized Speech:<br>%s (confidence: %.2f)" % (latest_iu.text, latest_iu.confidence))
+
+    class SimulatedDialogueManagerModule(AbstractModule):
+
+        MODULE = dm.SimulatedDialogueManagerModule
+        PARAMETERS = {"agenda_file": "data/sct/callerfile.ini", "conv_folder": "data/sct11/audio", "agent_class": "caller", "first_utterance": False}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.agent_class)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
+    class SimulatedEoTModule(AbstractModule):
+
+        MODULE = eot.SimulatedEoTModule
+        PARAMETERS = {}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Simulated EOT Module")
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Is Speaking: <b>%s</b><br> Probability: %.2f)" % (latest_iu.is_speaking, latest_iu.probability))
+
+    class SimulatedNLGModule(AbstractModule):
+
+        MODULE = nlg.SimulatedNLGModule
+        PARAMETERS = {"data_directory": "data/sct11/audio", "agent_type":"caller"}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Simulated NLG Module")
+            self.gui.add_info("Data directory: %s" % self.retico_module.data_directory)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Is Speaking: <b>%s</b><br>Text: %s)" % (latest_iu.dispatch, latest_iu.get_text()))
+
+    class SimulatedNLUModule(AbstractModule):
+
+        MODULE = nlu.SimulatedNLUModule
+        PARAMETERS = {}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Simulated NLU Module")
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
+    class SimulatedTTSModule(AbstractModule):
+
+        MODULE = tts.SimulatedTTSModule
+        PARAMETERS = {}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Simulated TTS Module")
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Disptaching: %s" % latest_iu.dispatch)
 
 
-class SimulatedASRWidget(InfoLabelWidget):
-    """A simulated ASR module."""
 
-    retico_class = asr.SimulatedASRModule
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = iu.get_text()
-
-
-class SimulatedDialogueManagerWidget(InfoLabelWidget):
-    """A simulated ASR module."""
-
-    retico_class = dm.SimulatedDialogueManagerModule
-    args = {"agenda_file": "data/callerfile.ini",
-            "conv_folder": "data/sct11",
-            "agent_class": "caller",
-            "first_utterance": True}
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = "%s - %s (%s)" % (iu.act, iu.concepts,
-                                                     iu.dispatch)
-
-    def update_label(self):
-        if self.module:
-            self.info_label.text = str(self.module.agent_class)
-
-
-class SimulatedEOTWidget(InfoLabelWidget):
-    """A simulated EOT module."""
-
-    retico_class = eot.SimulatedEoTModule
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = "%s (%s)" % (iu.probability, iu.is_speaking)
-
-
-class SimulatedNLGWidget(InfoLabelWidget):
-    """A simulated NLG module."""
-
-    retico_class = nlg.SimulatedNLGModule
-    args = {"data_directory": "data/sct11", "agent_type": "caller"}
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = "%s (%s)" % (iu.get_text(),
-                                                iu.dispatch)
-
-
-class SimulatedNLUWidget(InfoLabelWidget):
-    """A simulated NLU module."""
-
-    retico_class = nlu.SimulatedNLUModule
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = "%s (%s)" % (iu.act, iu.concepts)
-
-
-class SimulatedTTSWidget(InfoLabelWidget):
-    """A simulated EOT module."""
-
-    retico_class = tts.SimulatedTTSModule
-
-    def update_info(self):
-        iu = self.module.latest_iu()
-        if iu:
-            self.info_label.text = str(iu.dispatch)
+except ImportError:
+    pass

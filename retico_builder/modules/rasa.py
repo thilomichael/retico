@@ -1,20 +1,23 @@
-"""A module for rasa widgets."""
-
-from retico_builder.modules.abstract import InfoLabelWidget
+from flexx import flx
+from retico_builder.modules.abstract import AbstractModule
 
 try:
-    from retico.modules.rasa.nlu import RasaNLUModule
+    from retico.modules.rasa import nlu
 
-    class RasaNLUModuleWidget(InfoLabelWidget):
-        """A widget for NLU by rasa."""
+    class RasaNLUModule(AbstractModule):
 
-        retico_class = RasaNLUModule
-        args = {"model_dir": "data/rasa/models/nlu/current",
-                "config_file": "data/rasa/nlu_model_config.json"}
+        MODULE = nlu.RasaNLUModule
+        PARAMETERS = {"model_dir": "data/rasa/models/nlu/current", "config_file": "data/rasa/nlu_model_config.json"}
 
-        def update_info(self):
-            iu = self.module.latest_iu()
-            if iu:
-                self.info_label.text = "%s - %s" % (iu.act, iu.concepts)
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Model dir: %s" % self.retico_module.model_dir)
+            self.gui.add_info("Config file: %s" % self.retico_module.config_file)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
 except ImportError:
     pass
