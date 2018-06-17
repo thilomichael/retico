@@ -90,11 +90,6 @@ class MicrophoneModule(abstract.AbstractProducingModule):
 
     def setup(self):
         """Set up the microphone for recording."""
-        pass
-
-    def prepare_run(self):
-        # TODO: Fix this when pyaudio is fixed
-        # See https://stackoverflow.com/questions/50897510/
         p = self._p
         self.stream = p.open(format=p.get_format_from_width(self.sample_width),
                              channels=CHANNELS,
@@ -102,7 +97,10 @@ class MicrophoneModule(abstract.AbstractProducingModule):
                              input=True,
                              output=False,
                              stream_callback=self.callback,
-                             frames_per_buffer=self.chunk_size)
+                             frames_per_buffer=self.chunk_size,
+                             start=False)
+
+    def prepare_run(self):
         if self.stream:
             self.stream.start_stream()
 
