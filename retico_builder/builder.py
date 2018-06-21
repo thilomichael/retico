@@ -198,23 +198,26 @@ class ReticoBuilder(flx.PyComponent):
         self.load_map = {}
         self.load_c_list = c_list
         for m in m_list:
-            type = m.meta_data["widget"]
+            type = m.meta_data.get("widget", None)
+            if not type:
+                type = str(m.__class__.__name__)
             parent = self.get_parent(type)
-            x = m.meta_data["left"]
-            y = m.meta_data["top"]
-            h = m.meta_data["height"]
-            w = m.meta_data["width"]
-            mid = m.meta_data["id"]
+            x = m.meta_data.get("left", 20)
+            y = m.meta_data.get("top", 20)
+            h = m.meta_data.get("height", 150)
+            w = m.meta_data.get("width", 150)
+            mid = m.meta_data.get("id", id(m))
             self.load_map[mid] = m
-            print(type, parent, x, y, w, h, mid)
             self.widget.create_existing_module(type, parent, x, y, w, h, mid)
         self.widget.load_connections()
 
     @flx.action
     def load_connections(self):
         for (a, b) in self.load_c_list:
-            agui = self.load_map[a.meta_data["id"]]
-            bgui = self.load_map[b.meta_data["id"]]
+            aid = a.meta_data.get("id", id(a))
+            bid = b.meta_data.get("id", id(b))
+            agui = self.load_map[aid]
+            bgui = self.load_map[bid]
             self.widget.add_connection(agui, bgui)
 
     def get_parent(self, name):
