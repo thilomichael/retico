@@ -2,8 +2,6 @@ from flexx import flx
 import time
 
 import json
-import threading
-import asyncio
 
 class AbstractModule(flx.PyComponent):
 
@@ -18,8 +16,11 @@ class AbstractModule(flx.PyComponent):
     def set_content(self):
         pass
 
-    def init(self, gui, parameters):
-        self.retico_module = self.MODULE(**json.loads(parameters))
+    def init(self, gui, parameters, retico_module):
+        if not retico_module:
+            self.retico_module = self.MODULE(**json.loads(parameters))
+        else:
+            self.retico_module = retico_module
         self.gui = gui
         self.set_content()
         self.running = False
@@ -55,9 +56,9 @@ class AbstractModule(flx.PyComponent):
 
     def setup(self):
         self.gui.setup()
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.retico_module.setup()
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.gui.highlight(True, "border")
 
     def run(self):
@@ -65,6 +66,6 @@ class AbstractModule(flx.PyComponent):
 
     def stop(self):
         self.enable_buttons()
-        time.sleep(0.1)
+        time.sleep(0.01)
         self.gui.stop()
         self.retico_module.stop()

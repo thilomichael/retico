@@ -18,6 +18,7 @@ def load(filename):
     mc_list = pickle.load(open(filename, "rb"))
     module_dict = {}
     module_list = []
+    connection_list = []
 
     for m in mc_list[0]:
         mod = m["retico_class"](**m["args"])
@@ -25,8 +26,9 @@ def load(filename):
         module_list.append(mod)
     for ida, idb in mc_list[1]:
         module_dict[idb].subscribe(module_dict[ida])
+        connection_list.append((module_dict[idb], module_dict[ida]))
 
-    return module_list
+    return (module_list, connection_list)
 
 
 def load_and_execute(filename):
@@ -102,9 +104,8 @@ def save(module, filename):
         current_dict["widget_name"] = current_module.name()
         current_dict["retico_class"] = current_module.__class__
         current_dict["args"] = current_module.get_init_arguments()
-        current_dict["x"] = None
-        current_dict["y"] = None
         current_dict["id"] = id(current_module)
+        current_dict["meta"] = current_module.meta_data
         m_list.append(current_dict)
         for buf in current_module.right_buffers():
             c_list.append((id(buf.consumer), id(buf.provider)))

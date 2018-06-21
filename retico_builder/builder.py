@@ -1,21 +1,35 @@
 """The module for the gui of the retico builder."""
 
 import json
+import glob
+import time
 
 from flexx import flx
-from pscript import RawJS
+from pscript import window
 
 from retico_builder import modlist
+from retico import headless
 
 flx.assets.associate_asset(__name__, "http://code.interactjs.io/v1.3.4/interact.js")
 
 class ReticoBuilder(flx.PyComponent):
+    """The main connection between the GUI (JS) and the Model (Python).
+    The ReticoBuilder object lives on the Python-side and has access to all
+    interfaces of the Javascript-side."""
 
     connecting_state = flx.BoolProp(settable=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.connecting_module = None
+        self.connecting_direction = None
+        self.load_map = {}
+        self.load_c_list = []
+
     def init(self):
         module_list = modlist.get_module_list()
-        self.widget = ReticoWidget(self, module_list)
+        file_list = glob.glob("save/*.rtc")
+        self.widget = ReticoWidget(self, module_list, file_list)
         self.modules = {}
         self.running = False
         self.set_connecting_state(False)
@@ -23,19 +37,43 @@ class ReticoBuilder(flx.PyComponent):
         self.connecting_direction = None
 
     @flx.action
-    def register_module(self, type, parent, gui, params):
+    def register_module(self, module_type, parent, gui, params):
+        """Creates a new module model with the given type and parameters and
+        gives the model a reference to the GUI object (ReticoModule) that the
+        module is representing.
+
+        Params:
+            module_type (str): The name of the class of the module that should
+                be instantiated.
+            parent (str): The parent name in the module list (e.g. ReTiCo,
+                Google, ...)
+            gui (ReticoModule): A retico module gui widget that represents the
+                new module.
+            params (dict): A json string of parameters that the retico module
+                should be initialized with.
+        """
         if self.running:
             gui.set_parent(None)
             gui.dispose()
             return
-        pymodule = modlist.MODULE_LIST[parent][type](gui, params, flx_session=self.session)
+        pymodule = modlist.MODULE_LIST[parent][module_type](gui, params, None, flx_session=self.session)
         self.modules[id(gui)] = pymodule
         gui.set_mtitle(pymodule.retico_module.name())
         pymodule.enable_buttons()
 
     @flx.action
-    def create_parameter_dialogue(self, type, parent):
-        self.widget.create_dialogue(json.dumps(modlist.MODULE_LIST[parent][type].PARAMETERS), type, parent)
+    def create_parameter_dialogue(self, module_type, parent):
+        """Creates a parameters dialogue for the given module type.
+
+        Before showing the dialogue, this method retrieves the default parameter
+        for the module so that the parameter dialogue shows a  default.
+
+        Params:
+            module_type (str): The name of the class of the module
+            parent (str): The parent name in the module list (e.g. ReTiCo, ...)
+        """
+        params = json.dumps(modlist.MODULE_LIST[parent][module_type].PARAMETERS)
+        self.widget.create_dialogue(params, module_type, parent)
 
     @flx.action
     def init_out_click(self, gui):
@@ -96,7 +134,6 @@ class ReticoBuilder(flx.PyComponent):
         if self.running:
             return
         self.widget.delete_module(gui)
-        pymod = self.modules[id(gui)]
         del self.modules[id(gui)]
         self.set_connecting_state(False)
         self.connecting_module = None
@@ -130,7 +167,6 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def update_module_info(self):
-        print("Updaing module info")
         for m in self.modules.values():
             m.update_running_info()
 
@@ -138,6 +174,65 @@ class ReticoBuilder(flx.PyComponent):
     def set_module_content(self):
         for m in self.modules.values():
             m.set_content()
+
+    @flx.action
+    def save(self, filename):
+        path = "save/%s" % filename
+        last_m = None
+        for m in self.modules.values():
+            meta = m.retico_module.meta_data
+            meta["widget"] = str(m.__class__.__name__)
+            meta["left"] = m.gui.p_left
+            meta["top"] = m.gui.p_top
+            meta["width"] = m.gui.p_width
+            meta["height"] = m.gui.p_height
+            meta["id"] = id(m)
+            last_m = m
+        headless.save(last_m.retico_module, path)
+        self.widget.update_file_tree(glob.glob("save/*.rtc"))
+
+    @flx.action
+    def load(self, filename):
+        path = "save/%s" % filename
+        m_list, c_list = headless.load(path)
+        self.load_map = {}
+        self.load_c_list = c_list
+        for m in m_list:
+            type = m.meta_data["widget"]
+            parent = self.get_parent(type)
+            x = m.meta_data["left"]
+            y = m.meta_data["top"]
+            h = m.meta_data["height"]
+            w = m.meta_data["width"]
+            mid = m.meta_data["id"]
+            self.load_map[mid] = m
+            print(type, parent, x, y, w, h, mid)
+            self.widget.create_existing_module(type, parent, x, y, w, h, mid)
+        self.widget.load_connections()
+
+    @flx.action
+    def load_connections(self):
+        for (a, b) in self.load_c_list:
+            agui = self.load_map[a.meta_data["id"]]
+            bgui = self.load_map[b.meta_data["id"]]
+            self.widget.add_connection(agui, bgui)
+
+    def get_parent(self, name):
+        for k in modlist.MODULE_LIST.keys():
+            for n in modlist.MODULE_LIST[k].keys():
+                if n == name:
+                    return k
+
+    @flx.action
+    def register_existing_module(self, type, parent, gui, mid):
+        m = self.load_map[mid]
+        self.load_map[mid] = gui
+        pymodule = modlist.MODULE_LIST[parent][type](gui, None, m, flx_session=self.session)
+        self.modules[id(gui)] = pymodule
+        gui.set_mtitle(pymodule.retico_module.name())
+        pymodule.enable_buttons()
+
+
 
 
 class ReticoWidget(flx.Widget):
@@ -148,18 +243,26 @@ class ReticoWidget(flx.Widget):
     }
     """
 
-    def init(self, model, module_list):
+    def init(self, model, module_list, file_list):
         self.model = model
         self.connection_list = []
         self.running = False
         with flx.HSplit():
             self.mpane = ModulePane(self, flex=3)
-            self.menu = MenuPane(self, self.mpane, module_list, flex=1)
+            self.menu = MenuPane(self, self.mpane, module_list, file_list, flex=1)
+
+    @flx.action
+    def update_file_tree(self, files):
+        self.menu.update_file_tree(files)
+
+    @flx.action
+    def load_connections(self):
+        window.setTimeout(self.model.load_connections, 10)
 
     def update_periodically(self):
         if self.running:
             self.model.update_module_info()
-            setTimeout(self.update_periodically, 1000)
+            window.setTimeout(self.update_periodically, 1000)
         else:
             self.model.set_module_content()
 
@@ -197,6 +300,10 @@ class ReticoWidget(flx.Widget):
                 new_clist.append((f, t))
         self.connection_list = new_clist
         self.draw_strokes()
+
+    @flx.action
+    def create_existing_module(self, type, parent, x, y, w, h, id):
+        self.mpane.create_existing_module(type, parent, x, y, w, h, id)
 
     def draw_strokes(self):
         canvas = self.mpane.canvas.node.getContext("2d")
@@ -278,7 +385,7 @@ class MenuPane(flx.Widget):
     }
     """
 
-    def init(self, retico_widget, mpane, module_list):
+    def init(self, retico_widget, mpane, module_list, file_list):
         self.retico_widget = retico_widget
         self.mpane = mpane
         with flx.VBox(css_class="stupid-vbox") as stupid_vbox:
@@ -293,7 +400,23 @@ class MenuPane(flx.Widget):
             self.run_button = flx.Button(text="Run", css_class="menu-button")
             self.stop_button = flx.Button(text="Stop", css_class="menu-button")
             self.stop_button.set_disabled(True)
+            flx.Widget(style="min-height:50px;")
+            with flx.TreeWidget(max_selected=1, style="height:300px;", flex=1) as self.file_tree:
+                for g in file_list:
+                    flx.TreeItem(text=g[5:], checked=None)
+            self.load_button = flx.Button(text="Load")
+            self.filename_edit = flx.LineEdit()
+            self.save_button = flx.Button(text="Save")
             flx.Widget(flex=1)
+
+    @flx.action
+    def update_file_tree(self, files):
+        for child in self.file_tree.children:
+            child.set_parent(None)
+            child.dispose()
+        for g in files:
+            flx.TreeItem(text=g[5:], checked=None, parent=self.file_tree)
+
 
     @flx.reaction("add_module_button.pointer_click")
     def module_click(self, *events):
@@ -303,6 +426,14 @@ class MenuPane(flx.Widget):
         module = self.module_tree.highlight_get().text
         self.retico_widget.model.create_parameter_dialogue(module, parent)
         # ParameterBox(self.mpane, module, parent, parent=self.retico_widget)
+
+    @flx.reaction("save_button.pointer_click")
+    def save_click(self):
+        self.retico_widget.model.save(self.filename_edit.text)
+
+    @flx.reaction("load_button.pointer_click")
+    def load_click(self):
+        self.retico_widget.model.load(self.file_tree.highlight_get().text)
 
     @flx.reaction("run_button.pointer_click")
     def run_click(self):
@@ -360,7 +491,7 @@ class ModulePane(flx.PinboardLayout):
             self.node.style["background-color"] = None
 
     def init_moving(self):
-        RawJS("interact")(".flx-ReticoModule").draggable({
+        window.interact(".flx-ReticoModule").draggable({
             "onmove": self.dragMoveListener,
             "restrict": {"restriction": 'parent', "elementRect":
                 {"top": 0, "left": 0, "bottom": 1, "right": 1 }},
@@ -383,14 +514,22 @@ class ModulePane(flx.PinboardLayout):
             self.canvas = flx.CanvasWidget(style="left: 0; top: 0; height:100%; width: 100%;")
         self.modules = []
         self.init_moving()
-        setTimeout(self.center_view, 10)
+        window.setTimeout(self.center_view, 10)
 
     def create_module(self, type, parent, params):
-        init_x = self.node.scrollLeft + (self.node.getBoundingClientRect().width/2) - 75
-        init_y = self.node.scrollTop + (self.node.getBoundingClientRect().height/2) - 75
-        module = ReticoModule(self.retico_widget, parent=self.mcontainer, style="left: %dpx; top: %dpx;" % (init_x, init_y))
+        rect = self.node.getBoundingClientRect()
+        init_x = self.node.scrollLeft + (rect.width/2) - 75
+        init_y = self.node.scrollTop + (rect.height/2) - 75
+        module = ReticoModule(self.retico_widget, parent=self.mcontainer,
+                              style="left: %dpx; top: %dpx;" % (init_x, init_y))
         self.modules.append(module)
         self.retico_widget.model.register_module(type, parent, module, params)
+
+    def create_existing_module(self, type, parent, x, y, w, h, id):
+        module = ReticoModule(self.retico_widget, parent=self.mcontainer,
+                              style="left: %dpx; top: %dpx; width: %dpx; height: %dpx;" % (x, y, w, h))
+        self.modules.append(module)
+        self.retico_widget.model.register_existing_module(type, parent, module, id)
 
 class ReticoModule(flx.Widget):
 
@@ -486,6 +625,11 @@ class ReticoModule(flx.Widget):
     }
     """
 
+    p_left = flx.IntProp(settable=True)
+    p_top = flx.IntProp(settable=True)
+    p_width = flx.IntProp(settable=True)
+    p_height = flx.IntProp(settable=True)
+
     def init(self, retico_widget):
         self.retico_widget = retico_widget
         self.l_title = flx.Label(text="", css_class="title-label")
@@ -496,6 +640,18 @@ class ReticoModule(flx.Widget):
         self.out_button_r = flx.Button(text="▶", css_class="out-button right-button")
         self.in_button_l = flx.Button(text="▶", css_class="in-button left-button")
         self.in_button_r = flx.Button(text="◀", css_class="in-button right-button")
+        self.set_position()
+
+    def set_position(self):
+        rect = self.node.getBoundingClientRect()
+        mpane = self.retico_widget.mpane.node
+
+        self.set_p_left(rect.left + mpane.scrollLeft)
+        self.set_p_top(rect.top + mpane.scrollTop)
+        self.set_p_width(rect.width)
+        self.set_p_height(rect.height)
+
+        window.setTimeout(self.set_position, 100)
 
     @flx.action
     def clear_content(self):
@@ -590,11 +746,15 @@ class ReticoModule(flx.Widget):
 
     def in_pos(self):
         rect = self.node.getBoundingClientRect()
-        return(rect.left+(rect.width/2)+self.retico_widget.mpane.node.scrollLeft, rect.bottom-13+self.retico_widget.mpane.node.scrollTop)
+        mp_node = self.retico_widget.mpane.node
+        return(rect.left+(rect.width/2)+mp_node.scrollLeft,
+               rect.bottom-13+mp_node.scrollTop)
 
     def out_pos(self):
         rect = self.node.getBoundingClientRect()
-        return(rect.left+(rect.width/2)+self.retico_widget.mpane.node.scrollLeft, rect.top+45+self.retico_widget.mpane.node.scrollTop)
+        mp_node = self.retico_widget.mpane.node
+        return(rect.left+(rect.width/2)+mp_node.scrollLeft,
+               rect.top+45+mp_node.scrollTop)
 
     @flx.action
     def setup(self):
@@ -624,19 +784,19 @@ class ParameterBox(flx.Widget):
     }
     """
 
-    def init(self, parameters, mpane, type, mod_parent):
+    def init(self, parameters, mpane, module_type, mod_parent):
         flx.Label(text="Parameters for this module:", style="color: #fff;")
         self.params = flx.LineEdit(text=parameters, style="width: 500px;")
         self.okbtn = flx.Button(text="OK")
         self.mpane = mpane
-        self.type = type
+        self.module_type = module_type
         self.mod_parent = mod_parent
 
     @flx.reaction('okbtn.pointer_click')
-    def ok(self):
+    def ok_click(self):
         self.set_parent(None)
         self.dispose()
-        self.mpane.create_module(self.type, self.mod_parent, self.params.text)
+        self.mpane.create_module(self.module_type, self.mod_parent, self.params.text)
 
 
 if __name__ == '__main__':
