@@ -2,15 +2,16 @@
 
 import json
 import glob
-import time
 
 from flexx import flx
 from pscript import window
 
 from retico_builder import modlist
+from retico_builder import resourceserver
 from retico import headless
 
-flx.assets.associate_asset(__name__, "http://code.interactjs.io/v1.3.4/interact.js")
+# flx.assets.associate_asset(__name__, "http://code.interactjs.io/v1.3.4/interact.js")
+flx.assets.associate_asset(__name__, "http://localhost:8000/interact.js")
 
 class ReticoBuilder(flx.PyComponent):
     """The main connection between the GUI (JS) and the Model (Python).
@@ -235,7 +236,11 @@ class ReticoBuilder(flx.PyComponent):
         gui.set_mtitle(pymodule.retico_module.name())
         pymodule.enable_buttons()
 
-
+    @flx.action
+    def clear(self):
+        for m in list(self.modules.values()):
+            self.delete_module(m.gui)
+        self.modules = {}
 
 
 class ReticoWidget(flx.Widget):
@@ -253,6 +258,10 @@ class ReticoWidget(flx.Widget):
         with flx.HSplit():
             self.mpane = ModulePane(self, flex=3)
             self.menu = MenuPane(self, self.mpane, module_list, file_list, flex=1)
+
+    def clear(self):
+        self.connection_list = []
+        self.model.clear()
 
     @flx.action
     def update_file_tree(self, files):
@@ -410,6 +419,7 @@ class MenuPane(flx.Widget):
             self.load_button = flx.Button(text="Load")
             self.filename_edit = flx.LineEdit()
             self.save_button = flx.Button(text="Save")
+            self.clear_button = flx.Button(text="Clear")
             flx.Widget(flex=1)
 
     @flx.action
@@ -448,6 +458,10 @@ class MenuPane(flx.Widget):
         self.run_button.set_disabled(False)
         self.stop_button.set_disabled(True)
         self.retico_widget.stop()
+
+    @flx.reaction("clear_button.pointer_click")
+    def clear_click(self):
+        self.retico_widget.clear()
 
 
 class ModulePane(flx.PinboardLayout):
@@ -803,7 +817,8 @@ class ParameterBox(flx.Widget):
 
 
 if __name__ == '__main__':
-    # m = flx.launch(ReticoBuilder)
-    flx.App(ReticoBuilder).serve()
-    flx.start()
-    # flx.run()
+    resourceserver.run_server()
+    a = flx.App(ReticoBuilder)
+    a.launch(runtime="chrome-browser", title="ReTiCo Builder")
+    flx.run()
+    resourceserver.stop_server()
