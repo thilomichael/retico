@@ -2,21 +2,6 @@
 ReTiCo."""
 
 
-class DialogueAct():
-    """A Dialogue act containing an act, concepts and optionally a confidence
-    score."""
-
-    def __init__(self, act, concepts=None):
-        self.act = act
-        if concepts:
-            self.concepts = concepts
-        else:
-            self.concepts = {}
-
-    def __repr__(self):
-        return "%s - %s" % (self.act, self.concepts)
-
-
 class AbstractDialogueManager():
     """An abstract dialogue manager.
 
@@ -35,16 +20,6 @@ class AbstractDialogueManager():
         Args:
             act (str): The act that should be processed as a string.
             concepts (dict): The concepts as key-value pairs.
-        """
-        da = DialogueAct(act, concepts)
-        self.process_dialogue_act(da)
-
-    def process_dialogue_act(self, dialogue_act):
-        """Prcoess an act received from an interlocutor.
-
-        Args:
-            dialogue_act (DialogueAct): The dialogue_act that should be
-            processed.
         """
         raise NotImplementedError
 

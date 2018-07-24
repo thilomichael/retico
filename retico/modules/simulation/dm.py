@@ -8,12 +8,11 @@ from retico.core import abstract
 from retico.core.dialogue.common import DialogueActIU, DispatchableActIU
 from retico.core.audio.common import DispatchedAudioIU
 from retico.core.prosody.common import EndOfTurnIU
-from retico.dialogue.common import AbstractDialogueManager, DialogueAct
-
-from agents import callee, caller, agent
-from networks import message
+from retico.dialogue.manager.agenda import AgendaDialogueManager
+from retico.dialogue.manager.convsim import ConvSimDialogueManager
 
 import numpy as np
+
 
 class SimulatedDialogueManagerModule(abstract.AbstractModule):
     """A Simulated Dialogue Manager"""
@@ -34,12 +33,9 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def output_iu():
         return DispatchableActIU
 
-    def __init__(self, agenda_file, conv_folder, agent_class, first_utterance,
+    def __init__(self, first_utterance,
                  **kwargs):
         super().__init__(**kwargs)
-        self.agenda_file = agenda_file
-        self.conv_folder = conv_folder
-        self.agent_class = agent_class
 
         self.dialogue_manager = None
         self.is_dispatching = False
@@ -58,9 +54,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         self.rnd = random.random()
 
     def speak(self):
-        da, fd = self.dialogue_manager.next_act()
+        act, concepts = self.dialogue_manager.next_act()
+        fd = "%s:%s" % (act, ",".join(concepts.keys()))
         output_iu = self.create_iu(None)
-        output_iu.set_act(da.act, da.concepts)
+        output_iu.set_act(act, concepts)
         output_iu.meta_data["message_data"] = fd
         output_iu.dispatch = True
         self.append(output_iu)
@@ -81,8 +78,14 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         else:
             return right_now - self.last_interl_utterance
 
-    def inverse_sigmoid(self, x):
+    def gando_model(self, x):
         return -0.322581 * np.log(0.433008 * (-1 + 1/x))
+
+    def pause_model(self, x):
+        result = -0.196366 * np.log(0.0767043 * (-1 + 1/x))
+        while result < 0:
+            result = -0.196366 * np.log(0.0767043 * (-1 + 1/random.random()))
+        return result + 2
 
     def continous_loop(self):
         while not self.dialogue_finished:
@@ -106,11 +109,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
             #     print("")
             #     print("is silence", is_silence)
             #     print("i spoke last", i_spoke_last)
-            #     print("rnd", self.inverse_sigmoid(self.rnd))
+            #     print("rnd", self.gando_model(self.rnd))
             #     print("t until eot", self.time_until_eot())
             #     print("")
             #     print("")
-
 
             if self.fu:
                 if self.first_utterance:
@@ -120,20 +122,22 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
             else:
                 if is_silence:
                     if i_spoke_last:
-                        if random.random() < 0.02:
+                        if ts_last_utterance > self.pause_model(self.rnd):
                             self.speak()
                     else:
-                        if self.inverse_sigmoid(self.rnd) <= self.time_until_eot():
+                        if self.gando_model(self.rnd) <= self.time_until_eot():
                             iu = self.current_incoming_da
                             self.dialogue_manager.process_act(iu.act, iu.concepts)
                             self.speak()
                 else:
                     if self.is_dispatching and self.interlocutor_talking:
-                        output_iu = self.create_iu(None)
-                        output_iu.set_act("", {})
-                        output_iu.dispatch = False
+                        if random.random() < 0.05:
+                            output_iu = self.create_iu(None)
+                            output_iu.set_act("", {})
+                            output_iu.dispatch = False
+                            self.append(output_iu)
                     elif not self.is_dispatching:
-                        if self.inverse_sigmoid(self.rnd) <= self.time_until_eot():
+                        if self.gando_model(self.rnd) <= self.time_until_eot():
                             if right_now - self.last_interl_utterance_begin < 1.5:
                                 continue
                             iu = self.current_incoming_da
@@ -170,73 +174,33 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         return None
 
     def setup(self):
-        if isinstance(self.agent_class, str):
-            agent_class = SimulatedDM.get_agent_class(self.agent_class)
-        else:
-            agent_class = self.agent_class
-
-        self.dialogue_manager = SimulatedDM(self.agenda_file, self.conv_folder,
-                                            agent_class)
         self.dialogue_finished = False
+
+    def prepare_run(self):
         t = threading.Thread(target=self.continous_loop)
         t.start()
 
     def shutdown(self):
         self.dialogue_finished = True
 
+class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
+    "An agenda-based dialogue manager"
 
-class SimulatedDM(AbstractDialogueManager):
-    """A simulated dialogue manager that serves as a wrapper to the dialogue
-    management used in ConvSim.
-    """
+    def __init__(self, agenda_file, aa_file, first_utterance, **kwargs):
+        super().__init__(first_utterance, **kwargs)
+        self.dialogue_manager = AgendaDialogueManager(aa_file, agenda_file,
+                                                      first_utterance)
 
-    def __init__(self, agenda_file, conv_folder, agent_class):
-        self.agenda_file = agenda_file
-        self.conv_folder = conv_folder
-        self.agent_class = agent_class
-        message.MessageData.init_message_data(self.conv_folder)
-        self.agent = self.agent_class(self.agenda_file, play_audio=False)
+class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
+    "A dialogue manaher based on ConvSim"
 
-    def process_dialogue_act(self, dialogue_act):
-        d = "%s:%s" % (dialogue_act.act, ",".join(dialogue_act.concepts.keys()))
-        msg_data = message.MessageData(message.MessageData.NO_DATA, d)
-        msg = message.Message(msg_data, None)
-        self.agent.receive(msg)
+    def __init__(self, agenda_file, conv_folder, agent_class, first_utterance,
+                 **kwargs):
+        super().__init__(first_utterance, **kwargs)
+        if isinstance(agent_class, str):
+            agent_class = ConvSimDialogueManager.get_agent_class(agent_class)
+        else:
+            agent_class = agent_class
 
-    def next_act(self):
-        message, _ = self.agent.act_out_turn()
-        print(message.message_data.full_tag)
-        print(message.speech_act.value, message.parameters)
-        act = message.speech_act.value
-        parameters = message.parameters
-        params = {}
-        for p in parameters:
-            params[p] = ""
-        print("%s: %s - %s" % (self.agent.name(), act, params))
-        return DialogueAct(act, params), message.message_data.full_tag
-
-    @staticmethod
-    def get_agent_class(agent_type):
-        """Returns the class of a ConvSim agent given its type.
-
-        If the given agent_type is not recognized, an agent of type agent.Agent
-        is returned.
-
-        Args:
-            agent_type (str): The type of the agent. Might be "caller", "callee"
-                 or "agent".
-
-        Returns:
-            (agent.Agent) An agent of the specified type
-        """
-        if agent_type == "caller":
-            return caller.Caller
-        elif agent_type == "callee":
-            return callee.Callee
-        return agent.Agent
-
-
-if __name__ == '__main__':
-    sdm = SimulatedDM("data/calleefile.ini", "data/sct11", caller.Caller)
-    sdm.process_act("request_info", {"num_of_persons": None})
-    print(sdm.next_act())
+        self.dialogue_manager = ConvSimDialogueManager(agenda_file, conv_folder,
+                                                       agent_class)

@@ -45,11 +45,12 @@ class SimulatedNLGModule(abstract.AbstractModule):
     def process_iu(self, input_iu):
         if input_iu.act == "":
             output_iu = self.create_iu(input_iu)
-            output_iu.payload("<silence>")
+            output_iu.payload = "<silence>"
             output_iu.dispatch = False
             output_iu.meta_data["raw_audio"] = b""
             output_iu.meta_data["frame_rate"] = 44100
             output_iu.meta_data["sample_width"] = 2
+            return output_iu
         msg_data = input_iu.meta_data["message_data"].split(":")
         act = msg_data[0]
         concepts = {}
