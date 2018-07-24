@@ -10,6 +10,7 @@ from retico.core.audio.common import DispatchedAudioIU
 from retico.core.prosody.common import EndOfTurnIU
 from retico.dialogue.manager.agenda import AgendaDialogueManager
 from retico.dialogue.manager.convsim import ConvSimDialogueManager
+from retico.dialogue.manager.ngram import NGramDialogueManager
 
 import numpy as np
 
@@ -204,3 +205,13 @@ class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
 
         self.dialogue_manager = ConvSimDialogueManager(agenda_file, conv_folder,
                                                        agent_class)
+
+class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
+    "An n-gram dialogue manager module"
+
+    def __init__(self, ngram_model, first_utterance, **kwargs):
+        super().__init__(first_utterance, **kwargs)
+        if first_utterance:
+            self.dialogue_manager = NGramDialogueManager(ngram_model, "callee")
+        else:
+            self.dialogue_manager = NGramDialogueManager(ngram_model, "caller")
