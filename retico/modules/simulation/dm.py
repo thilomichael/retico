@@ -132,11 +132,12 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                             self.speak()
                 else:
                     if self.is_dispatching and self.interlocutor_talking:
-                        if random.random() < 0.05:
-                            output_iu = self.create_iu(None)
-                            output_iu.set_act("", {})
-                            output_iu.dispatch = False
-                            self.append(output_iu)
+                        if (self.dispatching_completion > 0.2 and self.dispatching_completion < 0.8) or (self.eot_prediction > 0.2 and self.eot_prediction < 0.8):
+                            if random.random() < 0.05:
+                                output_iu = self.create_iu(None)
+                                output_iu.set_act("", {})
+                                output_iu.dispatch = False
+                                self.append(output_iu)
                     elif not self.is_dispatching:
                         if self.gando_model(self.rnd) <= self.time_until_eot():
                             if right_now - self.last_interl_utterance_begin < 1.5:
