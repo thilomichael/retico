@@ -99,6 +99,9 @@ class Agenda:
     def is_partial(self, field_name):
         return bool(self.fields.get(field_name+"-0"))
 
+    def has_field(self, field_name):
+        return bool(self.fields.get(field_name))
+
     def mention_field(self, field_name):
         """Sets the field's mentioned flag to True."""
         if self.fields.get(field_name):
@@ -184,6 +187,11 @@ class ActGuider:
             if "" in self.guide[act]:
                 return act, []
         if act == "offer_info":
+            print("OFFER INFO FALLBACK")
+            print(entities)
+            for e in self.guide["provide_partial"]:
+                if entities[0]+"-0" in e or entities[0] in e:
+                    return "provide_partial", e.split(",")
             return self.guide_utterance("provide_info", entities)
         assert False, "Could not find utterance for %s - %s" % (act, entities)
 
@@ -286,6 +294,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
                 return self.DA_GREETING, ["callee_name"]
             return self.DA_GREETING, []
         if self.stack:
+            print(self.starts_dialogue, " -- pulled from stack")
             act, entities = self.stack.pop(0)
             return act, entities
         current_field = self.agenda.next_field()
@@ -304,8 +313,10 @@ class AgendaDialogueManager(AbstractDialogueManager):
         real_act, real_entities = self.act_guider.guide_utterance(act, entities)
         entity_dict = {}
         for entity in real_entities:
+            print("mentioned ", entity)
             self.agenda.mention_field(entity)
             entity_dict[entity] = ""
+        print(self.starts_dialogue, real_act, real_entities)
         return real_act, entity_dict
 
     def push_to_stack(self, act, entities):
@@ -319,7 +330,8 @@ class AgendaDialogueManager(AbstractDialogueManager):
         if isinstance(entities, dict):
             entities = list(entities.keys())
         for entity in entities:
-            if act == self.DA_PROVIDE_INFO or act == self.DA_GREETING:
+            if (act == self.DA_PROVIDE_PARTIAL or act == self.DA_PROVIDE_INFO or
+                    act == self.DA_GREETING):
                 self.agenda.confirm_field(entity)
             self.agenda.mention_field(entity)
 
