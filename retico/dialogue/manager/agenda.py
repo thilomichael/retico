@@ -187,8 +187,6 @@ class ActGuider:
             if "" in self.guide[act]:
                 return act, []
         if act == "offer_info":
-            print("OFFER INFO FALLBACK")
-            print(entities)
             for e in self.guide["provide_partial"]:
                 if entities[0]+"-0" in e or entities[0] in e:
                     return "provide_partial", e.split(",")
@@ -294,7 +292,6 @@ class AgendaDialogueManager(AbstractDialogueManager):
                 return self.DA_GREETING, ["callee_name"]
             return self.DA_GREETING, []
         if self.stack:
-            print(self.starts_dialogue, " -- pulled from stack")
             act, entities = self.stack.pop(0)
             return act, entities
         current_field = self.agenda.next_field()
@@ -313,10 +310,12 @@ class AgendaDialogueManager(AbstractDialogueManager):
         real_act, real_entities = self.act_guider.guide_utterance(act, entities)
         entity_dict = {}
         for entity in real_entities:
-            print("mentioned ", entity)
             self.agenda.mention_field(entity)
             entity_dict[entity] = ""
-        print(self.starts_dialogue, real_act, real_entities)
+        if self.starts_dialogue:
+            print("callee:", real_act, real_entities)
+        else:
+            print("caller:", real_act, real_entities)
         return real_act, entity_dict
 
     def push_to_stack(self, act, entities):
