@@ -112,12 +112,10 @@ class GoogleTTS:
         """
         cache_path = self.get_cache_path(text)
         if os.path.isfile(cache_path):
-            print("LOADING FROM CACHE")
             wav_audio = None
             with open(cache_path, 'rb') as cfile:
                 wav_audio = cfile.read()
         else:
-            print("SYNTHESIZING")
             mp3_audio = self.google_tts_call(text)
             wav_audio = self.convert_audio(mp3_audio)
             with open(cache_path, 'wb') as cfile:
@@ -226,7 +224,6 @@ class GoogleTTSModule(abstract.AbstractModule):
 
     def process_iu(self, input_iu):
         output_iu = self.create_iu(input_iu)
-        print(input_iu.get_text())
         raw_audio = self.gtts.tts(input_iu.get_text())
         nframes = len(raw_audio) / self.sample_width
         output_iu.set_audio(raw_audio, nframes, self.rate, self.sample_width)
