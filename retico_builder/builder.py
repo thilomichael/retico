@@ -78,7 +78,7 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def init_out_click(self, gui):
-        if self.running:
+        if self.running: # If the network is in running state we do not allow to make new connections
             return
         module = self.modules[id(gui)]
         out_iu = module.MODULE.output_iu()
@@ -94,7 +94,7 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def init_in_click(self, gui):
-        if self.running:
+        if self.running: # If the network is in running state we do not allow to make new connections
             return
         module = self.modules[id(gui)]
         in_ius = module.MODULE.input_ius()

@@ -11,7 +11,7 @@ from retico.core.prosody.common import EndOfTurnIU
 from retico.dialogue.manager.agenda import AgendaDialogueManager
 from retico.dialogue.manager.convsim import ConvSimDialogueManager
 from retico.dialogue.manager.ngram import NGramDialogueManager
-
+from retico.dialogue.manager.rasa import RasaDialogueManager, RandomChoicePolicy
 import numpy as np
 
 
@@ -56,7 +56,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
 
     def speak(self):
         act, concepts = self.dialogue_manager.next_act()
-        fd = "%s:%s" % (act, ",".join(concepts.keys()))
+        if concepts.keys():
+            fd = "%s:%s" % (act, ",".join(concepts.keys()))
+        else:
+            fd = act
         output_iu = self.create_iu(None)
         output_iu.set_act(act, concepts)
         output_iu.meta_data["message_data"] = fd
@@ -86,7 +89,7 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         result = -0.196366 * np.log(0.0767043 * (-1 + 1/x))
         while result < 0:
             result = -0.196366 * np.log(0.0767043 * (-1 + 1/random.random()))
-        return result + 2
+        return result + 1
 
     def continous_loop(self):
         while not self.dialogue_finished:
@@ -185,6 +188,7 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def shutdown(self):
         self.dialogue_finished = True
 
+
 class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
     "An agenda-based dialogue manager"
 
@@ -193,8 +197,9 @@ class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
         self.dialogue_manager = AgendaDialogueManager(aa_file, agenda_file,
                                                       first_utterance)
 
+
 class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
-    "A dialogue manaher based on ConvSim"
+    "A dialogue manager based on ConvSim"
 
     def __init__(self, agenda_file, conv_folder, agent_class, first_utterance,
                  **kwargs):
@@ -207,6 +212,7 @@ class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
         self.dialogue_manager = ConvSimDialogueManager(agenda_file, conv_folder,
                                                        agent_class)
 
+
 class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
     "An n-gram dialogue manager module"
 
@@ -216,3 +222,11 @@ class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
             self.dialogue_manager = NGramDialogueManager(ngram_model, "callee")
         else:
             self.dialogue_manager = NGramDialogueManager(ngram_model, "caller")
+
+
+class RasaDialogueManagerModule(SimulatedDialogueManagerModule):
+    "An n-gram dialogue manager module"
+
+    def __init__(self, model_dir, first_utterance, **kwargs):
+        super().__init__(first_utterance, **kwargs)
+        self.dialogue_manager = RasaDialogueManager(model_dir)

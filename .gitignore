@@ -93,3 +93,5 @@ py3/
 sims/
 
 .idea/
+data/gtts_cache
+data/*/rasa_models

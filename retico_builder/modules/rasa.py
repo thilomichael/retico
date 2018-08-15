@@ -7,7 +7,7 @@ try:
     class RasaNLUModule(AbstractModule):
 
         MODULE = nlu.RasaNLUModule
-        PARAMETERS = {"model_dir": "data/rasa/models/nlu/current", "config_file": "data/rasa/nlu_model_config.json"}
+        PARAMETERS = {"model_dir": "data/rasa/models/nlu/current"}
 
         def set_content(self):
             self.gui.clear_content()
