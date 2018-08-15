@@ -91,3 +91,5 @@ py3/
 .ropeproject
 **/*.rtc
 sims/
+
+.idea/
