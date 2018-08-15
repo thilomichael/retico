@@ -17079,27 +17079,22 @@
       },
       {
         "intent": "greet",
-        "entities": [],
         "text": "hello"
       },
       {
         "intent": "greet",
-        "entities": [],
         "text": "good morning"
       },
       {
         "intent": "greet",
-        "entities": [],
         "text": "hi"
       },
       {
         "intent": "deny",
-        "entities": [],
         "text": "no"
       },
       {
         "intent": "deny",
-        "entities": [],
         "text": "no thank you"
       },
       {
@@ -17398,12 +17393,10 @@
       },
       {
         "intent": "deny",
-        "entities": [],
         "text": "no thanks"
       },
       {
         "intent": "thankyou",
-        "entities": [],
         "text": "thanks"
       },
       {
@@ -17420,17 +17413,14 @@
       },
       {
         "intent": "affirm",
-        "entities": [],
         "text": "let's do it"
       },
       {
         "intent": "affirm",
-        "entities": [],
         "text": "yes"
       },
       {
         "intent": "affirm",
-        "entities": [],
         "text": "i love that"
       },
       {
@@ -17495,17 +17485,14 @@
       },
       {
         "intent": "deny",
-        "entities": [],
         "text": "no this does not work for me"
       },
       {
         "intent": "deny",
-        "entities": [],
         "text": "do you have something else"
       },
       {
         "intent": "thankyou",
-        "entities": [],
         "text": "you rock"
       },
       {
