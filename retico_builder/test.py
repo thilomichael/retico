@@ -5,6 +5,7 @@ from retico.core.text.asr import ASRtoTTSModule
 
 from retico.modules.google.asr import GoogleASRModule
 from retico.modules.google.tts import GoogleTTSModule
+from retico.modules.mary.tts import MaryTTSModule
 from retico.modules.rasa.nlu import RasaNLUModule
 
 from retico.modules.simulation.dm import ConvSimDialogueManagerModule
@@ -134,6 +135,111 @@ def rasa_nlu():
     m3.stop()
     m4.stop()
     m5.stop()
+
+def simulation3(caller_dm, callee_dm, convtype):
+    caller_nlg = SimulatedNLGModule("data/%s/audio" % convtype, agent_type="caller")
+    caller_tts = MaryTTSModule("de", "bits1-hsmm")
+    caller_io  = AudioDispatcherModule(5000)
+    caller_asr = SimulatedASRModule()
+    caller_nlu = SimulatedNLUModule()
+    caller_eot = SimulatedEoTModule()
+    caller_speaker = SpeakerModule(use_speaker="left")
+    caller_recorder = AudioRecorderModule("recording_caller.wav")
+
+    callee_nlg = SimulatedNLGModule("data/%s/audio" % convtype, agent_type="callee")
+    callee_tts = MaryTTSModule("de", "bits3-hsmm")
+    callee_io  = AudioDispatcherModule(5000)
+    callee_asr = SimulatedASRModule()
+    callee_nlu = SimulatedNLUModule()
+    callee_eot = SimulatedEoTModule()
+    callee_speaker = SpeakerModule(use_speaker="right")
+    callee_recorder = AudioRecorderModule("recording_callee.wav")
+
+    caller_dm.subscribe(caller_nlg)
+    caller_nlg.subscribe(caller_tts)
+    caller_tts.subscribe(caller_io)
+    caller_io.subscribe(callee_asr)
+    caller_io.subscribe(callee_eot)
+    caller_io.subscribe(caller_speaker)
+    caller_io.subscribe(caller_recorder)
+    caller_io.subscribe(caller_dm)
+    callee_asr.subscribe(callee_nlu)
+    callee_nlu.subscribe(callee_dm)
+    callee_eot.subscribe(callee_dm)
+    callee_dm.subscribe(callee_nlg)
+    callee_nlg.subscribe(callee_tts)
+    callee_tts.subscribe(callee_io)
+    callee_io.subscribe(caller_asr)
+    callee_io.subscribe(caller_eot)
+    callee_io.subscribe(callee_dm)
+    callee_io.subscribe(callee_speaker)
+    callee_io.subscribe(callee_recorder)
+    caller_asr.subscribe(caller_nlu)
+    caller_nlu.subscribe(caller_dm)
+    caller_eot.subscribe(caller_dm)
+
+    headless.save(caller_dm, "simulation_%s" % convtype)
+
+    caller_dm.setup()
+    caller_nlg.setup()
+    caller_tts.setup()
+    caller_io.setup()
+    caller_asr.setup()
+    caller_nlu.setup()
+    caller_eot.setup()
+    caller_speaker.setup()
+    caller_recorder.setup()
+    callee_dm.setup()
+    callee_nlg.setup()
+    callee_tts.setup()
+    callee_io.setup()
+    callee_asr.setup()
+    callee_nlu.setup()
+    callee_eot.setup()
+    callee_speaker.setup()
+    callee_recorder.setup()
+
+    print("READY")
+
+    caller_dm.run(run_setup=False)
+    caller_nlg.run(run_setup=False)
+    caller_tts.run(run_setup=False)
+    caller_io.run(run_setup=False)
+    caller_asr.run(run_setup=False)
+    caller_nlu.run(run_setup=False)
+    caller_eot.run(run_setup=False)
+    caller_speaker.run(run_setup=False)
+    caller_recorder.run(run_setup=False)
+    callee_dm.run(run_setup=False)
+    callee_nlg.run(run_setup=False)
+    callee_tts.run(run_setup=False)
+    callee_io.run(run_setup=False)
+    callee_asr.run(run_setup=False)
+    callee_nlu.run(run_setup=False)
+    callee_eot.run(run_setup=False)
+    callee_speaker.run(run_setup=False)
+    callee_recorder.run(run_setup=False)
+
+    input()
+
+    caller_dm.stop()
+    caller_nlg.stop()
+    caller_tts.stop()
+    caller_io.stop()
+    caller_asr.stop()
+    caller_nlu.stop()
+    caller_eot.stop()
+    caller_speaker.stop()
+    caller_recorder.stop()
+    callee_dm.stop()
+    callee_nlg.stop()
+    callee_tts.stop()
+    callee_io.stop()
+    callee_asr.stop()
+    callee_nlu.stop()
+    callee_eot.stop()
+    callee_speaker.stop()
+    callee_recorder.stop()
 
 def simulation2(caller_dm, callee_dm, convtype):
     caller_nlg = SimulatedNLGModule("data/%s/audio" % convtype, agent_type="caller")
@@ -351,6 +457,8 @@ def convsim_simulation(convtype, simtype):
     callee_dm = ConvSimDialogueManagerModule("data/%s/calleefile.ini" % convtype, "data/%s/audio" % convtype, "callee", True)
     if simtype == "gtts":
         simulation2(caller_dm, callee_dm, convtype)
+    elif simtype == "mtts":
+        simulation3(caller_dm, callee_dm, convtype)
     else:
         simulation(caller_dm, callee_dm, convtype)
 
@@ -359,6 +467,8 @@ def agenda_simulation(convtype, simtype):
     callee_dm = AgendaDialogueManagerModule("data/%s/calleefile.ini" % convtype, "data/%s/available_acts_%s_callee.txt" % (convtype, convtype), True)
     if simtype == "gtts":
         simulation2(caller_dm, callee_dm, convtype)
+    elif simtype == "mtts":
+        simulation3(caller_dm, callee_dm, convtype)
     else:
         simulation(caller_dm, callee_dm, convtype)
 
@@ -367,6 +477,8 @@ def ngram_simulation(convtype, simtype):
     callee_dm = NGramDialogueManagerModule("data/%s/ngram_dm/combined-model.pickle" % convtype, True)
     if simtype == "gtts":
         simulation2(caller_dm, callee_dm, convtype)
+    elif simtype == "mtts":
+        simulation3(caller_dm, callee_dm, convtype)
     else:
         simulation(caller_dm, callee_dm, convtype)
 
@@ -375,6 +487,8 @@ def rasa_simulation(convtype, simtype):
     callee_dm = RasaDialogueManagerModule("data/%s/rasa_models/callee/" % convtype, True)
     if simtype == "gtts":
         simulation2(caller_dm, callee_dm, convtype)
+    elif simtype == "mtts":
+        simulation3(caller_dm, callee_dm, convtype)
     else:
         simulation(caller_dm, callee_dm, convtype)
 
