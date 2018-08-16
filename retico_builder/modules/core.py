@@ -76,3 +76,17 @@ class ASRtoTTSModule(AbstractModule):
         latest_iu = self.retico_module.latest_iu()
         if latest_iu:
             self.gui.update_info("Current text:<br>%s" % latest_iu.payload)
+
+class IncrementalizeASRModule(AbstractModule):
+
+    MODULE = asr.IncrementalizeASRModule
+    PARAMETERS = {"threshold": 0.8}
+
+    def set_content(self):
+        self.gui.clear_content()
+        self.gui.add_info("Incrementalize ASR Module")
+
+    def update_running_info(self):
+        latest_iu = self.retico_module.latest_iu()
+        if latest_iu:
+            self.gui.update_info("Current text:<br>%s" % latest_iu.payload)

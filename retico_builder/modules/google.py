@@ -18,7 +18,7 @@ try:
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
-                self.gui.update_info("Recognized Speech:<br>%s (confidence: %.2f)" % (latest_iu.text, latest_iu.confidence))
+                self.gui.update_info("Recognized Speech:<br>%s<br/>(confidence: %.2f, stability: %.2f)" % (latest_iu.text, latest_iu.confidence, latest_iu.stability))
 
     class GoogleTTSModule(AbstractModule):
 
