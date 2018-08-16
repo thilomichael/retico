@@ -1,16 +1,13 @@
 import inspect
 
-from retico_builder.modules import core
-from retico_builder.modules import abstract
-from retico_builder.modules import google
-from retico_builder.modules import rasa
-from retico_builder.modules import simulation
+from retico_builder.modules import core, abstract, google, rasa, simulation, mary
 
 INSPECT_MODULES = {
     "ReTiCo": core,
     "Google": google,
     "Rasa": rasa,
-    "Simulation": simulation
+    "Simulation": simulation,
+    "Mary": mary
 }
 
 # MODULE_LIST = {

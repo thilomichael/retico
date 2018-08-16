@@ -66,7 +66,7 @@ class MicrophoneModule(AbstractModule):
 class ASRtoTTSModule(AbstractModule):
 
     MODULE = asr.ASRtoTTSModule
-    PARAMETERS = {}
+    PARAMETERS = {"forward_after_final": True}
 
     def set_content(self):
         self.gui.clear_content()
@@ -75,4 +75,4 @@ class ASRtoTTSModule(AbstractModule):
     def update_running_info(self):
         latest_iu = self.retico_module.latest_iu()
         if latest_iu:
-            self.gui.update_info("Current text:<br>%s" % latest_iu.text)
+            self.gui.update_info("Current text:<br>%s" % latest_iu.payload)

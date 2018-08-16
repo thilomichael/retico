@@ -34,7 +34,7 @@ try:
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
-                self.gui.update_info("Produced speech" % (latest_iu.payload))
+                self.gui.update_info("<b>Produced speech:</b><br/>%s" % (latest_iu.grounded_in.get_text()))
 
 except ImportError:
     pass

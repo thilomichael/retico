@@ -21,8 +21,12 @@ class ASRtoTTSModule(abstract.AbstractModule):
     def output_iu():
         return text.common.GeneratedTextIU
 
+    def __init__(self, forward_after_final=True, **kwargs):
+        super().__init__(**kwargs)
+        self.forward_after_final = forward_after_final
+
     def process_iu(self, input_iu):
-        if input_iu.final:
+        if input_iu.final or not self.forward_after_final:
             output_iu = self.create_iu(input_iu)
             output_iu.payload = input_iu.get_text()
             output_iu.dispatch = True
