@@ -18,14 +18,56 @@ try:
             if latest_iu:
                 self.gui.update_info("Recognized Speech:<br>%s (confidence: %.2f)" % (latest_iu.text, latest_iu.confidence))
 
-    class SimulatedDialogueManagerModule(AbstractModule):
+    class ConvsimDialogueManagerModule(AbstractModule):
 
-        MODULE = dm.SimulatedDialogueManagerModule
+        MODULE = dm.ConvSimDialogueManagerModule
         PARAMETERS = {"agenda_file": "data/sct/callerfile.ini", "conv_folder": "data/sct11/audio", "agent_class": "caller", "first_utterance": False}
 
         def set_content(self):
             self.gui.clear_content()
-            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.agent_class)
+            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
+    class AgendaDialogueManagerModule(AbstractModule):
+
+        MODULE = dm.AgendaDialogueManagerModule
+        PARAMETERS = {"agenda_file": "data/sct/callerfile.ini", "aa_file": "data/sct11/available_acts_sct11_caller.txt", "first_utterance": False}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
+    class NGramDialogueManagerModule(AbstractModule):
+
+        MODULE = dm.NGramDialogueManagerModule
+        PARAMETERS = {"ngram_model": "data/sct11/ngram_dm/combined-model.pickle", "first_utterance": False}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
+
+    class NGramDialogueManagerModule(AbstractModule):
+
+        MODULE = dm.RasaDialogueManagerModule
+        PARAMETERS = {"model_dir": "data/sct11/rasa_models/caller/", "first_utterance": False}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
 
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()

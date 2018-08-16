@@ -2,7 +2,7 @@ from flexx import flx
 from retico_builder.modules.abstract import AbstractModule
 
 try:
-    from retico.modules.google import asr
+    from retico.modules.google import asr, tts
 
     class GoogleASRModule(AbstractModule):
 
@@ -19,6 +19,22 @@ try:
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
                 self.gui.update_info("Recognized Speech:<br>%s (confidence: %.2f)" % (latest_iu.text, latest_iu.confidence))
+
+    class GoogleTTSModule(AbstractModule):
+
+        MODULE = tts.GoogleTTSModule
+        PARAMETERS = {"language_code": "en-US", "voice_name": "en-US-Wavenet-A", "speaking_rate": 1.4}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Language: %s" % self.retico_module.language_code)
+            self.gui.add_info("Voice Name: %s" % self.retico_module.voice_name)
+            self.gui.add_info("Speaking Rate: %.2f" % self.retico_module.speaking_rate)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info("Produced speech" % (latest_iu.payload))
 
 except ImportError:
     pass

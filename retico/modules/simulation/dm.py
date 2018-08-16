@@ -50,6 +50,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         self.current_incoming_da = None
         self.dialogue_finished = False
         self.first_utterance = first_utterance
+        if first_utterance:
+            self.role = "Callee"
+        else:
+            self.role = "Caller"
         self.fu = True
         self.ready = False
         self.rnd = random.random()
@@ -192,8 +196,14 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
 class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
     "An agenda-based dialogue manager"
 
+    @staticmethod
+    def name():
+        return "Agenda DM Module"
+
     def __init__(self, agenda_file, aa_file, first_utterance, **kwargs):
         super().__init__(first_utterance, **kwargs)
+        self.aa_file = aa_file
+        self.first_utterance = first_utterance
         self.dialogue_manager = AgendaDialogueManager(aa_file, agenda_file,
                                                       first_utterance)
 
@@ -201,9 +211,17 @@ class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
 class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
     "A dialogue manager based on ConvSim"
 
+    @staticmethod
+    def name():
+        return "ConvSim Agenda DM Module"
+
     def __init__(self, agenda_file, conv_folder, agent_class, first_utterance,
                  **kwargs):
         super().__init__(first_utterance, **kwargs)
+        self.agenda_file = agenda_file
+        self.conv_folder = conv_folder
+        self.agent_class = agent_class
+        self.first_utterance = first_utterance
         if isinstance(agent_class, str):
             agent_class = ConvSimDialogueManager.get_agent_class(agent_class)
         else:
@@ -216,8 +234,14 @@ class ConvSimDialogueManagerModule(SimulatedDialogueManagerModule):
 class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
     "An n-gram dialogue manager module"
 
+    @staticmethod
+    def name():
+        return "N-Gram DM Module"
+
     def __init__(self, ngram_model, first_utterance, **kwargs):
         super().__init__(first_utterance, **kwargs)
+        self.ngram_model = ngram_model
+        self.first_utterance = first_utterance
         if first_utterance:
             self.dialogue_manager = NGramDialogueManager(ngram_model, "callee")
         else:
@@ -227,6 +251,12 @@ class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
 class RasaDialogueManagerModule(SimulatedDialogueManagerModule):
     "An n-gram dialogue manager module"
 
+    @staticmethod
+    def name():
+        return "RASA (LSTM-RNN) DM Module"
+
     def __init__(self, model_dir, first_utterance, **kwargs):
         super().__init__(first_utterance, **kwargs)
+        self.model_dir = model_dir
+        self.first_utterance = first_utterance
         self.dialogue_manager = RasaDialogueManager(model_dir)

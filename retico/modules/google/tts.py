@@ -200,7 +200,7 @@ class GoogleTTSModule(abstract.AbstractModule):
 
     @staticmethod
     def description():
-        return ("A module that uses Google TTS to synthesize audio.")
+        return "A module that uses Google TTS to synthesize audio."
 
     @staticmethod
     def input_ius():
@@ -210,11 +210,13 @@ class GoogleTTSModule(abstract.AbstractModule):
     def output_iu():
         return audio.common.SpeechIU
 
-    def __init__(self, language_code, voice_name, **kwargs):
+    def __init__(self, language_code, voice_name, speaking_rate=1.4, caching=True, **kwargs):
         super().__init__(**kwargs)
         self.language_code = language_code
         self.voice_name = voice_name
-        self.gtts = GoogleTTS(language_code, voice_name)
+        self.speaking_rate = speaking_rate
+        self.caching = caching
+        self.gtts = GoogleTTS(language_code, voice_name, speaking_rate, caching)
         self.sample_width = 2
         self.rate = 44100
 
