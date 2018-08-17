@@ -35,7 +35,12 @@ class AbstractModule(flx.PyComponent):
         self.gui.disable_output_buttons()
 
     def enable_input_ius(self, in_ius):
-        if any([issubclass(self.MODULE.output_iu(), in_iu) for in_iu in in_ius]):
+        values = []
+        for in_iu in in_ius:
+            oiu = self.MODULE.output_iu()
+            if oiu:
+                values.append(issubclass(oiu, in_iu))
+        if any(values):
             self.gui.enable_output_buttons()
             self.gui.highlight(True)
         else:

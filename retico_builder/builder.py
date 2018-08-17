@@ -135,6 +135,7 @@ class ReticoBuilder(flx.PyComponent):
         if self.running:
             return
         self.widget.delete_module(gui)
+        self.modules[id(gui)].retico_module.remove()
         del self.modules[id(gui)]
         self.set_connecting_state(False)
         self.connecting_module = None
@@ -145,7 +146,6 @@ class ReticoBuilder(flx.PyComponent):
 
         gui.set_parent(None)
         gui.dispose()
-        # TODO: actually remove the underlying module...
 
     @flx.action
     def run(self):
