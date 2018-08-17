@@ -18,7 +18,7 @@ QUEUE_TIMEOUT = 0.01
 class IncrementalQueue(queue.Queue):
     """An abstract incremental queue.
 
-    A module may subscribe to a queue of another module. Everytime a new
+    A module may subscribe to a queue of another module. Every time a new
     incremental unit (IU) is produced, the IU is put into a special queue for
     every subscriber to the incremental queue. Every unit gets its own queue and
     may process the items at different speeds.
@@ -26,6 +26,8 @@ class IncrementalQueue(queue.Queue):
     Attributes:
         provider (AbstractModule): The module that provides IUs for this queue.
         consumer (AbstractModule): The module that consumes IUs for this queue.
+        maxsize (int): The maximum size of the queue, where 0 does not restrict
+            the size.
     """
 
     def __init__(self, provider, consumer, maxsize=0):
@@ -33,6 +35,10 @@ class IncrementalQueue(queue.Queue):
         self.provider = provider
         self.consumer = consumer
 
+    def remove(self):
+        """Removes the queue from the consumer and the producer."""
+        self.provider.remove_right_buffer(self)
+        self.consumer.remove_left_buffer(self)
 
 class IncrementalUnit():
     """An abstract incremental unit.
@@ -297,6 +303,34 @@ class AbstractModule():
         """
         return list(self._left_buffers)
 
+    def add_right_buffer(self, right_buffer):
+        """Add a new right buffer for the module.
+
+        This method stops the execution of the module pipeline if it is running.
+
+        Args:
+            right_buffer (IncrementalQueue): The right buffer to add to the
+                module.
+        """
+        if not right_buffer or not isinstance(right_buffer, IncrementalQueue):
+            return
+        if self.is_running:
+            self.stop()
+        self._right_buffers.append(right_buffer)
+
+    def remove_right_buffer(self, right_buffer):
+        """Remove a right buffer from the module.
+
+        This method stops the execution of the module pipeline if it is running.
+
+        Args:
+            right_buffer (IncrementalQueue): The right buffer to remove from the
+                module.
+        """
+        if self.is_running:
+            self.stop()
+        self._right_buffers.remove(right_buffer)
+
     def right_buffers(self):
         """Return the right buffers of the module.
 
@@ -345,34 +379,61 @@ class AbstractModule():
         self._right_buffers.append(q)
         return q
 
-    def unsubscribe(self, q):
-        """Remove a queue from the list of queues.
+    def remove_from_rb(self, module):
+        """Removes the connection to a module from the right buffers.
 
-        Note that this method does not take the module as an input argument,
-        but rather the queue that was returned by the "subscribe" method of this
-        class.
-
-        Args:
-            q (IncrementalQueue): The queue that should be deleted from the list
-                of output queues"""
-        if q.consumer:
-            q.consumer.remove_left_buffer(q)
-        self._right_buffers.remove(q)
-
-    def unsubscribe_all(self, module):
-        """Removes all queues from a given module.
+        This method removes all queues between this module and the given module
+        from the right buffer of this module and the left buffer of the given
+        module.
+        This method stops the execution of the module.
 
         Args:
-            module (AbstractModule): A module that is the consumer of one or
-                more queues in the list of output queues.
+            module: A module that is subscribed to this module
         """
-        new_right_buffers = []
-        for q in self._right_buffers:
-            if q.consumer != module:
-                new_right_buffers.append(q)
-            elif q.consumer:
-                q.consumer.remove_left_buffer(q)
-        self._right_buffers.append = new_right_buffers
+        if self.is_running:
+            self.stop()
+        # We get a copy of the buffers because we are mutating it
+        rbs = self.right_buffers()
+        for buffer in rbs:
+            if buffer.consumer == module:
+                buffer.remove()
+
+    def remove_from_lb(self, module):
+        """Removes the connection to a module from the left buffers.
+
+        This method removes all queues between this module and the given module
+        from the left buffer of this module and the right buffer of the given
+        module.
+        This method stops the execution of the module.
+
+        Args:
+            module: A module that this module is subscribed to
+        """
+        if self.is_running:
+            self.stop()
+        # We get a copy of the buffers because we are mutating it
+        lbs = self.left_buffers()
+        for buffer in lbs:
+            if buffer.producer == module:
+                buffer.remove()
+
+    def remove(self):
+        """Removes all connections to all modules.
+
+        This methods removes all queues from the left buffer and right buffer.
+        The queues are also removed from the buffers of the connected modules.
+        This method can be used to remove a module completely from a network.
+
+        This method stops the execution of the module.
+        """
+        if self.is_running:
+            self.stop()
+        lbs = self.left_buffers()
+        rbs = self.right_buffers()
+        for buffer in lbs:
+            buffer.remove()
+        for buffer in rbs:
+            buffer.remove()
 
     def process_iu(self, input_iu):
         """Processes the information unit given and returns a new IU that can be
