@@ -10,6 +10,8 @@ from retico_builder import modlist
 from retico_builder import resourceserver
 from retico import headless
 
+from retico.dialogue.manager.rasa import RandomChoicePolicy
+
 flx.assets.associate_asset(__name__, "http://localhost:8000/interact.js")
 flx.assets.associate_asset(__name__, "http://localhost:8000/style.css")
 
@@ -707,7 +709,6 @@ class ParameterBox(flx.Widget):
 if __name__ == '__main__':
     resourceserver.run_server()
     a = flx.App(ReticoBuilder)
-    a.serve()
-    # a.launch(runtime="browser", title="ReTiCo Builder")
-    flx.run()
+    a.launch(runtime="chrome-browser", title="ReTiCo Builder")
+    flx.start() # Or .run() if the App should terminate after closing.
     resourceserver.stop_server()

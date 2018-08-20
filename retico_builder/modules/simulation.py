@@ -43,6 +43,9 @@ try:
         def set_content(self):
             self.gui.clear_content()
             self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+            self.gui.add_info("Agenda file: %s" % self.retico_module.agenda_file)
+            self.gui.add_info("AA file: %s" % self.retico_module.aa_file)
+            self.gui.add_info("First utterance: %s" % self.retico_module.first_utterance)
 
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
@@ -57,20 +60,8 @@ try:
         def set_content(self):
             self.gui.clear_content()
             self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
-
-        def update_running_info(self):
-            latest_iu = self.retico_module.latest_iu()
-            if latest_iu:
-                self.gui.update_info("Intent: %s<br>Concept: %s" % (latest_iu.act, latest_iu.concepts))
-
-    class NGramDialogueManagerModule(AbstractModule):
-
-        MODULE = dm.RasaDialogueManagerModule
-        PARAMETERS = {"model_dir": "data/sct11/rasa_models/caller/", "first_utterance": False}
-
-        def set_content(self):
-            self.gui.clear_content()
-            self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+            self.gui.add_info("N-gram model: %s" % self.retico_module.ngram_model)
+            self.gui.add_info("First utterance: %s" % self.retico_module.first_utterance)
 
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()

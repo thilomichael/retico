@@ -16,8 +16,9 @@ class RandomChoicePolicy(KerasPolicy):
         """This function activates the RNN to predict the next action, but then
         does a dice roll and sets the "winning" action to a probability of 100%"""
         predictions = super().predict_action_probabilities(tracker, domain)
-        # print("PREDICTIONS", predictions)
-
+        # print("PREDICTIONS", predictions[0])
+        predictions[0] = 0
+        print("PREDICTIONS", predictions[0])
         total = sum(predictions) # This is the sum of all predictions, should be close to 1
         new_predictions = [0.0] * len(predictions) # This is the new predictions array. Initially all values are set to 0.0
 
@@ -53,20 +54,20 @@ def train():
     caller_agent = Agent(domain_file, policies=[RandomChoicePolicy()])
     callee_agent = Agent(domain_file, policies=[RandomChoicePolicy()])
 
-    caller_agent.train(
-        caller_training,
-        epochs=400,
-        batch_size=500,
-        augmentation_factor=1,
-        validation_split=0.2
-    )
-    caller_agent.persist(caller_model_path)
+    # caller_train_data = caller_agent.load_data(caller_training)
+    # caller_agent.train(
+    #     caller_train_data,
+    #     epochs=100,
+    #     batch_size=100,
+    #     validation_split=0.2
+    # )
+    # caller_agent.persist(caller_model_path)
 
+    callee_train_data = callee_agent.load_data(callee_training)
     callee_agent.train(
-        callee_training,
-        epochs=400,
-        batch_size=500,
-        augmentation_factor=1,
+        callee_train_data,
+        epochs=100,
+        batch_size=100,
         validation_split=0.2
     )
     callee_agent.persist(callee_model_path)
@@ -77,17 +78,29 @@ class RasaDialogueManager(AbstractDialogueManager):
     def __init__(self, model_dir):
         self.agent = Agent.load(model_dir)
         self.acts = []
+        self.dialogue_started = False
 
     def process_act(self, act, concepts):
+        if act == "NOTHING":
+            return
+        self.dialogue_started = True
         concept_string = json.dumps(concepts)
         rasa_msg = "/%s%s" % (act, concept_string)
+        print("rasa_msg:", rasa_msg)
         results = self.agent.handle_message(rasa_msg)
-        self.acts.extend(results)
+        print("results:", results)
+        self.acts.append(results[0])
 
     def next_act(self):
+        print("AVAILABLE ACTS:", len(self.acts))
+        if not self.dialogue_started:
+            self.dialogue_started = True
+            return "greeting", {"callee_name": "[empty]"}
         if not self.acts:
-            return None, None
-        act, entities = action_to_act(self.acts.pop(0))
+            return "NOTHING", {}
+        na = self.acts.pop(0)["text"]
+        act, entities = action_to_act(na)
+        print(act, " - ", entities)
         return act, entities
 
 if __name__ == '__main__':
