@@ -546,11 +546,16 @@ class AbstractModule():
         t = threading.Thread(target=self._run)
         t.start()
 
-    def stop(self):
+    def stop(self, clear_buffer=True):
         """Stops the execution of the processing pipeline of this module at the
         next possible point in time. This may be after the next incoming IU is
         processed."""
         self.is_running = False
+        if clear_buffer:
+            for buffer in self.right_buffers():
+                while not buffer.empty():
+                    buffer.get()
+
 
     def create_iu(self, grounded_in=None):
         """Creates a new Incremental Unit that contains the information of the
