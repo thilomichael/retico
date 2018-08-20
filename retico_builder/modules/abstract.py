@@ -60,6 +60,8 @@ class AbstractModule(flx.PyComponent):
         self.gui.highlight(False)
 
     def setup(self):
+        if not self.gui.active:
+            return
         self.gui.setup()
         time.sleep(0.01)
         self.retico_module.setup()
@@ -67,9 +69,13 @@ class AbstractModule(flx.PyComponent):
         self.gui.highlight(True, "border")
 
     def run(self):
+        if not self.gui.active:
+            return
         self.retico_module.run(run_setup=False)
 
     def stop(self):
+        if not self.gui.active:
+            return
         self.enable_buttons()
         time.sleep(0.01)
         self.gui.stop()

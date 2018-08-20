@@ -110,6 +110,15 @@
   color: #999 !important;
 }
 
+.enable-button {
+  position: absolute !important;
+  margin-left: -35px !important;
+  margin-top: 0px !important;
+  left: 50%;
+  width: 70px;
+  background-color: #fff !important;
+}
+
 .out-button:hover {
   background-color: #dc3545 !important;
   color: #fff !important;
@@ -135,7 +144,6 @@
 .flx-ParameterBox {
   background: rgba(0, 0, 0, 0.7) !important;
   position: absolute !important;
-  text
   left: 0 !important;
   top: 0 !important;
   height: 100% !important;

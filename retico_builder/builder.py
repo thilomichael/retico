@@ -191,7 +191,6 @@ class ReticoBuilder(flx.PyComponent):
             last_m = m
         headless.save(last_m.retico_module, path)
         filenames = glob.glob("save/*.rtc")
-        filenames.sort()
         self.widget.update_file_tree(filenames)
 
     @flx.action
@@ -244,6 +243,10 @@ class ReticoBuilder(flx.PyComponent):
             self.delete_module(m.gui)
         self.modules = {}
 
+    @flx.action
+    def toggle_module(self, gui):
+        gui.set_active(not gui.active)
+        gui.display_active()
 
 class ReticoWidget(flx.Widget):
 
@@ -392,9 +395,8 @@ class MenuPane(flx.Widget):
             self.stop_button = flx.Button(text="Stop", css_class="menu-button")
             self.stop_button.set_disabled(True)
             flx.Widget(style="min-height:50px;")
-            with flx.TreeWidget(max_selected=1, style="height:300px;", flex=1) as self.file_tree:
-                for g in file_list:
-                    flx.TreeItem(text=g[5:], checked=None)
+            self.file_tree = flx.TreeWidget(max_selected=1, style="height:300px;", flex=1)
+            self.update_file_tree(file_list)
             self.load_button = flx.Button(text="Load")
             self.filename_edit = flx.LineEdit()
             self.save_button = flx.Button(text="Save")
@@ -403,6 +405,7 @@ class MenuPane(flx.Widget):
 
     @flx.action
     def update_file_tree(self, files):
+        files.sort()
         for child in self.file_tree.children:
             child.set_parent(None)
             child.dispose()
@@ -524,16 +527,20 @@ class ReticoModule(flx.Widget):
     p_width = flx.IntProp(settable=True)
     p_height = flx.IntProp(settable=True)
 
+    active = flx.BoolProp(settable=True)
+
     def init(self, retico_widget):
         self.retico_widget = retico_widget
         self.l_title = flx.Label(text="", css_class="title-label")
         self.close_button = flx.Button(text="X", css_class="close-button")
-        with flx.VBox(style="cursor: default; padding-bottom: 30px; padding-left: 20px; padding-right:20px;") as self.content_box:
+        with flx.VBox(style="cursor: default; padding-bottom: 30px; padding-left: 20px; padding-right:20px; padding-top: 30px;") as self.content_box:
             self.content_box.set_padding("20px")
         self.out_button_l = flx.Button(text="◀", css_class="out-button left-button")
         self.out_button_r = flx.Button(text="▶", css_class="out-button right-button")
         self.in_button_l = flx.Button(text="▶", css_class="in-button left-button")
         self.in_button_r = flx.Button(text="◀", css_class="in-button right-button")
+        self.enable_button = flx.Button(text="enabled", css_class="enable-button")
+        self.set_active(True)
         self.set_position()
 
     def set_position(self):
@@ -634,6 +641,11 @@ class ReticoModule(flx.Widget):
     def _close(self):
         self.retico_widget.model.delete_module(self)
 
+    @flx.reaction('enable_button.pointer_click')
+    def enable_button_click(self):
+        self.enabled = not self.enabled
+        self.retico_widget.model.toggle_module(self)
+
     @flx.action
     def set_mtitle(self, thing):
         self.l_title.set_text(thing)
@@ -662,6 +674,14 @@ class ReticoModule(flx.Widget):
         self.enable_close_button()
         self.highlight(False)
 
+    @flx.action
+    def display_active(self):
+        if self.active:
+            self.node.style["opacity"] = 1
+        else:
+            self.node.style["opacity"] = 0.1
+
+
 class ParameterBox(flx.Widget):
 
     def init(self, parameters, mpane, module_type, mod_parent):
@@ -682,6 +702,7 @@ class ParameterBox(flx.Widget):
 if __name__ == '__main__':
     resourceserver.run_server()
     a = flx.App(ReticoBuilder)
-    a.launch(runtime="chrome-browser", title="ReTiCo Builder")
+    a.serve()
+    # a.launch(runtime="browser", title="ReTiCo Builder")
     flx.run()
     resourceserver.stop_server()

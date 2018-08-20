@@ -26,6 +26,9 @@ try:
         def set_content(self):
             self.gui.clear_content()
             self.gui.add_info("Dialogue Manager:<br><b>%s</b>" % self.retico_module.role)
+            self.gui.add_info("Agenda file: %s" % self.retico_module.agenda_file)
+            self.gui.add_info("Conv folder: %s" % self.retico_module.conv_folder)
+            self.gui.add_info("First utterance: %s" % self.retico_module.first_utterance)
 
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
