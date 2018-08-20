@@ -187,6 +187,7 @@ class ReticoBuilder(flx.PyComponent):
             meta["top"] = m.gui.p_top
             meta["width"] = m.gui.p_width
             meta["height"] = m.gui.p_height
+            meta["active"] = m.gui.active
             meta["id"] = id(m)
             last_m = m
         headless.save(last_m.retico_module, path)
@@ -209,8 +210,9 @@ class ReticoBuilder(flx.PyComponent):
             h = m.meta_data.get("height", 150)
             w = m.meta_data.get("width", 150)
             mid = m.meta_data.get("id", id(m))
+            active = m.meta_data.get("active", True)
             self.load_map[mid] = m
-            self.widget.create_existing_module(type, parent, x, y, w, h, mid)
+            self.widget.create_existing_module(type, parent, x, y, w, h, mid, active)
         self.widget.load_connections()
 
     @flx.action
@@ -313,8 +315,8 @@ class ReticoWidget(flx.Widget):
         self.draw_strokes()
 
     @flx.action
-    def create_existing_module(self, type, parent, x, y, w, h, id):
-        self.mpane.create_existing_module(type, parent, x, y, w, h, id)
+    def create_existing_module(self, type, parent, x, y, w, h, id, active):
+        self.mpane.create_existing_module(type, parent, x, y, w, h, id, active)
 
     def draw_strokes(self):
         canvas = self.mpane.canvas.node.getContext("2d")
@@ -514,9 +516,11 @@ class ModulePane(flx.PinboardLayout):
         self.modules.append(module)
         self.retico_widget.model.register_module(type, parent, module, params)
 
-    def create_existing_module(self, type, parent, x, y, w, h, id):
+    def create_existing_module(self, type, parent, x, y, w, h, id, active):
         module = ReticoModule(self.retico_widget, parent=self.mcontainer,
                               style="left: %dpx; top: %dpx; width: %dpx; height: %dpx;" % (x, y, w, h))
+        module.set_active(active)
+        module.display_active();
         self.modules.append(module)
         self.retico_widget.model.register_existing_module(type, parent, module, id)
 
@@ -643,7 +647,6 @@ class ReticoModule(flx.Widget):
 
     @flx.reaction('enable_button.pointer_click')
     def enable_button_click(self):
-        self.enabled = not self.enabled
         self.retico_widget.model.toggle_module(self)
 
     @flx.action
@@ -678,8 +681,10 @@ class ReticoModule(flx.Widget):
     def display_active(self):
         if self.active:
             self.node.style["opacity"] = 1
+            self.enable_button.set_text("enabled")
         else:
             self.node.style["opacity"] = 0.1
+            self.enable_button.set_text("disabled")
 
 
 class ParameterBox(flx.Widget):
