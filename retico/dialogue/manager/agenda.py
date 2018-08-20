@@ -61,6 +61,8 @@ class Agenda:
     def __init__(self, agendafile):
         self.config = configparser.ConfigParser(allow_no_value=True)
         self.config.read(agendafile)
+        if len(self.config) == 0:
+            raise FileNotFoundError("Could not find '%s' or it is empty!")
 
         self.agenda = collections.OrderedDict()
         self.fields = {}
@@ -191,6 +193,8 @@ class ActGuider:
                 if entities[0]+"-0" in e or entities[0] in e:
                     return "provide_partial", e.split(",")
             return self.guide_utterance("provide_info", entities)
+        if act == "request_info" and entities == ["callee_name"]:
+            return "greeting", []
         assert False, "Could not find utterance for %s - %s" % (act, entities)
 
 

@@ -63,14 +63,14 @@ class MicrophoneModule(AbstractModule):
         self.gui.add_info("Rate: %d" % self.retico_module.rate)
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
 
-class ASRtoTTSModule(AbstractModule):
+class TextDispatcherModule(AbstractModule):
 
-    MODULE = asr.ASRtoTTSModule
+    MODULE = asr.TextDispatcherModule
     PARAMETERS = {"forward_after_final": True}
 
     def set_content(self):
         self.gui.clear_content()
-        self.gui.add_info("ASR to TTS Module")
+        self.gui.add_info("Text Dispatcher Module")
 
     def update_running_info(self):
         latest_iu = self.retico_module.latest_iu()

@@ -35,7 +35,7 @@ try:
     class AgendaDialogueManagerModule(AbstractModule):
 
         MODULE = dm.AgendaDialogueManagerModule
-        PARAMETERS = {"agenda_file": "data/sct/callerfile.ini", "aa_file": "data/sct11/available_acts_sct11_caller.txt", "first_utterance": False}
+        PARAMETERS = {"agenda_file": "data/sct11/callerfile.ini", "aa_file": "data/sct11/available_acts_sct11_caller.txt", "first_utterance": False}
 
         def set_content(self):
             self.gui.clear_content()

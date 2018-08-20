@@ -202,6 +202,7 @@ class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
 
     def __init__(self, agenda_file, aa_file, first_utterance, **kwargs):
         super().__init__(first_utterance, **kwargs)
+        self.agenda_file = agenda_file
         self.aa_file = aa_file
         self.first_utterance = first_utterance
         self.dialogue_manager = AgendaDialogueManager(aa_file, agenda_file,

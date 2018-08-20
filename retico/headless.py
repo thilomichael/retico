@@ -4,7 +4,7 @@ import sys
 import pickle
 
 
-def load(filename):
+def load(filename: str):
     """Loads a network from file and returns a list of modules in that network.
 
     The connections between the module have been set according to the file.
@@ -13,7 +13,8 @@ def load(filename):
         filename (str): The path to the .rtc file containing a network.
 
     Returns:
-        (list): A list of Modules that are connected and ready to be run.
+        (list, list): A list of Modules that are connected and ready to be run
+            and a list of connections between those modules.
     """
     mc_list = pickle.load(open(filename, "rb"))
     module_dict = {}
@@ -40,7 +41,7 @@ def load_and_execute(filename):
     Args:
         filename (str): The path to the .rtc file containing a network.
     """
-    module_list = load(filename)
+    module_list, _ = load(filename)
 
     for module in module_list:
         module.setup()
@@ -113,4 +114,7 @@ def save(module, filename):
 
 
 if __name__ == '__main__':
-    load_and_execute(sys.argv[1])
+    if len(sys.argv) > 1:
+        load_and_execute(sys.argv[1])
+    else:
+        print("Please provide an rtc-file to load!")

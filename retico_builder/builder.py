@@ -190,7 +190,9 @@ class ReticoBuilder(flx.PyComponent):
             meta["id"] = id(m)
             last_m = m
         headless.save(last_m.retico_module, path)
-        self.widget.update_file_tree(glob.glob("save/*.rtc"))
+        filenames = glob.glob("save/*.rtc")
+        filenames.sort()
+        self.widget.update_file_tree(filenames)
 
     @flx.action
     def load(self, filename):

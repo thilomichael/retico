@@ -3,7 +3,7 @@ A module that helps transforming text to be used for synthesis.
 """
 
 from retico.core import abstract, text
-class ASRtoTTSModule(abstract.AbstractModule):
+class TextDispatcherModule(abstract.AbstractModule):
 
     @staticmethod
     def name():
