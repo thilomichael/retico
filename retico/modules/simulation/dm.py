@@ -192,6 +192,9 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def shutdown(self):
         self.dialogue_finished = True
 
+    def __repr__(self):
+        return super().__repr__() + " " + self.role
+
 
 class AgendaDialogueManagerModule(SimulatedDialogueManagerModule):
     "An agenda-based dialogue manager"

@@ -596,6 +596,9 @@ class AbstractModule():
         """
         return self._previous_iu
 
+    def __repr__(self):
+        return self.name()
+
 
 class AbstractProducingModule(AbstractModule):
     """An abstract producing module that is able to incrementally process data.
