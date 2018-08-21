@@ -2,7 +2,6 @@ from flexx import flx
 from retico_builder.modules.abstract import AbstractModule
 
 from retico.core.audio import io
-from retico.core.text import asr
 
 class AudioRecorderModule(AbstractModule):
 
@@ -62,31 +61,3 @@ class MicrophoneModule(AbstractModule):
         self.gui.add_info("Chunk Size: %d" % self.retico_module.chunk_size)
         self.gui.add_info("Rate: %d" % self.retico_module.rate)
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
-
-class TextDispatcherModule(AbstractModule):
-
-    MODULE = asr.TextDispatcherModule
-    PARAMETERS = {"forward_after_final": True}
-
-    def set_content(self):
-        self.gui.clear_content()
-        self.gui.add_info("Text Dispatcher Module")
-
-    def update_running_info(self):
-        latest_iu = self.retico_module.latest_iu()
-        if latest_iu:
-            self.gui.update_info("Current text:<br>%s" % latest_iu.payload)
-
-class IncrementalizeASRModule(AbstractModule):
-
-    MODULE = asr.IncrementalizeASRModule
-    PARAMETERS = {"threshold": 0.8}
-
-    def set_content(self):
-        self.gui.clear_content()
-        self.gui.add_info("Incrementalize ASR Module")
-
-    def update_running_info(self):
-        latest_iu = self.retico_module.latest_iu()
-        if latest_iu:
-            self.gui.update_info("Current text:<br>%s" % latest_iu.payload)

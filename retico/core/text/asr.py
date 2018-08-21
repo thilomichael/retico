@@ -4,6 +4,12 @@ A module that helps transforming text to be used for synthesis.
 
 from retico.core import abstract, text
 class TextDispatcherModule(abstract.AbstractModule):
+    """
+    A Moduel that turns SpeechRecognitionIUs or TextIUs into GeneratedTextIUs
+    that have the dispatch-flag set.
+
+
+    """
 
     @staticmethod
     def name():
@@ -11,11 +17,12 @@ class TextDispatcherModule(abstract.AbstractModule):
 
     @staticmethod
     def description():
-        return "A module that uses SpeechRecognition IUs and outputs dispatchable IUs"
+        return "A module that uses SpeechRecognition IUs and outputs" + \
+               " dispatchable IUs"
 
     @staticmethod
     def input_ius():
-        return [text.common.SpeechRecognitionIU]
+        return [text.common.SpeechRecognitionIU, text.common.TextIU]
 
     @staticmethod
     def output_iu():
@@ -26,11 +33,13 @@ class TextDispatcherModule(abstract.AbstractModule):
         self.forward_after_final = forward_after_final
 
     def process_iu(self, input_iu):
-        if input_iu.final or not self.forward_after_final:
-            output_iu = self.create_iu(input_iu)
-            output_iu.payload = input_iu.get_text()
-            output_iu.dispatch = True
-            return output_iu
+        if isinstance(input_iu, text.common.SpeechRecognitionIU):
+            if self.forward_after_final and not input_iu.final:
+                return
+        output_iu = self.create_iu(input_iu)
+        output_iu.payload = input_iu.get_text()
+        output_iu.dispatch = True
+        return output_iu
 
 class IncrementalizeASRModule(abstract.AbstractModule):
 

@@ -18,7 +18,7 @@ class RandomChoicePolicy(KerasPolicy):
         predictions = super().predict_action_probabilities(tracker, domain)
         # print("PREDICTIONS", predictions[0])
         predictions[0] = 0
-        print("PREDICTIONS", predictions[0])
+
         total = sum(predictions) # This is the sum of all predictions, should be close to 1
         new_predictions = [0.0] * len(predictions) # This is the new predictions array. Initially all values are set to 0.0
 
@@ -54,14 +54,14 @@ def train():
     caller_agent = Agent(domain_file, policies=[RandomChoicePolicy()])
     callee_agent = Agent(domain_file, policies=[RandomChoicePolicy()])
 
-    # caller_train_data = caller_agent.load_data(caller_training)
-    # caller_agent.train(
-    #     caller_train_data,
-    #     epochs=100,
-    #     batch_size=100,
-    #     validation_split=0.2
-    # )
-    # caller_agent.persist(caller_model_path)
+    caller_train_data = caller_agent.load_data(caller_training)
+    caller_agent.train(
+        caller_train_data,
+        epochs=100,
+        batch_size=100,
+        validation_split=0.2
+    )
+    caller_agent.persist(caller_model_path)
 
     callee_train_data = callee_agent.load_data(callee_training)
     callee_agent.train(
@@ -89,7 +89,7 @@ class RasaDialogueManager(AbstractDialogueManager):
         print("rasa_msg:", rasa_msg)
         results = self.agent.handle_message(rasa_msg)
         print("results:", results)
-        self.acts.append(results[0])
+        self.acts.insert(0, results[0])
 
     def next_act(self):
         print("AVAILABLE ACTS:", len(self.acts))

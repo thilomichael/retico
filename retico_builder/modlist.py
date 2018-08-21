@@ -1,9 +1,10 @@
 import inspect
 
-from retico_builder.modules import core, abstract, google, rasa, simulation, mary, net
+from retico_builder.modules import audio, abstract, google, rasa, simulation, mary, net, text
 
 INSPECT_MODULES = {
-    "ReTiCo": core,
+    "Audio": audio,
+    "Text": text,
     "Google": google,
     "Rasa": rasa,
     "Simulation": simulation,
