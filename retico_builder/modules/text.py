@@ -1,6 +1,7 @@
 from retico_builder.modules.abstract import AbstractModule
 from retico.core.text import asr
 from retico.core.dialogue import io
+from retico.core.text import io as textio
 
 class TextDispatcherModule(AbstractModule):
 
@@ -43,3 +44,17 @@ class DialogueActRecorderModule(AbstractModule):
         latest_iu = self.retico_module.latest_iu()
         if latest_iu:
             self.gui.update_info("Current act:<br>%s" % latest_iu.act)
+
+class TextRecorderModule(AbstractModule):
+
+    MODULE = textio.TextRecorderModule
+    PARAMETERS = {"filename": "transcript.txt"}
+
+    def set_content(self):
+        self.gui.clear_content()
+        self.gui.add_info("Filename: %s" % self.retico_module.filename)
+
+    def update_running_info(self):
+        latest_iu = self.retico_module.latest_iu()
+        if latest_iu:
+            self.gui.update_info("Current text:<br>%s" % latest_iu.get_text())

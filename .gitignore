@@ -97,3 +97,4 @@ data/gtts_cache
 data/mtts_cache
 data/*/rasa_models
 acts.txt
+transcript.txt
