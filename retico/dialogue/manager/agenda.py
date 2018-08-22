@@ -311,7 +311,9 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def next_act(self):
         act, entities = self.create_next_act()
+        print("na", act, entities)
         real_act, real_entities = self.act_guider.guide_utterance(act, entities)
+        print("ga", real_act)
         entity_dict = {}
         for entity in real_entities:
             self.agenda.mention_field(entity)

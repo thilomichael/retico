@@ -1,6 +1,11 @@
+"""
+This module handles input and output of text.
+"""
+
 from retico.core.abstract import AbstractConsumingModule
 
 from retico.core.text.common import TextIU, GeneratedTextIU, SpeechRecognitionIU
+
 
 class TextRecorderModule(AbstractConsumingModule):
     """A module that writes the received text into a file."""

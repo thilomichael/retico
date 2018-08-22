@@ -60,6 +60,12 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
 
     def speak(self):
         act, concepts = self.dialogue_manager.next_act()
+        print(self.role, "dmACT:", act)
+        print(time.time()-self.last_interl_utterance)
+        if time.time() - self.last_interl_utterance > 20 and act != "greeting":
+            print("HERE")
+            act = "greeting"
+            concepts = {}
         if concepts.keys():
             fd = "%s:%s" % (act, ",".join(concepts.keys()))
         else:
@@ -87,13 +93,17 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
             return right_now - self.last_interl_utterance
 
     def gando_model(self, x):
+        if x == 0:
+            x = 0.0000001
         return -0.322581 * np.log(0.433008 * (-1 + 1/x))
 
     def pause_model(self, x):
+        if x == 0:
+            x = 0.0000001
         result = -0.196366 * np.log(0.0767043 * (-1 + 1/x))
         while result < 0:
             result = -0.196366 * np.log(0.0767043 * (-1 + 1/random.random()))
-        return result + 1
+        return result + 1 + ((time.time()-self.last_interl_utterance)/10)
 
     def continous_loop(self):
         while not self.dialogue_finished:
@@ -145,6 +155,9 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                                 output_iu.set_act("", {})
                                 output_iu.dispatch = False
                                 self.append(output_iu)
+                                self.rnd = random.random() + 0.2
+                                if self.rnd > 1:
+                                    self.rnd = 0.99
                     elif not self.is_dispatching:
                         if self.gando_model(self.rnd) <= self.time_until_eot():
                             if right_now - self.last_interl_utterance_begin < 1.5:
