@@ -18,6 +18,10 @@ import numpy as np
 class SimulatedDialogueManagerModule(abstract.AbstractModule):
     """A Simulated Dialogue Manager"""
 
+    EVENT_DIALOGUE_END = "dialogue_end"
+    EVENT_SAID = "said"
+    EVENT_HEARD = "heard"
+
     @staticmethod
     def name():
         return "Simulated DM Module"
@@ -57,13 +61,12 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         self.fu = True
         self.ready = False
         self.rnd = random.random()
+        self.received_goodbye = False
+        self.said_goodbye = False
 
     def speak(self):
         act, concepts = self.dialogue_manager.next_act()
-        print(self.role, "dmACT:", act)
-        print(time.time()-self.last_interl_utterance)
         if time.time() - self.last_interl_utterance > 20 and act != "greeting":
-            print("HERE")
             act = "greeting"
             concepts = {}
         if concepts.keys():
@@ -75,6 +78,9 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         output_iu.meta_data["message_data"] = fd
         output_iu.dispatch = True
         self.append(output_iu)
+        if act == "goodbye":
+            self.said_goodbye = True
+        self.event_call(self.EVENT_SAID, data={"iu": output_iu})
         self.is_dispatching = True
         self.last_utterance_begin = time.time()
         self.rnd = random.random()
@@ -165,8 +171,13 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                             iu = self.current_incoming_da
                             if not iu:
                                 continue
+                            self.event_call(self.EVENT_HEARD, data={"iu": iu})
                             self.dialogue_manager.process_act(iu.act, iu.concepts)
                             self.speak()
+                        if self.time_until_eot() < 0.001 and self.current_incoming_da and self.current_incoming_da.act == "goodbye":
+                            self.received_goodbye = True
+                            if self.said_goodbye:
+                                self.event_call(self.EVENT_DIALOGUE_END)
             time.sleep(0.05)
 
     def process_iu(self, input_iu):

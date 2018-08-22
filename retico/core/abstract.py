@@ -184,6 +184,11 @@ class IncrementalUnit():
 class AbstractModule():
     """An abstract module that is able to incrementally process data."""
 
+    EVENT_PROCESS_IU = "process_iu"
+    EVENT_SUBSCRIBE = "subscribe"
+    EVENT_START = "start"
+    EVENT_STOP = "stop"
+
     @staticmethod
     def name():
         """Return the human-readable name of the module.
@@ -256,6 +261,7 @@ class AbstractModule():
         self._previous_iu = None
         self._left_buffers = []
         self.mutex = threading.Lock()
+        self.events = {}
 
         self.meta_data = {}
         if meta_data:
@@ -374,6 +380,7 @@ class AbstractModule():
             q (IncrementalQueue): A optional queue that is used. If q is None,
                 the a new queue will be used"""
         if not q:
+            self.event_call(self.EVENT_SUBSCRIBE, {"module": module})
             q = self.queue_class(self, module)
             module.add_left_buffer(q)
         self._right_buffers.append(q)
@@ -470,6 +477,7 @@ class AbstractModule():
                         if not self.is_valid_input_iu(input_iu):
                             raise TypeError("This module can't handle this "
                                             "type of IU")
+                        self.event_call(self.EVENT_PROCESS_IU, {"iu": input_iu})
                         output_iu = self.process_iu(input_iu)
                         input_iu.set_processed(self)
                         if output_iu:
@@ -545,6 +553,7 @@ class AbstractModule():
                 q.queue.clear()
         t = threading.Thread(target=self._run)
         t.start()
+        self.event_call(self.EVENT_START)
 
     def stop(self, clear_buffer=True):
         """Stops the execution of the processing pipeline of this module at the
@@ -555,6 +564,7 @@ class AbstractModule():
             for buffer in self.right_buffers():
                 while not buffer.empty():
                     buffer.get()
+        self.event_call(self.EVENT_STOP)
 
 
     def create_iu(self, grounded_in=None):
@@ -598,6 +608,49 @@ class AbstractModule():
 
     def __repr__(self):
         return self.name()
+
+    def event_subscribe(self, event_name, callback):
+        """
+        Subscribe a callback to an event with the given name. If tge event name
+        is "*", then the callback will be called after every event.
+
+        The callback function is given three arguments: the module that
+        triggered the event (AbstractModule), the name of the event (str) and a
+        dict (dict) that may contain data relevant to the event.
+
+        Args:
+            event_name (str): The name of the event to subscribe to
+            callback (function): A function that is called once the event occurs
+        """
+        if not self.events.get(event_name):
+            self.events[event_name] = []
+        self.events[event_name].append(callback)
+
+    def event_call(self, event_name, data={}):
+        """
+        Calls all callback functions that are subscribed to the given event
+        name with some data attached to it. The data is optional but should stay
+        consistent with each call of the same event.
+
+        If * is passed as the event name, no callback function is called.
+
+        Event name should be a unique identifier to the event. "*" is not
+        allowed as an event name.
+
+        Args:
+            event_name (str): The name of the event (not "*")
+            data (dict): Optionally some data that is relevant to the event.
+        """
+        if data is None:
+            data = {}
+        if event_name == "*":
+            return
+        if self.events.get(event_name):
+            for callback in self.events[event_name]:
+                threading.Thread(target=callback, args=(self, event_name, data)).start()
+        if self.events.get("*"):
+            for callback in self.events["*"]:
+                threading.Thread(target=callback, args=(self, event_name, data)).start()
 
 
 class AbstractProducingModule(AbstractModule):
@@ -669,12 +722,6 @@ class AbstractConsumingModule(AbstractModule):
         return None
 
     def subscribe(self, module, q=None):
-        raise ValueError("Consuming Modules do not produce any output")
-
-    def unsubscribe(self, q):
-        raise ValueError("Consuming Modules do not produce any output")
-
-    def unsubscribe_all(self, module):
         raise ValueError("Consuming Modules do not produce any output")
 
     def process_iu(self, input_iu):
