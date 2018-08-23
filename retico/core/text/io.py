@@ -3,7 +3,7 @@ This module handles input and output of text.
 """
 
 from retico.core.abstract import AbstractConsumingModule
-
+from retico.core.abstract import AbstractTriggerModule
 from retico.core.text.common import TextIU, GeneratedTextIU, SpeechRecognitionIU
 
 
@@ -56,3 +56,23 @@ class TextRecorderModule(AbstractConsumingModule):
                 self.txt_file.write(self.separator)
                 self.txt_file.write(str(input_iu.final))
             self.txt_file.write("\n")
+
+class TextTriggerModule(AbstractTriggerModule):
+
+    @staticmethod
+    def name():
+        return "Text Trigger Module"
+
+    @staticmethod
+    def description():
+        return "A trigger module that creates a TextIU once its triggered"
+
+    @staticmethod
+    def output_iu():
+        return TextIU
+
+    def trigger(self, data={}):
+        text = data.get("text", "This is a trigger test")
+        output_iu = self.create_iu()
+        output_iu.payload = text
+        self.append(output_iu)

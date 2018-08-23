@@ -1,6 +1,6 @@
 import inspect
 
-from retico_builder.modules import audio, abstract, google, rasa, simulation, mary, net, text
+from retico_builder.modules import audio, abstract, google, rasa, simulation, mary, net, text, trigger
 
 INSPECT_MODULES = {
     "Audio": audio,
@@ -9,7 +9,8 @@ INSPECT_MODULES = {
     "Rasa": rasa,
     "Simulation": simulation,
     "Mary": mary,
-    "Network": net
+    "Network": net,
+    "Trigger": trigger
 }
 
 # MODULE_LIST = {
@@ -33,7 +34,7 @@ def generate_module_list():
     for name, module in INSPECT_MODULES.items():
         current_dict = {}
         for n, obj in inspect.getmembers(module):
-            if inspect.isclass(obj) and issubclass(obj, abstract.AbstractModule) and obj is not abstract.AbstractModule:
+            if inspect.isclass(obj) and issubclass(obj, abstract.AbstractModule) and obj is not abstract.AbstractModule and obj is not abstract.AbstractTriggerModule:
                 current_dict[n] = obj
         m_list[name] = current_dict
     return m_list

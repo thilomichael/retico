@@ -1,4 +1,4 @@
-from retico_builder.modules.abstract import AbstractModule
+from retico_builder.modules.abstract import AbstractModule, AbstractTriggerModule
 from retico.core.text import asr
 from retico.core.dialogue import io
 from retico.core.text import io as textio

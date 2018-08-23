@@ -80,6 +80,7 @@ def parse_arguments():
                    help='The log files that should be saved in the output folder')
     return p.parse_args()
 
+
 if __name__ == '__main__':
     arguments = parse_arguments()
     log_files = [a.strip() for a in arguments.files.split(",")]

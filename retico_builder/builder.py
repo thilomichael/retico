@@ -252,6 +252,10 @@ class ReticoBuilder(flx.PyComponent):
         gui.set_active(not gui.active)
         gui.display_active()
 
+    @flx.action
+    def handle_trigger(self, gui, text):
+        self.modules[id(gui)].handle_trigger(text)
+
 class ReticoWidget(flx.Widget):
 
     def init(self, model, module_list, file_list):
@@ -378,7 +382,6 @@ class ReticoWidget(flx.Widget):
                 canvas.lineTo(to_x+(6*to_arrow_direction), to_y+4)
                 canvas.lineTo(to_x, to_y)
             canvas.stroke()
-
 
 
 class MenuPane(flx.Widget):
@@ -546,6 +549,12 @@ class ReticoModule(flx.Widget):
         self.in_button_l = flx.Button(text="▶", css_class="in-button left-button")
         self.in_button_r = flx.Button(text="◀", css_class="in-button right-button")
         self.enable_button = flx.Button(text="enabled", css_class="enable-button")
+        self.trigger_edit = flx.LineEdit(self.content_box)
+        self.trigger_button = flx.Button(parent=self.content_box,
+                                         text="Trigger")
+        self.trigger_edit.set_parent(None)
+        self.trigger_button.set_parent(None)
+        self.trigger_button.set_disabled(True)
         self.set_active(True)
         self.set_position()
 
@@ -580,6 +589,18 @@ class ReticoModule(flx.Widget):
             flx.Label(style=style, parent=self.content_box)
         self.content_box.children[0].set_html(text)
 
+    @flx.action
+    def create_trigger(self):
+        self.trigger_edit.set_parent(self.content_box)
+        self.trigger_button.set_parent(self.content_box)
+
+    @flx.reaction('trigger_button.pointer_click')
+    def trigger_clicked(self):
+        params_txt = self.trigger_edit.text
+        print("TRIGGER CLICKED!", str(params_txt))
+        self.retico_widget.model.handle_trigger(self, params_txt)
+
+
     # @flx.action
     # def set_content(self, content_list):
     #     for child in self.content_box.children:
@@ -611,10 +632,12 @@ class ReticoModule(flx.Widget):
     @flx.action
     def enable_close_button(self):
         self.close_button.set_disabled(False)
+        self.trigger_button.set_disabled(True)
 
     @flx.action
     def disable_close_button(self):
         self.close_button.set_disabled(True)
+        self.trigger_button.set_disabled(False)
 
     @flx.action
     def highlight(self, active, color="#ffd"):

@@ -1,7 +1,7 @@
 
 import json
 
-from retico.core.abstract import AbstractConsumingModule
+from retico.core.abstract import AbstractConsumingModule, AbstractTriggerModule
 from retico.core.dialogue.common import DispatchableActIU, DialogueActIU
 
 class DialogueActRecorderModule(AbstractConsumingModule):
@@ -46,3 +46,29 @@ class DialogueActRecorderModule(AbstractConsumingModule):
                 self.txt_file.write(self.separator)
                 self.txt_file.write(str(input_iu.dispatch))
             self.txt_file.write("\n")
+
+
+class DialogueActTriggerModule(AbstractTriggerModule):
+
+    @staticmethod
+    def name():
+        return "Dialogue Act Trigger Module"
+
+    @staticmethod
+    def description():
+        return "A trigger module that emits a dialogue act when triggered."
+
+    @staticmethod
+    def output_iu():
+        return DispatchableActIU
+
+    def __init__(self, dispatch=True, **kwargs):
+        super().__init__(**kwargs)
+        self.dispatch = True
+
+    def trigger(self, data={}):
+        output_iu = self.create_iu()
+        output_iu.dispatch = self.dispatch
+        output_iu.set_act(data.get("act", "greeting"),
+                          data.get("concepts", {}))
+        self.append(output_iu)

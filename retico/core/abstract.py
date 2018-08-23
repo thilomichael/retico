@@ -726,3 +726,47 @@ class AbstractConsumingModule(AbstractModule):
 
     def process_iu(self, input_iu):
         raise NotImplementedError()
+
+
+class AbstractTriggerModule(AbstractProducingModule):
+    """An abstract trigger module that produces IU once a trigger method is
+    called. Unless the module is triggered no IUs are produced"""
+
+    @staticmethod
+    def name():
+        raise NotImplementedError()
+
+    @staticmethod
+    def description():
+        raise NotImplementedError()
+
+    @staticmethod
+    def input_ius():
+        return []
+
+    @staticmethod
+    def output_iu():
+        raise NotImplementedError()
+
+    def __init__(self, queue_class=IncrementalQueue, **kwargs):
+        super().__init__(queue_class=IncrementalQueue, **kwargs)
+
+    def _run(self):
+        self.prepare_run()
+        self.is_running = True
+        while self.is_running:
+            with self.mutex:
+                time.sleep(0.05)
+        self.shutdown()
+
+    def process_iu(self, input_iu):
+        return None
+
+    def trigger(self, data={}):
+        """The trigger method that should produce an IU and append it to the
+        right buffer
+
+        Args:
+            data (dict): A dictionary with data that can be used for the trigger
+        """
+        raise NotImplementedError()

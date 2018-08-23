@@ -80,3 +80,15 @@ class AbstractModule(flx.PyComponent):
         time.sleep(0.01)
         self.gui.stop()
         self.retico_module.stop()
+
+
+class AbstractTriggerModule(AbstractModule):
+
+    def set_content(self):
+        self.gui.create_trigger()
+
+    def update_running_info(self):
+        pass
+
+    def handle_trigger(self, text):
+        raise NotImplementedError()
