@@ -263,8 +263,10 @@ class ReticoWidget(flx.Widget):
         self.connection_list = []
         self.running = False
         with flx.HSplit():
-            self.mpane = ModulePane(self, flex=3)
-            self.menu = MenuPane(self, self.mpane, module_list, file_list, flex=1)
+            with flx.Widget(flex=3):
+                self.mpane = ModulePane(self)
+            with flx.Widget(flex=1):
+                self.menu = MenuPane(self, self.mpane, module_list, file_list, style="height:100%;")
 
     def clear(self):
         self.connection_list = []
@@ -453,7 +455,7 @@ class MenuPane(flx.Widget):
         self.retico_widget.clear()
 
 
-class ModulePane(flx.PinboardLayout):
+class ModulePane(flx.Widget):
 
     def dragMoveListener(self, event):
         target = event.target
@@ -501,6 +503,9 @@ class ModulePane(flx.PinboardLayout):
         rect = self.node.getBoundingClientRect()
         h = rect.height/2
         w = rect.width/2
+        if h == 0 or w == 0:
+            window.setTimeout(self.center_view, 10)
+            return
         self.node.scrollTop = 1500 - h
         self.node.scrollLeft = 1500 - w
 
