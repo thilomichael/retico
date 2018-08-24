@@ -11,7 +11,6 @@ from retico.core.prosody.common import EndOfTurnIU
 from retico.dialogue.manager.agenda import AgendaDialogueManager
 from retico.dialogue.manager.convsim import ConvSimDialogueManager
 from retico.dialogue.manager.ngram import NGramDialogueManager
-from retico.dialogue.manager.rasa import RasaDialogueManager, RandomChoicePolicy
 import numpy as np
 
 
@@ -275,17 +274,3 @@ class NGramDialogueManagerModule(SimulatedDialogueManagerModule):
             self.dialogue_manager = NGramDialogueManager(ngram_model, "callee")
         else:
             self.dialogue_manager = NGramDialogueManager(ngram_model, "caller")
-
-
-class RasaDialogueManagerModule(SimulatedDialogueManagerModule):
-    "An n-gram dialogue manager module"
-
-    @staticmethod
-    def name():
-        return "RASA (LSTM-RNN) DM Module"
-
-    def __init__(self, model_dir, first_utterance, **kwargs):
-        super().__init__(first_utterance, **kwargs)
-        self.model_dir = model_dir
-        self.first_utterance = first_utterance
-        self.dialogue_manager = RasaDialogueManager(model_dir)

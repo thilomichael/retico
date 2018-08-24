@@ -2,7 +2,7 @@ from retico_builder.modules.abstract import AbstractModule
 
 try:
     from retico.modules.rasa import nlu
-    from retico.modules.simulation import dm
+    from retico.modules.simulation import dm_rasa
 
     class RasaNLUModule(AbstractModule):
 
@@ -20,7 +20,7 @@ try:
 
     class RasaDialogueManagerModule(AbstractModule):
 
-        MODULE = dm.RasaDialogueManagerModule
+        MODULE = dm_rasa.RasaDialogueManagerModule
         PARAMETERS = {"model_dir": "data/sct11/rasa_models/caller/", "first_utterance": False}
 
         def set_content(self):
