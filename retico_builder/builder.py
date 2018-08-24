@@ -10,7 +10,10 @@ from retico_builder import modlist
 from retico_builder import resourceserver
 from retico import headless
 
-from retico.dialogue.manager.rasa import RandomChoicePolicy
+try:
+    from retico.dialogue.manager.rasa import RandomChoicePolicy
+except ImportError:
+    pass
 
 flx.assets.associate_asset(__name__, "http://localhost:8000/interact.js")
 flx.assets.associate_asset(__name__, "http://localhost:8000/style.css")
