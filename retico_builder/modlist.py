@@ -1,6 +1,7 @@
 import inspect
 
-from retico_builder.modules import audio, abstract, google, rasa, simulation, mary, net, text, trigger
+from retico_builder.modules import audio, abstract, google, rasa, simulation, \
+    mary, net, text, trigger, convsim
 
 INSPECT_MODULES = {
     "Audio": audio,
@@ -10,7 +11,8 @@ INSPECT_MODULES = {
     "Simulation": simulation,
     "Mary": mary,
     "Network": net,
-    "Trigger": trigger
+    "Trigger": trigger,
+    "ConvSim": convsim
 }
 
 # MODULE_LIST = {
