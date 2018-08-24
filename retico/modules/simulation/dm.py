@@ -3,6 +3,7 @@
 import time
 import threading
 import random
+import math
 
 from retico.core import abstract
 from retico.core.dialogue.common import DialogueActIU, DispatchableActIU
@@ -10,7 +11,6 @@ from retico.core.audio.common import DispatchedAudioIU
 from retico.core.prosody.common import EndOfTurnIU
 from retico.dialogue.manager.agenda import AgendaDialogueManager
 from retico.dialogue.manager.ngram import NGramDialogueManager
-import numpy as np
 
 
 class SimulatedDialogueManagerModule(abstract.AbstractModule):
@@ -99,14 +99,14 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def gando_model(self, x):
         if x == 0:
             x = 0.0000001
-        return -0.322581 * np.log(0.433008 * (-1 + 1/x))
+        return -0.322581 * math.log(0.433008 * (-1 + 1/x))
 
     def pause_model(self, x):
         if x == 0:
             x = 0.0000001
-        result = -0.196366 * np.log(0.0767043 * (-1 + 1/x))
+        result = -0.196366 * math.log(0.0767043 * (-1 + 1/x))
         while result < 0:
-            result = -0.196366 * np.log(0.0767043 * (-1 + 1/random.random()))
+            result = -0.196366 * math.log(0.0767043 * (-1 + 1/random.random()))
         return result + 1 + ((time.time()-self.last_interl_utterance)/10)
 
     def continous_loop(self):
