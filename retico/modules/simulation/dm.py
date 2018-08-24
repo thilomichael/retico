@@ -157,6 +157,7 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                     if self.is_dispatching and self.interlocutor_talking:
                         if (self.dispatching_completion > 0.2 and self.dispatching_completion < 0.8) or (self.eot_prediction > 0.2 and self.eot_prediction < 0.8):
                             if random.random() < 0.05:
+                                print("SILENCING", self.role)
                                 output_iu = self.create_iu(None)
                                 output_iu.set_act("", {})
                                 output_iu.dispatch = False

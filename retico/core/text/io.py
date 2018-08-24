@@ -69,10 +69,15 @@ class TextTriggerModule(AbstractTriggerModule):
 
     @staticmethod
     def output_iu():
-        return TextIU
+        return GeneratedTextIU
+
+    def __init__(self, dispatch=True, **kwargs):
+        super().__init__(**kwargs)
+        self.dispatch=dispatch
 
     def trigger(self, data={}):
         text = data.get("text", "This is a trigger test")
         output_iu = self.create_iu()
         output_iu.payload = text
+        output_iu.dispatch = self.dispatch
         self.append(output_iu)

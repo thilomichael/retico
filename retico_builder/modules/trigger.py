@@ -7,7 +7,7 @@ import json
 class TextTriggerModule(AbstractTriggerModule):
 
     MODULE = textio.TextTriggerModule
-    PARAMETERS = {}
+    PARAMETERS = {"dispatch": True}
 
     def handle_trigger(self, text):
         self.retico_module.trigger({"text": text})
