@@ -7,12 +7,11 @@ try:
     class RasaNLUModule(AbstractModule):
 
         MODULE = nlu.RasaNLUModule
-        PARAMETERS = {"model_dir": "data/rasa/models/nlu/current"}
+        PARAMETERS = {"model_dir": "data/rasa/models/nlu/default/current"}
 
         def set_content(self):
             self.gui.clear_content()
             self.gui.add_info("Model dir: %s" % self.retico_module.model_dir)
-            self.gui.add_info("Config file: %s" % self.retico_module.config_file)
 
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
