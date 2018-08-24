@@ -736,12 +736,14 @@ class ParameterBox(flx.Widget):
         self.dispose()
         self.mpane.create_module(self.module_type, self.mod_parent, self.params.text)
 
+
 def main():
     resourceserver.run_server()
     a = flx.App(ReticoBuilder)
     a.launch(runtime="chrome-browser", title="ReTiCo Builder")
     flx.start()  # Or .run() if the App should terminate after closing.
     resourceserver.stop_server()
+
 
 if __name__ == '__main__':
     main()

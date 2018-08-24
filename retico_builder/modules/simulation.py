@@ -1,4 +1,3 @@
-from flexx import flx
 from retico_builder.modules.abstract import AbstractModule
 
 try:
@@ -107,8 +106,6 @@ try:
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
                 self.gui.update_info("Disptaching: %s" % latest_iu.dispatch)
-
-
 
 except ImportError:
     pass
