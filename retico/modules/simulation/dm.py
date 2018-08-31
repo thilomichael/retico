@@ -57,7 +57,6 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         else:
             self.role = "Caller"
         self.fu = True
-        self.ready = False
         self.rnd = random.random()
         self.received_goodbye = False
         self.said_goodbye = False
@@ -99,7 +98,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
     def gando_model(self, x):
         if x == 0:
             x = 0.0000001
-        return -0.322581 * math.log(0.433008 * (-1 + 1/x))
+        out = -0.322581 * math.log(0.433008 * (-1 + 1/x))
+        if out > 1:
+            out *= 0.5
+        return out
 
     def pause_model(self, x):
         if x == 0:
@@ -107,13 +109,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
         result = -0.196366 * math.log(0.0767043 * (-1 + 1/x))
         while result < 0:
             result = -0.196366 * math.log(0.0767043 * (-1 + 1/random.random()))
-        return result + 1 + ((time.time()-self.last_interl_utterance)/10)
+        return result + ((time.time()-self.last_interl_utterance)/10)
 
     def continous_loop(self):
         while not self.dialogue_finished:
-            while not self.ready:
-                time.sleep(1.0)
-                continue
             right_now = time.time()
             ts_last_utterance = right_now - self.last_utterance
             ts_last_interl_utterance = right_now - self.last_interl_utterance
@@ -180,7 +179,6 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
             time.sleep(0.05)
 
     def process_iu(self, input_iu):
-        self.ready = True
         # First, we switch between the different types of IUs
         if isinstance(input_iu, DialogueActIU):
             # print(self.agent_class, "received DialogueAct", input_iu.act)
@@ -203,6 +201,10 @@ class SimulatedDialogueManagerModule(abstract.AbstractModule):
                 self.last_interl_utterance_begin = time.time()
             self.interlocutor_talking = input_iu.is_speaking
             self.eot_prediction = input_iu.probability
+            if self.eot_prediction > 0.99:
+                self.dialogue_manager.process_act(self.current_incoming_da.act,
+                                                  self.current_incoming_da.concepts)
+                self.rnd = random.random()
         return None
 
     def setup(self):
