@@ -205,6 +205,14 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
         return (b'\0' * frame_count * self.sample_width, pyaudio.paContinue)
 
     def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
+        """Initialize the streaming speaker module.
+
+        Args:
+            chunk_size (int): The number of frames a buffer of the output stream
+                should have.
+            rate (int): The frame rate of the audio. Defaults to 44100.
+            sample_width (int): The sample width of the audio. Defaults to 2.
+        """
         super().__init__(**kwargs)
         self.chunk_size = chunk_size
         self.rate = rate
@@ -265,6 +273,8 @@ class AudioDispatcherModule(abstract.AbstractModule):
         audio_buffer (list): The current audio buffer containing the output IUs
             that are currently dispatched.
         run_loop (bool): Whether or not the dispatching loop is running.
+        interrupt (bool): Whether or not incoming IUs interrupt the old
+            dispatching
     """
 
     @staticmethod
@@ -285,7 +295,8 @@ class AudioDispatcherModule(abstract.AbstractModule):
         return DispatchedAudioIU
 
     def __init__(self, target_chunk_size, rate=44100, sample_width=2,
-                 speed=1.0, continuous=True, silence=None, **kwargs):
+                 speed=1.0, continuous=True, silence=None, interrupt=True,
+                 **kwargs):
         """Initialize the AudioDispatcherModule with the given arguments.
 
         Args:
@@ -300,6 +311,11 @@ class AudioDispatcherModule(abstract.AbstractModule):
             silence (bytes): A bytes array containing target_chunk_size samples
                 of silence. If this argument is set to None, a default silence
                 of all zeros will be set.
+            interrupt (boolean): If this flag is set, a new input IU with audio
+                to dispatch will stop the current dispatching process. If set to
+                False, the "old" dispatching will be finished before the new one
+                is started. If the new input IU has the dispatching flag set to
+                False, dispatching will always be stopped.
         """
         super().__init__(**kwargs)
         self.target_chunk_size = target_chunk_size
@@ -315,9 +331,11 @@ class AudioDispatcherModule(abstract.AbstractModule):
         self.audio_buffer = []
         self.run_loop = False
         self.speed = speed
+        self.interrupt = interrupt
 
     def is_dispatching(self):
-        """Return whether or not the audio dispatcher is dispatching a Speech IU.
+        """Return whether or not the audio dispatcher is dispatching a Speech
+        IU.
 
         Returns:
             bool: Whether or not speech is currently dispatched
@@ -336,9 +354,16 @@ class AudioDispatcherModule(abstract.AbstractModule):
 
     def process_iu(self, input_iu):
         cur_width = self.target_chunk_size * self.sample_width
-        self.set_dispatching(False)
-        self.audio_buffer = []
+        # If the AudioDispatcherModule is set to intterupt mode or if the
+        # incoming IU is set to not dispatch, we stop dispatching and clean the
+        # buffer
+        if self.interrupt or not input_iu.dispatch:
+            self.set_dispatching(False)
+            self.audio_buffer = []
         if input_iu.dispatch:
+            # Loop over all frames (frame-sized chunks of data) in the input IU
+            # and add them to the buffer to be dispatched by the
+            # _dispatch_audio_loop
             for i in range(0, input_iu.nframes, self.target_chunk_size):
                 cur_pos = i * self.sample_width
                 data = input_iu.raw_audio[cur_pos:cur_pos + cur_width]
@@ -359,6 +384,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
         return None
 
     def _dispatch_audio_loop(self):
+        """A method run in a thread that adds IU to the output queue."""
         while self.run_loop:
             with self.dispatching_mutex:
                 if self._is_dispatching:
@@ -366,7 +392,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
                         self.append(self.audio_buffer.pop(0))
                     else:
                         self._is_dispatching = False
-                else:
+                if not self._is_dispatching: # no else here! bc line above
                     if self.continuous:
                         current_iu = self.create_iu(None)
                         current_iu.set_audio(self.silence,
@@ -374,7 +400,6 @@ class AudioDispatcherModule(abstract.AbstractModule):
                                              self.rate, self.sample_width)
                         current_iu.set_dispatching(0.0, False)
                         self.append(current_iu)
-                        # print([x.consumer for x in self._right_buffers if isinstance(x.consumer, retico.modules.simulation.dm.SimulatedDialogueManagerModule)])
             time.sleep((self.target_chunk_size / self.rate) / self.speed)
 
     def setup(self):
@@ -403,6 +428,15 @@ class AudioRecorderModule(abstract.AbstractConsumingModule):
         return [AudioIU]
 
     def __init__(self, filename, rate=44100, sample_width=2, **kwargs):
+        """Initialize the audio recorder module.
+
+        Args:
+            filename (string): The file name where the audio should be recorded
+                to. The path to the file has to be created beforehand.
+            rate (int): The sample rate of the input and thus of the wave file.
+                Defaults to 44100.
+            sample_width (int): The width of one sample. Defaults to 2.
+        """
         super().__init__(**kwargs)
         self.filename = filename
         self.wavfile = None
