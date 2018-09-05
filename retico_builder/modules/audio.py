@@ -18,7 +18,7 @@ class AudioDispatcherModule(AbstractModule):
 
     MODULE = io.AudioDispatcherModule
     PARAMETERS = {"target_chunk_size": 5000, "rate": 44100, "sample_width": 2,
-                 "speed": 1.0, "continuous": True, "silence": None}
+                 "speed": 1.0, "continuous": True, "silence": None, "interrupt" :True}
 
     def set_content(self):
         self.gui.clear_content()
