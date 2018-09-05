@@ -1,8 +1,21 @@
+"""
+A module for the convsim dialogue manager module.
+This class has its own module so that the import may be ignored when convsim is
+not installed.
+"""
+
 from retico.modules.simulation import dm
 from retico.dialogue.manager.convsim import ConvSimDialogueManager
 
-class ConvSimDialogueManagerModule(dm.SimulatedDialogueManagerModule):
-    "A dialogue manager based on ConvSim"
+class ConvSimDialogueManagerModule(dm.TurnTakingDialogueManagerModule):
+    """A turn taking dialogue manager module that utilizes the convsim
+    dialogue manager implemented in `retico.dialogue.manager.convsim` to generate
+    dialogue acts.
+
+    Convsim is an agenda based dialogue manager that also handles turn taking.
+    However, the turn taking information is ignored by the dialogue manager and
+    just the dialogue acts are returned.
+    """
 
     @staticmethod
     def name():
@@ -16,9 +29,12 @@ class ConvSimDialogueManagerModule(dm.SimulatedDialogueManagerModule):
         self.agent_class = agent_class
         self.first_utterance = first_utterance
         if isinstance(agent_class, str):
-            agent_class = ConvSimDialogueManager.get_agent_class(agent_class)
+            self.agent_class = ConvSimDialogueManager.get_agent_class(agent_class)
         else:
-            agent_class = agent_class
+            self.agent_class = agent_class
 
-        self.dialogue_manager = ConvSimDialogueManager(agenda_file, conv_folder,
-                                                       agent_class)
+    def setup(self):
+        super().setup()
+        self.dialogue_manager = ConvSimDialogueManager(self.agenda_file,
+                                                       self.conv_folder,
+                                                       self.agent_class)
