@@ -6,6 +6,29 @@ state of the agenda.
 This dialogue manager also incorporates an ActGuider that looks at real life
 data and tries to suggest dialogue acts that were already seen in the data
 rather than completely 'artifical' ones.
+
+The dialogue manager is modeled after the agenda-based user simulator described
+in [Schatzmann et al., 2007] but adds the additional features of "act guidance"
+and "field mentioning" to allows for a correct behaviour during dialogues that
+incorporate dynamic turn taking.
+
+The rules of the agenda-based dialogue manager are as follows:
+    GREETING: Greet and check off potentially mentioned field (such as the
+        interlocutors name)
+    GOODBYE: Say goodbye
+    PROVIDE_INFO: confirm and check off the information that was provided.
+    PROVIDE_PARTIAL: confirm and check off the partial bit of information that
+        was provided.
+    REQUEST_INFO: provide the requested information regardless of the state of
+        that field and check off that information
+    OFFER_INFO: provide that information and mark it as checked.
+    STALLING: do nothing
+    REQUEST_CONFIRM: confirm the field that was requested
+    CONFIRM: mark the field as confirmed
+    MISUNDERSTANDING: repeat the field
+    THANKS: utter welcome
+    WELCOME: do nothing
+
 """
 
 import configparser
@@ -59,9 +82,14 @@ class Agenda:
     """
 
     def __init__(self, agendafile):
+        """Initialize the Agenda
+
+        Args:
+            agendafile (str): Path to the ini-file to load.
+        """
         self.config = configparser.ConfigParser(allow_no_value=True)
         self.config.read(agendafile)
-        if len(self.config) == 0:
+        if not self.config:
             raise FileNotFoundError("Could not find '%s' or it is empty!")
 
         self.agenda = collections.OrderedDict()
@@ -99,18 +127,51 @@ class Agenda:
                 print("    Confirmed:", field.confirmed)
 
     def is_partial(self, field_name):
+        """Returns whether or not the given field is a partial of this argenda
+        or not.
+
+        Args:
+            field_name (str): The name of a field (without a partial number
+                added to it).
+
+        Returns:
+            bool: Whether or not that field is a partial.
+
+        """
         return bool(self.fields.get(field_name+"-0"))
 
     def has_field(self, field_name):
+        """Return whether or not the given field name is a field of the current
+        agenda.
+
+        Args:
+            field_name (str): Name of the field to test for.
+
+        Returns:
+            bool: Whether the field name is part of the agenda.
+
+        """
         return bool(self.fields.get(field_name))
 
     def mention_field(self, field_name):
-        """Sets the field's mentioned flag to True."""
+        """Sets the field's mentioned flag to True.
+
+        If the field is not part of the agenda, this method just does nothing.
+
+        Args:
+            field_name(str): Name of the filed
+        """
         if self.fields.get(field_name):
             self.fields[field_name].mentioned = True
 
     def confirm_field(self, field_name):
-        """Sets teh field's confirm flag to True."""
+        """Sets teh field's confirm flag to True.
+
+        If the field is not part of the agenda, this method just does nothing.
+
+        Args:
+            field_name(str): Name of the field
+        """
         if self.fields.get(field_name):
             self.fields[field_name].confirmed = True
 
@@ -118,6 +179,14 @@ class Agenda:
         """
         Returns the next field (i.e. the first field that wasn't mentioned
         yet.)
+
+        Depending on if a field is a request (`TYPE_REQ`) or a constraints
+        (`TYPE_CON`), a field is considered the next field if it was not yet
+        confirmed (for requests) or if it was not yet mentioned (for
+        constraints).
+
+        Returns:
+            Field: The current field of the agenda.
         """
         for section in self.agenda:
             for field in self.agenda[section]:
@@ -137,6 +206,8 @@ class ActGuider:
     in the data basis. If not, it tries to suggest alterantive dialogue acts and
     entities that convey a similar meaning.
     """
+
+    DA_FALLBACK = "stalling"
 
     def __init__(self, aa_file):
         self.available_acts = []
@@ -158,15 +229,31 @@ class ActGuider:
                 self.guide[act].append("")
 
     def guide_utterance(self, act, entities):
-        """
-        Magic code that guides the utterance to conform to the underlying data.
+        """Magic code that guides the utterance to conform to the underlying
+        data.
+
+        Args:
+            act (str): The act that should be uttered
+            entities (dict): The concepts that should be named
+
+        Returns:
+            (str,dict): A pair of a dialogue act and a dict of entities
+            containing the "guided" act.
+
         """
         # TODO: Refactor this!
         entities_string = ",".join(entities)
+
+        # If the dialogue act is not at all in the available acts, "stalling" is
+        # the fallback
         if not self.guide.get(act):
-            return "stalling", []
+            return self.DA_FALLBACK, []
+
+        # If we see the exact act + entity combination in the provided list, we
+        # can just return it!
         if entities_string in self.guide[act]:
             return act, entities
+
         if entities_string:
             possible_u = []
             for e in self.guide[act]:
@@ -200,7 +287,15 @@ class ActGuider:
 
 class AgendaDialogueManager(AbstractDialogueManager):
     """
-    An agenda based dialogue manager.
+    An agenda based dialogue manager that is based on the agenda-based dialogue
+    manager described in [Schatzmann et al. 2007], however it is improved in a
+    way that constraints and requests may be just mentioned or be confirmed by
+    the interlocutor or the dialogue manager itself.
+
+    This allows for an arbitraty dialogue flow (in terms of turns) where each
+    produced dialogue act is consistent with the agenda and the already obtained
+    information, regardless of whether the interlocutor uttered something
+    between the two acts.
     """
 
     DA_GREETING = "greeting"
@@ -270,6 +365,8 @@ class AgendaDialogueManager(AbstractDialogueManager):
         DA_THANKS: _rule_THANKS,
         DA_WELCOME: _rule_WELCOME
     }
+    """A dict containing the rules on how the dialogue manager should react to
+    a given incoming dialogue act."""
 
     def __init__(self, aa_file, agenda_file, starts_dialogue=True):
         self.act_guider = ActGuider(aa_file)
@@ -284,6 +381,22 @@ class AgendaDialogueManager(AbstractDialogueManager):
         Creates the next dialogue act. This dialogue act may not conform to a
         act-concepts-pair that is seen in real life data. That's why the output
         of this method has to be given to the ActGuider.
+
+        This method implements the following rules:
+            - If the dialogue hasn't started yet, the dialogue manager produces
+                a "greeting" dialogue act.
+            - If dialogue acts are on the stack, the dialogue manager returns
+                them
+            - If no dialogue acts are on the stack, the dialogue manager
+                determines the next field in the agenda and either requests the
+                information if the field is a request or offers the information
+                if the field is a constraint.
+            - If no dialogue acts are on the stack and the agenda is completed
+                the method returns a "goodbye" dialogue act.
+
+        Returns:
+            (str, dict): An act-concepts-pair that corresponds to the next act
+            the dialogue manager has decided on.
         """
         if not self.dialogue_started:
             self.dialogue_started = True
@@ -323,13 +436,25 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return real_act, entity_dict
 
     def push_to_stack(self, act, entities):
-        """Pushes an act and entities to the stack."""
+        """Pushes an act and entities to the stack.
+
+        Args:
+            act (str): The act that should be pushed to the stack.
+            entities (dict): The entities corresponding to the act.
+        """
         tup = (act, entities)
         if (act, entities) not in self.stack:
-            # self.stack.insert(0, tup)
             self.stack.append(tup)
 
     def process_act(self, act, entities):
+        """When processing an act this dialogue manager executes the rules
+        according to the `RULES` dict and puts the resulting dialogue act and
+        concepts onto the stack.
+
+        Args:
+            act (str): The act that should be processed.
+            entities (dict): The entities that should be processed.
+        """
         if isinstance(entities, dict):
             entities = list(entities.keys())
         for entity in entities:
