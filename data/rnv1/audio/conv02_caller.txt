@@ -1,6 +1,6 @@
 #file:///Users/jannik/Documents/QU/ConvSim_soundbites_WIP/3. ELAN/conv02/conv02_caller.wav -- offset: 0, duration: 00:00:54.618 / 54.618 / 54618
 
-dialogue_act	caller	1640	3670	greeting	Hallo schläfst du mal vorher	0.6788638234138489
+dialogue_act	caller	1640	3670	greeting	Hallo liest du mal vor	0.6788638234138489
 dialogue_act	caller	4380	5760	provide_partial:string0-0	31	0.9154566526412964
 dialogue_act	caller	6270	7470	provide_partial:string0-1	85	0.8695310354232788
 dialogue_act	caller	7940	8930	provide_partial:string0-2	17	0.671005368232727

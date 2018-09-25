@@ -21,7 +21,7 @@ dialogue_act	callee	31800	32150	confirm:string2-4	Ja	1
 dialogue_act	callee	33365	33565	confirm:string2-5	Ja	1
 dialogue_act	callee	34905	35625	provide_partial:string3-0	17	0.6710054874420166
 dialogue_act	callee	36275	37235	provide_partial:string3-1	56	0.8191343545913696
-dialogue_act	callee	38160	38850	stalling:string3-2	Ehm	1
+dialogue_act	callee	38160	38850	stalling:string3-2	Ähm	1
 dialogue_act	callee	38875	39585	provide_partial:string3-2	76	0.8530652523040771
 dialogue_act	callee	40275	41025	provide_partial:string3-3	20	0.6414778232574463
 dialogue_act	callee	41650	42580	provide_partial:string3-4	77	0.9391159415245056

@@ -8,7 +8,7 @@ dialogue_act	caller	7550	8460	provide_partial:string0-3	73	0.7482209205627441
 dialogue_act	caller	9125	9945	provide_partial:string0-4	44	0.7651912569999695
 dialogue_act	caller	11495	12405	provide_partial:string0-5	59	0.913476288318634
 dialogue_act	caller	15470	15970	confirm:string1-0	ja	0.8915091753005981
-dialogue_act	caller	18140	18780	stalling	Ehm	1
+dialogue_act	caller	18140	18780	stalling	Ähm	1
 dialogue_act	caller	29180	30040	confirm:string1-4	richtig	0.9814176559448242
 dialogue_act	caller	30810	32160	provide_partial:string2-0	11	0.7219680547714233
 dialogue_act	caller	33015	34855	provide_partial:string2-1	81	0.8969234228134155

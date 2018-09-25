@@ -28,9 +28,9 @@ dialogue_act	callee	49472	50662	provide_partial:string3-5	und 34	0.8805108070373
 dialogue_act	callee	52747	53337	goodbye	super	0.8272184133529663
 dialogue_act.	callee	15075	15975	provide_partial:string1-0	1 40	0.5008843541145325
 dialogue_act.	callee	16865	17495	provide_partial:string1-1	7	0.6356807947158813
-dialogue_act.	callee	21042	21442	stalling	Ehm	1
+dialogue_act.	callee	21042	21442	stalling	ähm	1
 dialogue_act.	callee	21442	22212	provide_partial:string1-3	24	0.8609102964401245
-dialogue_act.	callee	25357	25847	stalling:string1-5	Ehm	1
+dialogue_act.	callee	25357	25847	stalling:string1-5	ähm	1
 dialogue_act.	callee	25847	26657	provide_partial:string1-5	30	0.8942255973815918
 dialogue_act.	callee	41307	42047	provide_partial:string3-0	17	0.6132566928863525
 dialogue_act.	callee	43017	44037	provide_partial:string3-1	56	0.8191338777542114

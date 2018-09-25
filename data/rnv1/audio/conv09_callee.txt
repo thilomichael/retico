@@ -14,7 +14,7 @@ dialogue_act	callee	22580	23790	provide_partial:string1-4	56	0.8191338777542114
 dialogue_act	callee	24735	25865	provide_partial:string1-5	38	0.9107238054275513
 dialogue_act	callee	27200	27980	misunderstanding	wie bitte	1
 dialogue_act	callee	30335	30645	confirm:string2-0	Ja	1
-dialogue_act	callee	32720	32980	stalling:string2-1	Ehm	1
+dialogue_act	callee	32720	32980	stalling:string2-1	Ähm	1
 dialogue_act	callee	32985	33435	confirm:string2-1	nein	0.9418882131576538
 dialogue_act	callee	34750	35200	confirm:string2-2	ja	0.9312418699264526
 dialogue_act	callee	37375	37855	confirm:string2-3	ja	0.9312412738800049
