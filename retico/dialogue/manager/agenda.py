@@ -228,7 +228,7 @@ class ActGuider:
             else:
                 self.guide[act].append("")
 
-    def guide_utterance(self, act, entities):
+    def guide_utterance(self, act, entities, agenda):
         """Magic code that guides the utterance to conform to the underlying
         data.
 
@@ -249,39 +249,71 @@ class ActGuider:
         if not self.guide.get(act):
             return self.DA_FALLBACK, []
 
+        # If there are no entities, we can just return the act.
+        if not entities_string:
+            return act, entities
+
+        # Here comes the hacky part: we loop through all available acts that
+        # have the first entity in them. If the act is provide_info or
+        # provide_partial we try to select acts+entities where the entities have
+        # not been confirmed yet.
+        # This prevents provide_infos that include information mentioned waaay
+        # earlier in the conversation.
+        possible_u = [] # All acts+entities that contain the first entity
+        best_u = [] # All act+entities that contain the first entity and are not
+                    # Yet confirmed
+        for e in self.guide[act]:
+            if entities[0] in e:
+                good = True
+                if act == "provide_info" or act == "provide_partial":
+                    for ent in e.split(","):
+                        if agenda.has_field(ent) and agenda.fields[ent].confirmed:
+                            good = False
+                if good:
+                    best_u.append((act, e.split(",")))
+                possible_u.append((act, e.split(",")))
+        # If we have acts+entites in best_u, we chose from there!
+        if best_u:
+            possible_u = best_u
+
+        if possible_u:
+            if "-" in entities[-1]: # Evil hack for partials
+                # We have a problem
+                partial_int = int(entities[-1].split("-")[1])
+                for a, es in possible_u:
+                    not_good = False
+                    for e in es:
+                        if int(e.split("-")[1]) > partial_int:
+                            not_good = True
+                    if not_good:
+                        continue
+                    return a, es
+            else:
+                return random.choice(possible_u)
+
         # If we see the exact act + entity combination in the provided list, we
         # can just return it!
         if entities_string in self.guide[act]:
             return act, entities
 
-        if entities_string:
-            possible_u = []
-            for e in self.guide[act]:
-                if entities[0] in e:
-                    possible_u.append((act, e.split(",")))
-            if possible_u:
-                if "-" in entities[-1]:
-                    # We have a problem
-                    partial_int = int(entities[-1].split("-")[1])
-                    for a, es in possible_u:
-                        not_good = False
-                        for e in es:
-                            if int(e.split("-")[1]) > partial_int:
-                                not_good = True
-                        if not_good:
-                            continue
-                        return a, es
-                else:
-                    return random.choice(possible_u)
-            if "" in self.guide[act]:
-                return act, []
+        if entities[-1] in self.guide[act]:
+            return act, [entities[-1]]
+
+        if "" in self.guide[act]:
+            return act, []
+
+        if act == "provide_info" and "-" in entities[-1]:
+            return self.guide_utterance("provide_partial", entities, agenda)
+
         if act == "offer_info":
             for e in self.guide["provide_partial"]:
                 if entities[0]+"-0" in e or entities[0] in e:
                     return "provide_partial", e.split(",")
-            return self.guide_utterance("provide_info", entities)
+            return self.guide_utterance("provide_info", entities, agenda)
+
         if act == "request_info" and entities == ["callee_name"]:
             return "greeting", []
+
         assert False, "Could not find utterance for %s - %s" % (act, entities)
 
 
@@ -340,6 +372,9 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return self.CONFIRM, entities
 
     def _rule_CONFIRM(self, entities):
+        if self.provided_entities:
+            for e in self.provided_entities:
+                self.agenda.confirm_field(e)
         return None, None
 
     def _rule_MISUNDERSTANDING(self, entities):
@@ -375,6 +410,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
         self.starts_dialogue = starts_dialogue
         self.dialogue_started = False
         self.dialogue_finished = False
+        self.provided_entities = None
 
     def create_next_act(self):
         """
@@ -424,7 +460,15 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def next_act(self):
         act, entities = self.create_next_act()
-        real_act, real_entities = self.act_guider.guide_utterance(act, entities)
+        real_act, real_entities = self.act_guider.guide_utterance(act,
+                                                                  entities,
+                                                                  self.agenda)
+
+        if real_act == "provide_info" or real_act == "provide_partial":
+            self.provided_entities = real_entities
+        else:
+            self.provided_entities = None
+
         entity_dict = {}
         for entity in real_entities:
             self.agenda.mention_field(entity)

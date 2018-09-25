@@ -402,7 +402,9 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
             str: A string representaiton of the act-concept-pair.
 
         """
-        return "%s:%s" % (act, ",".join(concepts.keys()))
+        if concepts.keys():
+            return "%s:%s" % (act, ",".join(concepts.keys()))
+        return act
 
     def dispatch_act(self, act, concepts):
         """Takes an act and a dict of concepts, creates a new DialogueActIU with
@@ -502,7 +504,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         distributed between 0 and 1) to model the pause between two utterances/
         dialogue acts/turns of the same agent.
 
-        This model is base don the method of [Lunsford et al. 2016]. The
+        This model is based on the method of [Lunsford et al. 2016]. The
         cumulative sum of pauses at a specific time away from the end of the
         last utterance of the same speaker was approximated using logistic
         regression. The resulting function was then inverted resulting in a
@@ -513,6 +515,9 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
             float: Time relative to end of last utterance in seconds.
         """
         val = (0.925071 * (0.843217 + 2.92309 * math.pow(self.rnd, 2)))
+        val = val - 0.1
+        if val < 0:
+            val = -0.05
         return val
 
     def should_interrupt(self):
@@ -587,10 +592,11 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
             while self.suspended:
                 time.sleep(self.SLEEP_TIME)
 
-            if not self.dialogue_started and self.first_utterance:
-                self.reset_utterance_timers() # XXX: Do we really need to call this?
-                self.speak()
-                self.dialogue_started = True
+            if not self.dialogue_started:
+                if self.first_utterance:
+                    self.reset_utterance_timers() # XXX: Do we really need to call this?
+                    self.speak()
+                    self.dialogue_started = True
                 continue
 
 

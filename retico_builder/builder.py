@@ -10,6 +10,8 @@ from retico_builder import modlist
 from retico_builder import resourceserver
 from retico import headless
 
+# Evil hack because rasa can't load self defined policies if they are not
+# directly accessible in the path
 try:
     from retico.dialogue.manager.rasa import RandomChoicePolicy
 except ImportError:

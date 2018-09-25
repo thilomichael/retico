@@ -30,20 +30,20 @@ class AutomatedExecution():
         print("Running %d simulations..." % self.num_runs)
         for i in range(self.num_runs):
             print("Running simulation %d" % i)
-            modules, connections = load(self.file)
-            if not self.audio_output:
-                print("Removing speakers...")
-                new_modules = []
-                for module in modules:
-                    if isinstance(module, SpeakerModule) or \
-                       isinstance(module, StreamingSpeakerModule):
-                        print("Removed speaker %s" % module)
-                        module.remove()
-                    else:
-                        module.event_subscribe(self.end_sim_event, self.end_sim)
-                        module.setup()
-                        new_modules.append(module)
-                modules = new_modules
+            modules, _ = load(self.file)
+
+            new_modules = []
+            for module in modules:
+                if isinstance(module, (SpeakerModule, StreamingSpeakerModule)) \
+                 and not self.audio_output:
+                    print("Removed speaker %s" % module)
+                    module.remove()
+                    continue
+                module.event_subscribe(self.end_sim_event, self.end_sim)
+                module.setup()
+                new_modules.append(module)
+            modules = new_modules
+
             self.is_running = True
             for module in modules:
                 module.run(run_setup=False)
@@ -62,8 +62,8 @@ class AutomatedExecution():
 
 def parse_arguments():
     p = argparse.ArgumentParser(description='Automatically executes a '
-                                                 'network until a specific event'
-                                                 ' occurs.')
+                                            'network until a specific event'
+                                            ' occurs.')
     p.add_argument('file', type=str,
                    help='The file that should be loaded')
     p.add_argument('-n', '--num-runs', type=int, default=10,
@@ -72,12 +72,15 @@ def parse_arguments():
                    dest="audio_output", default=False, const=True,
                    help='A switch if the network should enable audio output')
     p.add_argument('-e', '--event', type=str, default="dialogue_end",
-                   help='The event that should trigger the end of the simulation')
+                   help='The event that should trigger the end of the \
+                         simulation')
     p.add_argument('-o', '--output-folder', type=str, default="sims/auto_sims",
                    help='The folder where the log files should be saved')
     p.add_argument('-f', '--files', type=str,
-                   default='recording_caller.wav, recording_callee.wav, transcript.txt, acts.txt',
-                   help='The log files that should be saved in the output folder')
+                   default='recording_caller.wav, recording_callee.wav, \
+                            transcript.txt, acts.txt',
+                   help='The log files that should be saved in the output \
+                         folder')
     return p.parse_args()
 
 
