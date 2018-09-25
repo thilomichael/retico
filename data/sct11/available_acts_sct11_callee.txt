@@ -38,10 +38,9 @@ provide_info:toppings
 request_info:num_of_persons
 confirm:address-0
 confirm:address-1
-provide_partial:toppings-4
+provide_partial:toppings-3
 confirm:address
 confirm:telephone-4,telephone-5,telephone-6,telephone-7,telephone-8
-request_info:address-2
 confirm:telephone-4,telephone-5
 confirm:telephone-6,telephone-7,telephone-8
 confirm:telephone-5
@@ -50,7 +49,6 @@ confirm:telephone-7
 confirm:telephone-8
 confirm:telephone-4,telephone-5,telephone-6,telephone-7
 provide_info:pizza_name,price
-provide_partial:toppings-1,toppings-2,toppings-3,toppings-4
 provide_partial:toppings-0,toppings-1,toppings-2,toppings-3
 confirm:telephone-0,telephone-1,telephone-2,telephone-3
 request_confirm:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8
