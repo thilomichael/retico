@@ -81,8 +81,8 @@ class RasaDialogueManager(AbstractDialogueManager):
         self.dialogue_started = False
 
     def process_act(self, act, concepts):
-        if act == "NOTHING":
-            return
+        # if act == "stalling":
+        #     return
         self.dialogue_started = True
         concept_string = json.dumps(concepts)
         rasa_msg = "/%s%s" % (act, concept_string)
@@ -97,7 +97,7 @@ class RasaDialogueManager(AbstractDialogueManager):
             self.dialogue_started = True
             return "greeting", {"callee_name": "[empty]"}
         if not self.acts:
-            return "NOTHING", {}
+            return "stalling", {}
         na = self.acts.pop(0)["text"]
         act, entities = action_to_act(na)
         print(act, " - ", entities)
