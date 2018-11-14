@@ -497,6 +497,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
 
         """
         result = -0.322581 * math.log(0.433008 * (-1 + 1/self.rnd))
+        result = result - 0.1 # Hack to counter balance the unprecise TTS signal
         return result
 
     def pause_model(self):
@@ -515,7 +516,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
             float: Time relative to end of last utterance in seconds.
         """
         val = (0.925071 * (0.843217 + 2.92309 * math.pow(self.rnd, 2)))
-        val = val - 0.1
+        val = val - 0.1 # Hack to counter balance the unprecise TTS signal
         if val < 0:
             val = -0.05
         return val
