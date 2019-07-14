@@ -40,7 +40,8 @@ class IncrementalQueue(queue.Queue):
         self.provider.remove_right_buffer(self)
         self.consumer.remove_left_buffer(self)
 
-class IncrementalUnit():
+
+class IncrementalUnit:
     """An abstract incremental unit.
 
     The IU may be used for ASR, NLU, DM, TT, TTS, ... It can be redefined to fit
@@ -64,8 +65,15 @@ class IncrementalUnit():
 
     MAX_DEPTH = 10
 
-    def __init__(self, creator=None, iuid=0, previous_iu=None, grounded_in=None,
-                 payload=None, **kwargs):
+    def __init__(
+        self,
+        creator=None,
+        iuid=0,
+        previous_iu=None,
+        grounded_in=None,
+        payload=None,
+        **kwargs
+    ):
         """Initialize an abstract IU. Takes the module that created the IU as an
         argument.
 
@@ -168,8 +176,11 @@ class IncrementalUnit():
             return module in self._processed_list
 
     def __repr__(self):
-        return "%s - (%s): %s" % (self.type(), self.creator.name(),
-                                  str(self.payload)[0:10])
+        return "%s - (%s): %s" % (
+            self.type(),
+            self.creator.name(),
+            str(self.payload)[0:10],
+        )
 
     @staticmethod
     def type():
@@ -181,7 +192,7 @@ class IncrementalUnit():
         raise NotImplementedError()
 
 
-class AbstractModule():
+class AbstractModule:
     """An abstract module that is able to incrementally process data."""
 
     EVENT_PROCESS_IU = "process_iu"
@@ -237,14 +248,13 @@ class AbstractModule():
             the current instance of the module.
         """
         d = {}
-        valid_types = (int, float, bool, str, dict) # Only serializable types.
+        valid_types = (int, float, bool, str, dict)  # Only serializable types.
         for k, v in self.__dict__.items():
             if isinstance(v, valid_types):
                 d[k] = v
         return d
 
-    def __init__(self, queue_class=IncrementalQueue, meta_data={},
-                 **kwargs):
+    def __init__(self, queue_class=IncrementalQueue, meta_data={}, **kwargs):
         """Initialize the module with a default IncrementalQueue.
 
         Args:
@@ -362,8 +372,7 @@ class AbstractModule():
         if not iu:
             return
         if not isinstance(iu, IncrementalUnit):
-            raise TypeError("IU is of type %s but should be IncrementalUnit" %
-                            type(iu))
+            raise TypeError("IU is of type %s but should be IncrementalUnit" % type(iu))
         for q in self._right_buffers:
             q.put(iu)
 
@@ -475,18 +484,22 @@ class AbstractModule():
                         input_iu = None
                     if input_iu:
                         if not self.is_valid_input_iu(input_iu):
-                            raise TypeError("This module can't handle this "
-                                            "type of IU")
+                            raise TypeError(
+                                "This module can't handle this " "type of IU"
+                            )
                         self.event_call(self.EVENT_PROCESS_IU, {"iu": input_iu})
                         output_iu = self.process_iu(input_iu)
                         input_iu.set_processed(self)
                         if output_iu:
-                            if (self.output_iu() is not None or
-                                    isinstance(output_iu, self.output_iu())):
+                            if self.output_iu() is not None or isinstance(
+                                output_iu, self.output_iu()
+                            ):
                                 self.append(output_iu)
                             else:
-                                raise TypeError("This module should not produce"
-                                                " IUs of this type.")
+                                raise TypeError(
+                                    "This module should not produce"
+                                    " IUs of this type."
+                                )
         self.shutdown()
 
     def is_valid_input_iu(self, iu):
@@ -505,8 +518,7 @@ class AbstractModule():
             bool: Whether the given iu is a valid one for this module.
         """
         if not isinstance(iu, IncrementalUnit):
-            raise TypeError("IU is of type %s but should be IncrementalUnit" %
-                            type(iu))
+            raise TypeError("IU is of type %s but should be IncrementalUnit" % type(iu))
         for valid_iu in self.input_ius():
             if isinstance(iu, valid_iu):
                 return True
@@ -566,7 +578,6 @@ class AbstractModule():
                     buffer.get()
         self.event_call(self.EVENT_STOP)
 
-
     def create_iu(self, grounded_in=None):
         """Creates a new Incremental Unit that contains the information of the
         creator (the current module), the previous IU that was created in this
@@ -585,9 +596,12 @@ class AbstractModule():
             unit it is grounded in and to the previous IU that was generated by
             this module.
         """
-        new_iu = self.output_iu()(creator=self, iuid=self.iu_counter,
-                                  previous_iu=self._previous_iu,
-                                  grounded_in=grounded_in)
+        new_iu = self.output_iu()(
+            creator=self,
+            iuid=self.iu_counter,
+            previous_iu=self._previous_iu,
+            grounded_in=grounded_in,
+        )
         self.iu_counter += 1
         self._previous_iu = new_iu
         return new_iu
@@ -687,12 +701,14 @@ class AbstractProducingModule(AbstractModule):
             with self.mutex:
                 output_iu = self.process_iu(None)
                 if output_iu:
-                    if (self.output_iu() is not None and
-                            isinstance(output_iu, self.output_iu())):
+                    if self.output_iu() is not None and isinstance(
+                        output_iu, self.output_iu()
+                    ):
                         self.append(output_iu)
                     else:
-                        raise TypeError("This module should not produce IUs of "
-                                        "this type.")
+                        raise TypeError(
+                            "This module should not produce IUs of " "this type."
+                        )
         self.shutdown()
 
     def process_iu(self, input_iu):

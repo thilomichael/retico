@@ -71,6 +71,7 @@ class Field:
         self.confirmed = False
         self.is_partial = "-" in name
 
+
 class Agenda:
     """The agenda is read by an ini-file.
 
@@ -138,7 +139,7 @@ class Agenda:
             bool: Whether or not that field is a partial.
 
         """
-        return bool(self.fields.get(field_name+"-0"))
+        return bool(self.fields.get(field_name + "-0"))
 
     def has_field(self, field_name):
         """Return whether or not the given field name is a field of the current
@@ -259,13 +260,14 @@ class ActGuider:
         # not been confirmed yet.
         # This prevents provide_infos that include information mentioned waaay
         # earlier in the conversation.
-        possible_u = [] # All acts+entities that contain the first entity
-        best_u = [] # All act+entities that contain the first entity and are not
-                    # Yet confirmed
+        possible_u = []  # All acts+entities that contain the first entity
+        best_u = []  # All act+entities that contain the first entity and are not
+        # Yet confirmed
         for e in self.guide[act]:
             if entities[0] in e:
                 good = True
                 if act == "provide_info" or act == "provide_partial":
+                    # print("-->", act, e)
                     for ent in e.split(","):
                         if agenda.has_field(ent) and agenda.fields[ent].confirmed:
                             good = False
@@ -277,17 +279,23 @@ class ActGuider:
             possible_u = best_u
 
         if possible_u:
-            if "-" in entities[-1]: # Evil hack for partials
+            if "-" in entities[-1]:  # Evil hack for partials
                 # We have a problem
                 partial_int = int(entities[-1].split("-")[1])
                 for a, es in possible_u:
                     not_good = False
                     for e in es:
-                        if int(e.split("-")[1]) > partial_int:
-                            not_good = True
+                        if act == "confirm":
+                            if int(e.split("-")[1]) > partial_int:
+                                not_good = True
+                        if act == "provide_partial":
+                            if int(e.split("-")[1]) < partial_int:
+                                not_good = True
                     if not_good:
                         continue
                     return a, es
+                if act == "provide_partial":
+                    return random.choice(possible_u)
             else:
                 return random.choice(possible_u)
 
@@ -307,7 +315,7 @@ class ActGuider:
 
         if act == "offer_info":
             for e in self.guide["provide_partial"]:
-                if entities[0]+"-0" in e or entities[0] in e:
+                if entities[0] + "-0" in e or entities[0] in e:
                     return "provide_partial", e.split(",")
             return self.guide_utterance("provide_info", entities, agenda)
 
@@ -359,7 +367,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def _rule_REQUEST_INFO(self, entities):
         if entities and self.agenda.is_partial(entities[0]):
-            return self.DA_PROVIDE_PARTIAL, entities[0]+"-0"
+            return self.DA_PROVIDE_PARTIAL, entities[0] + "-0"
         return self.DA_PROVIDE_INFO, entities
 
     def _rule_OFFER_INFO(self, entities):
@@ -398,7 +406,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
         DA_CONFIRM: _rule_CONFIRM,
         DA_MISUNDERSTANDING: _rule_MISUNDERSTANDING,
         DA_THANKS: _rule_THANKS,
-        DA_WELCOME: _rule_WELCOME
+        DA_WELCOME: _rule_WELCOME,
     }
     """A dict containing the rules on how the dialogue manager should react to
     a given incoming dialogue act."""
@@ -460,9 +468,9 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def next_act(self):
         act, entities = self.create_next_act()
-        real_act, real_entities = self.act_guider.guide_utterance(act,
-                                                                  entities,
-                                                                  self.agenda)
+        real_act, real_entities = self.act_guider.guide_utterance(
+            act, entities, self.agenda
+        )
 
         if real_act == "provide_info" or real_act == "provide_partial":
             self.provided_entities = real_entities
@@ -502,8 +510,11 @@ class AgendaDialogueManager(AbstractDialogueManager):
         if isinstance(entities, dict):
             entities = list(entities.keys())
         for entity in entities:
-            if (act == self.DA_PROVIDE_PARTIAL or act == self.DA_PROVIDE_INFO or
-                    act == self.DA_GREETING):
+            if (
+                act == self.DA_PROVIDE_PARTIAL
+                or act == self.DA_PROVIDE_INFO
+                or act == self.DA_GREETING
+            ):
                 self.agenda.confirm_field(entity)
             self.agenda.mention_field(entity)
 

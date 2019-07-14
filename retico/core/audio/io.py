@@ -29,7 +29,7 @@ def generate_silence(nsamples, sample_width):
         bytes: An array of silence with the length [nsamples] * [sample_width]
     """
     # TODO: find a way to generate real silence
-    return b'\0' * nsamples * sample_width
+    return b"\0" * nsamples * sample_width
 
 
 class MicrophoneModule(abstract.AbstractProducingModule):
@@ -84,21 +84,22 @@ class MicrophoneModule(abstract.AbstractProducingModule):
             return None
         sample = self.audio_buffer.get()
         output_iu = self.create_iu()
-        output_iu.set_audio(sample, self.chunk_size, self.rate,
-                            self.sample_width)
+        output_iu.set_audio(sample, self.chunk_size, self.rate, self.sample_width)
         return output_iu
 
     def setup(self):
         """Set up the microphone for recording."""
         p = self._p
-        self.stream = p.open(format=p.get_format_from_width(self.sample_width),
-                             channels=CHANNELS,
-                             rate=self.rate,
-                             input=True,
-                             output=False,
-                             stream_callback=self.callback,
-                             frames_per_buffer=self.chunk_size,
-                             start=False)
+        self.stream = p.open(
+            format=p.get_format_from_width(self.sample_width),
+            channels=CHANNELS,
+            rate=self.rate,
+            input=True,
+            output=False,
+            stream_callback=self.callback,
+            frames_per_buffer=self.chunk_size,
+            start=False,
+        )
 
     def prepare_run(self):
         if self.stream:
@@ -133,8 +134,7 @@ class SpeakerModule(abstract.AbstractConsumingModule):
     def output_iu():
         return None
 
-    def __init__(self, rate=44100, sample_width=2, use_speaker="both",
-                 **kwargs):
+    def __init__(self, rate=44100, sample_width=2, use_speaker="both", **kwargs):
         super().__init__(**kwargs)
         self.rate = rate
         self.sample_width = sample_width
@@ -159,12 +159,14 @@ class SpeakerModule(abstract.AbstractConsumingModule):
         else:
             stream_info = pyaudio.PaMacCoreStreamInfo(channel_map=(0, 0))
 
-        self.stream = p.open(format=p.get_format_from_width(self.sample_width),
-                             channels=CHANNELS,
-                             rate=self.rate,
-                             input=False,
-                             output_host_api_specific_stream_info=stream_info,
-                             output=True)
+        self.stream = p.open(
+            format=p.get_format_from_width(self.sample_width),
+            channels=CHANNELS,
+            rate=self.rate,
+            input=False,
+            output_host_api_specific_stream_info=stream_info,
+            output=True,
+        )
 
     def shutdown(self):
         """Close the audio stream."""
@@ -202,7 +204,7 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
                 return (audio_paket, pyaudio.paContinue)
             except queue.Empty:
                 pass
-        return (b'\0' * frame_count * self.sample_width, pyaudio.paContinue)
+        return (b"\0" * frame_count * self.sample_width, pyaudio.paContinue)
 
     def __init__(self, chunk_size, rate=44100, sample_width=2, **kwargs):
         """Initialize the streaming speaker module.
@@ -230,13 +232,15 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
     def setup(self):
         """Set up the speaker for speaking...?"""
         p = self._p
-        self.stream = p.open(format=p.get_format_from_width(self.sample_width),
-                             channels=CHANNELS,
-                             rate=self.rate,
-                             input=False,
-                             output=True,
-                             stream_callback=self.callback,
-                             frames_per_buffer=self.chunk_size)
+        self.stream = p.open(
+            format=p.get_format_from_width(self.sample_width),
+            channels=CHANNELS,
+            rate=self.rate,
+            input=False,
+            output=True,
+            stream_callback=self.callback,
+            frames_per_buffer=self.chunk_size,
+        )
         self.stream.start_stream()
 
     def shutdown(self):
@@ -283,8 +287,9 @@ class AudioDispatcherModule(abstract.AbstractModule):
 
     @staticmethod
     def description():
-        return ("A module that transmits audio by splitting it up into"
-                "streamable pakets.")
+        return (
+            "A module that transmits audio by splitting it up into" "streamable pakets."
+        )
 
     @staticmethod
     def input_ius():
@@ -294,9 +299,17 @@ class AudioDispatcherModule(abstract.AbstractModule):
     def output_iu():
         return DispatchedAudioIU
 
-    def __init__(self, target_chunk_size, rate=44100, sample_width=2,
-                 speed=1.0, continuous=True, silence=None, interrupt=True,
-                 **kwargs):
+    def __init__(
+        self,
+        target_chunk_size,
+        rate=44100,
+        sample_width=2,
+        speed=1.0,
+        continuous=True,
+        silence=None,
+        interrupt=True,
+        **kwargs
+    ):
         """Initialize the AudioDispatcherModule with the given arguments.
 
         Args:
@@ -366,19 +379,19 @@ class AudioDispatcherModule(abstract.AbstractModule):
             # _dispatch_audio_loop
             for i in range(0, input_iu.nframes, self.target_chunk_size):
                 cur_pos = i * self.sample_width
-                data = input_iu.raw_audio[cur_pos:cur_pos + cur_width]
+                data = input_iu.raw_audio[cur_pos : cur_pos + cur_width]
                 distance = cur_width - len(data)
-                data += b'\0' * distance
+                data += b"\0" * distance
 
-                completion = float((i + self.target_chunk_size)
-                                   / input_iu.nframes)
+                completion = float((i + self.target_chunk_size) / input_iu.nframes)
                 if completion > 1:
                     completion = 1
 
                 current_iu = self.create_iu(input_iu)
                 current_iu.set_dispatching(completion, True)
-                current_iu.set_audio(data, self.target_chunk_size, self.rate,
-                                     self.sample_width)
+                current_iu.set_audio(
+                    data, self.target_chunk_size, self.rate, self.sample_width
+                )
                 self.audio_buffer.append(current_iu)
             self.set_dispatching(True)
         return None
@@ -392,12 +405,15 @@ class AudioDispatcherModule(abstract.AbstractModule):
                         self.append(self.audio_buffer.pop(0))
                     else:
                         self._is_dispatching = False
-                if not self._is_dispatching: # no else here! bc line above
+                if not self._is_dispatching:  # no else here! bc line above
                     if self.continuous:
                         current_iu = self.create_iu(None)
-                        current_iu.set_audio(self.silence,
-                                             self.target_chunk_size,
-                                             self.rate, self.sample_width)
+                        current_iu.set_audio(
+                            self.silence,
+                            self.target_chunk_size,
+                            self.rate,
+                            self.sample_width,
+                        )
                         current_iu.set_dispatching(0.0, False)
                         self.append(current_iu)
             time.sleep((self.target_chunk_size / self.rate) / self.speed)
@@ -409,6 +425,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
 
     def shutdown(self):
         self.run_loop = False
+        self.audio_buffer = []
 
 
 class AudioRecorderModule(abstract.AbstractConsumingModule):
@@ -447,7 +464,7 @@ class AudioRecorderModule(abstract.AbstractConsumingModule):
         self.wavfile.writeframes(input_iu.raw_audio)
 
     def setup(self):
-        self.wavfile = wave.open(self.filename, 'wb')
+        self.wavfile = wave.open(self.filename, "wb")
         self.wavfile.setframerate(self.rate)
         self.wavfile.setnchannels(CHANNELS)
         self.wavfile.setsampwidth(self.sample_width)
