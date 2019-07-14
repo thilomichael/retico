@@ -322,6 +322,7 @@ class ActGuider:
         if act == "request_info" and entities == ["callee_name"]:
             return "greeting", []
 
+        return "stalling", []
         assert False, "Could not find utterance for %s - %s" % (act, entities)
 
 
@@ -358,6 +359,8 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return None, None
 
     def _rule_PROVIDE_INFO(self, entities):
+        if random.random() < 0.41:
+            return self.DA_REQUEST_CONFIRM, entities
         return self.DA_CONFIRM, entities
 
     def _rule_PROVIDE_PARTIAL(self, entities):
@@ -371,13 +374,13 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return self.DA_PROVIDE_INFO, entities
 
     def _rule_OFFER_INFO(self, entities):
-        return self.CONFIRM, []
+        return self.DA_CONFIRM, []
 
     def _rule_STALLING(self, entities):
         return None, None
 
     def _rule_REQUEST_CONFIRM(self, entities):
-        return self.CONFIRM, entities
+        return self.DA_CONFIRM, entities
 
     def _rule_CONFIRM(self, entities):
         if self.provided_entities:
@@ -389,9 +392,11 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return self.PROVIDE_INFO, entities
 
     def _rule_THANKS(self, entities):
-        return self.WELCOME, []
+        self.thanked = True
+        return self.DA_WELCOME, []
 
     def _rule_WELCOME(self, entities):
+        self.thanked = True
         return None, None
 
     RULES = {
@@ -419,6 +424,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
         self.dialogue_started = False
         self.dialogue_finished = False
         self.provided_entities = None
+        self.thanked = False
 
     def create_next_act(self):
         """
@@ -457,10 +463,14 @@ class AgendaDialogueManager(AbstractDialogueManager):
             return act, entities
         current_field = self.agenda.next_field()
         if not current_field:
+            if not self.thanked:
+                return self.DA_THANKS, []
             self.dialogue_finished = True
             return self.DA_GOODBYE, []
         if current_field.type == Field.TYPE_CON:
             if current_field.is_partial:
+                if current_field.name[-1] == 0 and random.random() > 0.5:
+                    return self.DA_OFFER_INFO, [current_field.name.split("-")[0]]
                 return self.DA_PROVIDE_PARTIAL, [current_field.name]
             return self.DA_OFFER_INFO, [current_field.name]
         if current_field.type == Field.TYPE_REQ:
@@ -468,9 +478,12 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def next_act(self):
         act, entities = self.create_next_act()
+        if act == self.DA_OFFER_INFO:
+            print("OFFER INFO", act, entities)
         real_act, real_entities = self.act_guider.guide_utterance(
             act, entities, self.agenda
         )
+        print("  ", real_act, real_entities)
 
         if real_act == "provide_info" or real_act == "provide_partial":
             self.provided_entities = real_entities
@@ -495,8 +508,12 @@ class AgendaDialogueManager(AbstractDialogueManager):
             entities (dict): The entities corresponding to the act.
         """
         tup = (act, entities)
+        if self.stack and self.stack[0][0] == self.DA_CONFIRM:
+            self.stack.pop(0)
         if (act, entities) not in self.stack:
-            self.stack.append(tup)
+            self.stack.insert(0, tup)
+        if random.random() < 0.15:
+            self.stack.insert(0, (self.DA_STALLING, {}))
 
     def process_act(self, act, entities):
         """When processing an act this dialogue manager executes the rules
