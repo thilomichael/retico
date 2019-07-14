@@ -707,24 +707,3 @@ class NGramDialogueManagerModule(TurnTakingDialogueManagerModule):
         else:
             self.dialogue_manager = NGramDialogueManager(self.ngram_model, "caller")
 
-
-class DM(abstract.AbstractModule):
-    @staticmethod
-    def name():
-        return "Turn Taking DM Module"
-
-    @staticmethod
-    def description():
-        return "A dialogue manager that uses eot predictions for turn taking"
-
-    @staticmethod
-    def input_ius():
-        return [DialogueActIU, DispatchedAudioIU, EndOfTurnIU]
-
-    @staticmethod
-    def output_iu():
-        return DispatchableActIU
-
-    def process_iu(self, input_iu):
-        da, concepts = meinCoolerDM.handle(input_iu.act, input_iu.concepts)
-        return self.create_iu(da, concepts)
