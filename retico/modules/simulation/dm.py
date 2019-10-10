@@ -61,6 +61,7 @@ class DialogueState:
         self.is_speaking = False
         self.completion = 0.0
         self.current_act = None
+        self.last_act = None
 
     def __repr__(self):
         rep = ""
@@ -70,6 +71,7 @@ class DialogueState:
         rep += "is_speaking: %s\n" % self.is_speaking
         rep += "completion: %s\n" % self.completion
         rep += "current_act: %s\n" % self.current_act
+        rep += "last_act: %s\n" % self.last_act
         return rep
 
     @property
@@ -337,6 +339,8 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         """
         if self.me.is_speaking and not input_iu.is_dispatching:
             self.me.utter_end = time.time()
+            self.me.last_act = self.me.current_act
+            self.me.current_act = None
             self.suspended = False
         elif not self.me.is_speaking and input_iu.is_dispatching:
             self.me.utter_start = time.time()
@@ -366,6 +370,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         self.other.is_speaking = input_iu.is_speaking
         self.other.completion = input_iu.probability
         if self.other.completion == 1.0:
+            self.other.last_act = self.other.current_act
             self.other.current_act = None
 
     def process_iu(self, input_iu):
@@ -433,6 +438,8 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         output_iu.set_act(act, concepts)
         output_iu.meta_data["message_data"] = meta_act
         output_iu.dispatch = True
+        self.me.last_act = self.me.current_act
+        self.me.current_act = output_iu
         self.append(output_iu)
         return output_iu
 
@@ -502,8 +509,20 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
 
         """
         result = -0.322581 * math.log(0.433008 * (-1 + 1 / self.rnd))  # GANDO SCT11
-        # result = -0.159767 * math.log(0.169563 * (-1 + 1/self.rnd)) # GANDO RNV1
         # result = result - 0.5  # Hack to counter balance the unprecise TTS signal
+
+        if self.other.current_act:
+            if (
+                self.other.current_act.act == "provide_partial"
+                or self.other.current_act.act == "provide_info"
+                or self.other.current_act.act == "confirm"
+            ):  # Switch to GANDO Model of RNV when uttering provide_partial and provide_info
+                result = -0.159767 * math.log(
+                    0.169563 * (-1 + 1 / self.rnd)
+                )  # GANDO RNV1
+                if result > 0:
+                    result *= 0.5
+
         return result
 
     def pause_model(self):
@@ -523,9 +542,26 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         """
         val = 0.925071 * (0.843217 + 2.92309 * math.pow(self.rnd, 2))  # PAUSE SCT11
         # val = -0.161705 * math.log(0.00106779 * (-1 + 1/self.rnd)) # PAUSE RNV1
+        # val = 0.0538261 * (14.9693 + 28.299 * math.pow(self.rnd, 2)) # PAUSE RNV1 sqrt
         # val = val - 0.5  # Hack to counter balance the unprecise TTS signal
-        if val < 0:
-            val = -0.05
+        if self.me.last_act:
+            if self.me.last_act.act == "request_info":
+                val += 1.5
+            if self.other.last_act:
+                if (
+                    self.me.last_act.act == "confirm"
+                    and self.other.last_act.act == "provide_partial"
+                ):
+                    val += 0.5
+                if (
+                    self.other.last_act.act == "greeting"
+                    and self.me.last_act.act == "greeting"
+                ):
+                    val = 0.2
+            elif self.me.last_act.act == "greeting":
+                val += 0.5
+        if val < 0:  # This should never happen...?
+            val = 0.2
         return val
 
     def should_interrupt(self):
@@ -706,4 +742,3 @@ class NGramDialogueManagerModule(TurnTakingDialogueManagerModule):
             self.dialogue_manager = NGramDialogueManager(self.ngram_model, "callee")
         else:
             self.dialogue_manager = NGramDialogueManager(self.ngram_model, "caller")
-
