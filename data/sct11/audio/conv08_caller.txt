@@ -1,0 +1,17 @@
+dialogue_act	caller	2970	3710	greeting	schönen guten Tag	0.9114922285079956
+dialogue_act	caller	3770	5710	provide_info:caller_name	mein Name ist jeremi Klemen	0.8228974342346191
+dialogue_act	caller	5710	11420	provide_info:reason,num_of_persons,pizza_type	ich möchte eine große Pizza bestellen für zwei Personen und es sollte eine vegetarische Pizza sein	0.8971368074417114
+dialogue_act	caller	14900	15240	confirm:num_of_persons	genau	0.9190641641616821
+dialogue_act	caller	18802	18992	confirm	Ja	1
+dialogue_act	caller	23020	23900	confirm:num_of_persons,pizza_type,price	das hört sich gut an	0.9190641045570374
+dialogue_act	caller	24265	25235	request_info:pizza_name	wie ist der Name der Pizza	0.8982650637626648
+dialogue_act	caller	30720	31860	stalling	und	0.9184496402740479
+dialogue_act	caller	32447	33427	request_info:toppings	welcher Belag ist drauf	0.9190641641616821
+dialogue_act	caller	39677	40497	confirm:toppings	das hört sich gut an	0.9190641045570374
+dialogue_act	caller	43695	46275	provide_partial:address-0,address-1,address-2	Glücksburger Straße 41 in Bochum	0.9190641045570374
+dialogue_act	caller	47930	48540	provide_partial:telephone-0,telephone-1	08	0.8812084197998047
+dialogue_act	caller	50095	50485	provide_partial:telephone-2,telephone-3	11 Uhr	0.6782891154289246
+dialogue_act	caller	51585	52045	provide_partial:telephone-4	7 Uhr	0.7310919761657715
+dialogue_act	caller	53205	54115	provide_partial:telephone-5,telephone-6	34	0.8800902366638184
+dialogue_act	caller	55615	56185	provide_partial:telephone-7,telephone-8	20	0.7642722725868225
+dialogue_act	caller	57290	58220	thanks	vielen Dank danke schön	0.890982449054718

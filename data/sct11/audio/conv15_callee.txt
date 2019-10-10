@@ -1,0 +1,14 @@
+dialogue_act	callee	550	2450	greeting:callee_name	Pizzeria Roma wie kann ich ihm helfen	0.8792031407356262
+dialogue_act	callee	8490	9170	confirm:reason	ja	0.9114229679107666
+dialogue_act	callee	15545	18275	provide_info:toppings-0,toppings-1,toppings-2,toppings-3	mit Spinat Champignons Tomaten und Käse	0.8985881805419922
+dialogue_act	callee	33070	34670	provide_info:price	die kostet dann 17 €	0.7935981154441833
+dialogue_act	callee	38830	39570	confirm:price	genau	0.9190641641616821
+dialogue_act	callee	47465	48865	provide_partial:toppings-0,toppings-1	Spinat Champignon	0.9190642237663269
+dialogue_act	callee	49490	49900	confirm:toppings-1	genau	0.9190641641616821
+dialogue_act	callee	50230	51310	provide_partial:toppings-2,toppings-3	Tomaten und Käse	0.9190641641616821
+dialogue_act	callee	58115	61135	confirm:address	Glücksburger Straße 41 Bochum	0.9137063026428223
+dialogue_act	callee	75735	76585	confirm:telephone	okay alles klar	0.531894326210022
+dialogue_act	callee	77000	81210	confirm:accept	Pizza ist kommt dann so schnell wie möglich bei Ihnen vorbei	0.895465075969696
+dialogue_act	callee	84005	86745	provide_info:delivery_duration	so maximal halbe Stunde dann ist sie da	0.8601253032684326
+dialogue_act	callee	90617	91037	welcome	bitte	0.8283730745315552
+dialogue_act	callee	91087	91427	goodbye	Auf Wiedersehen	1

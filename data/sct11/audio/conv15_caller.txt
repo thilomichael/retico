@@ -1,0 +1,19 @@
+dialogue_act	caller	3290	4760	greeting:caller_name	Jeremy Clemens guten Tag	0.8540655374526978
+dialogue_act	caller	5135	11045	provide_info:reason,num_of_persons,pizza_type	ich würde ganz gern eine große Pizza bestellen und zwar für zwei Personen vegetarisch an	0.8881515860557556
+dialogue_act	caller	19060	19370	confirm:toppings	Ja	1
+dialogue_act	caller	28145	29925	confirm	gut dann nehme ich doch lieber die Vegetarier	0.9187217354774475
+dialogue_act	caller	37265	38475	request_confirm:price	17 €	0.8627274036407471
+dialogue_act	caller	39705	42875	confirm:price,accept	okay aber ich verhungere nämlich doch die für 17 €	0.88914954662323
+dialogue_act	caller	45297	46597	request_info:toppings	so was war da noch mal drauf	0.8379504680633545
+dialogue_act	caller	47947	48777	request_confirm:toppings-1	Champignons	0.8572067022323608
+dialogue_act	caller	52162	53792	confirm:toppings	gut sehr schön	0.8742402791976929
+dialogue_act	caller	54389	57389	provide_partial:address-0,address-1	die Adresse wäre die Glücksburger Straße 41	0.9190641045570374
+dialogue_act	caller	58661	59341	provide_partial:address-2	in Bochum	0.910243034362793
+dialogue_act	caller	60721	61391	provide_partial:address-2	in Bochum	0.9110867381095886
+dialogue_act	caller	67630	74630	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	Telefonnummer König in durchgeben die 08117 3420	0.9159011840820312
+dialogue_act	caller	77284	78404	provide_info:caller_name	Jeremy Klemens	0.8025917410850525
+dialogue_act	caller	82394	82964	request_info:delivery_duration	wie lange ungefähr	0.9190641641616821
+dialogue_act	caller	87499	87939	confirm:delivery_duration	Ja	1
+dialogue_act	caller	88324	88544	confirm:delivery_duration	Ja	1
+dialogue_act	caller	89339	89739	thanks	Danke	1
+dialogue_act	caller	90919	91499	goodbye	Auf Wiedersehen	1

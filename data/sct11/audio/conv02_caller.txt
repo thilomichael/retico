@@ -1,0 +1,18 @@
+dialogue_act	caller	2898	5335	greeting:caller_name	schönen Tag mein Name ist Jeremy Clemens	0.8670927882194519
+dialogue_act	caller	5679	11465	provide_info:reason,num_of_persons,pizza_type	ich hätte gern eine große Pizza für zwei Personen und hätte gerne vegetarische Pizza	0.8867661952972412
+dialogue_act	caller	37770	39262	confirm:accept	ja dann nehmen wir die doch einfach	0.9190641045570374
+dialogue_act	caller	53020	53843	stalling	Ehm	1
+dialogue_act	caller	68483	76452	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	genau das ist dir je 0811 73420	0.8407113552093506
+dialogue_act	caller	86015	88675	request_confirm:delivery_duration	45 Minuten bis eine Stunde sei ganz schön lang war	0.8999452590942383
+dialogue_act.	caller	30931	31202	stalling	Ehm	1
+dialogue_act.	caller	41965	42644	stalling	Ehm	1
+dialogue_act.	caller	42740	44580	provide_info:caller_name	das ist Jeremy Clemens	0.8875194787979126
+dialogue_act.	caller	55305	57735	provide_partial:address-0,address-1	Glücksburger Straße 41	0.9190641641616821
+dialogue_act.	caller	78100	79320	request_info:delivery_duration	wie lange dauert es ungefähr	0.9190641045570374
+dialogue_act.	caller	93061	94861	thanks	alles klar na dann ich freue mich	0.9190641045570374
+dialogue_act.	caller	95351	96804	goodbye	dann ciao	0.857164204120636
+dialogue_act...	caller	24185	26268	request_confirm:accept	Pizza Vegetaria Eistee	0.8224239349365234
+dialogue_act...	caller	26960	27391	stalling	Ehm	1
+dialogue_act...	caller	28082	29552	request_confirm:toppings-1	Champignons okay	0.8447375297546387
+dialogue_act...	caller	31210	32240	request_info:price	wie viel kostet die denn	0.9190641045570374
+dialogue_act...	caller	34495	36785	confirm:price	17 € für 2 Personen okay	0.8566800355911255

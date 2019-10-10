@@ -1,0 +1,19 @@
+dialogue_act	callee	957	2471	greeting:callee_name	Hallo hier Pizzeria Roma	0.8588835000991821
+dialogue_act	callee	9450	13620	provide_info:pizza_name	vegetarisch ja da haben wir gerade nur die Vegetarier	0.9154512286186218
+dialogue_act	callee	13625	16344	provide_info:toppings	die hat Spinat Champignons Tomaten und Käse drauf	0.8946965336799622
+dialogue_act	callee	17206	18376	request_info:num_of_persons	und sagten für zwei Person	0.8671135902404785
+dialogue_act	callee	19826	20411	stalling	Ehm	1
+dialogue_act	callee	20411	22350	provide_info:price	dann würde die 17 € kosten	0.9167114496231079
+dialogue_act	callee	27589	28787	provide_partial:toppings-3,toppings-0	Käse und Spinat	0.9190641641616821
+dialogue_act	callee	36760	37425	stalling	Ehm	1
+dialogue_act	callee	37820	42339	provide_info:delivery_duration	das dauert heute so na ich sag mal zwischen 30 und 45	0.8784704208374023
+dialogue_act	callee	42590	44080	request_info:address	am besten sie geben mir noch mal ihre	0.9152096509933472
+dialogue_act	callee	49132	55424	confirm:address-0,address-1,address-2	Glücksburger Straße 41a in Bochum	0.9093763828277588
+dialogue_act	callee	56807	59981	provide_info:delivery_duration	dass du heute nicht länger als 45 Minuten da	0.8508421778678894
+dialogue_act	callee	60027	61570	request_info:telephone	geben Sie mir noch mal ihre Telefonnummer	0.9062599539756775
+dialogue_act	callee	64620	75270	confirm:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-7,telephone-8	81173 420	0.8800609111785889
+dialogue_act	callee	75385	76328	confirm:telephone	alles klar	0.9190642237663269
+dialogue_act	callee	76701	77074	confirm	gut	0.8765549659729004
+dialogue_act	callee	77358	77740	stalling	Ehm	1
+dialogue_act	callee	83667	83965	confirm	Ja	1
+dialogue_act	callee	85241	85557	goodbye	Auf Wiedersehen	1

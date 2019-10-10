@@ -1,0 +1,18 @@
+dialogue_act	callee	780	2710	greeting:callee_name	Pizzeria Roma was kann ich für Sie tun	0.9190641045570374
+dialogue_act	callee	12680	16190	confirm:pizza_type	da kann ich ihn dir vegetariana empfehlen	0.8880682587623596
+dialogue_act	callee	16850	19660	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9190641045570374
+dialogue_act	callee	26205	26745	confirm:toppings	genau	0.7946291565895081
+dialogue_act	callee	29530	30790	provide_info:price	17 € kostet	0.881844699382782
+dialogue_act	callee	32525	33815	confirm:num_of_persons	für zwei Personen	0.875165581703186
+dialogue_act	callee	37385	38315	confirm:accept	ja gerne	0.9185357689857483
+dialogue_act	callee	47120	47450	confirm:address-0,address-1	Ja	1
+dialogue_act	callee	49725	50125	request_confirm:address-2	in Bochum?	1
+dialogue_act	callee	59250	59500	confirm:telephone-0,telephone-1,telephone-2,telephone-3	Ja	1
+dialogue_act	callee	64280	64590	confirm:telephone-4,telephone-5,telephone-6	Ja	1
+dialogue_act	callee	68930	69210	confirm:telephone-7,telephone-8	Ja	1
+dialogue_act	callee	73845	76505	provide_info:delivery_duration	das ungefähr so in einer halben Stunde sollte die bei Ihnen sein	0.776265561580658
+dialogue_act	callee	77170	79170	request_info:caller_name	sagen sie noch mal einmal kurz ihren Namen bitte	0.8616504669189453
+dialogue_act	callee	83370	84510	confirm:caller_name	super	0.8566796779632568
+dialogue_act	callee	85762	86952	provide_info:delivery_duration	ungefähr einer halben Stunde	0.9121613502502441
+dialogue_act	callee	89156	90226	thanks	super danke schön	0.9190641641616821
+dialogue_act	callee	90686	91186	goodbye	Auf Wiedersehen	1

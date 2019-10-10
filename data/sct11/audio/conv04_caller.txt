@@ -1,0 +1,20 @@
+dialogue_act	caller	3663	6942	greeting:caller_name	Jeremy click Clemens schon guten Tag	0.7839212417602539
+dialogue_act	caller	7677	16784	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für zwei Personen und vegetarische Pizza bevor zu	0.8800438642501831
+dialogue_act	caller	45958	48410	provide_info:accept	Vegetarier wunderbar	0.8652375340461731
+dialogue_act	caller	50215	51168	request_info:toppings	was war noch mal der Belag	0.917926013469696
+dialogue_act	caller	51689	52654	request_confirm:toppings-2	Tomaten	0.9186131954193115
+dialogue_act	caller	57338	57754	confirm	ja	0.911422848701477
+dialogue_act	caller	58918	61339	confirm:toppings-1,toppings-0	Champignons und Spinat	0.9190641641616821
+dialogue_act	caller	61339	62232	request_info:price	und der Preis	0.9190641641616821
+dialogue_act	caller	66760	69569	confirm:price	17 €	0.9190641641616821
+dialogue_act.	caller	75185	78554	provide_info:caller_name	Jeremy Clement	0.7628989219665527
+dialogue_act.	caller	82362	83374	confirm:caller_name	Jeremy	0.8819140195846558
+dialogue_act.	caller	97773	99618	provide_partial:address-2	das ist in Bochum	0.9190641641616821
+dialogue_act.	caller	106510	107210	confirm:address-2	Bochum	0.9190641641616821
+dialogue_act.	caller	110541	117732	provide_partial:address-0,address-1	Glücksburger Straße 41	0.9190641641616821
+dialogue_act.	caller	121334	137834	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	das ist 0811 73420	0.8225945234298706
+dialogue_act.	caller	144842	145292	confirm	genau	0.9190641641616821
+dialogue_act.	caller	147099	152391	request_info:delivery_duration	wie lange dauert dauert es bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act.	caller	159318	161132	confirm:delivery_duration	das ist in Ordnung wunderbar	0.9190641045570374
+dialogue_act.	caller	164666	165319	thanks	danke	0.9190641641616821
+dialogue_act.	caller	166336	166768	goodbye	Auf Wiedersehen	1

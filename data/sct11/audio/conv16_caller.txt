@@ -1,0 +1,17 @@
+dialogue_act	caller	3000	5060	greeting:caller_name	Hallo ich bin Jeremy Clemens	0.8945357799530029
+dialogue_act	caller	5510	11185	provide_info:reason,num_of_persons,pizza_type	ich würde gerne eine große Pizza bestellen für zwei Personen und wenn's geht eine vegetarisch	0.8954746723175049
+dialogue_act	caller	25945	27095	request_info:toppings	was ist denn da so drauf	0.9099788665771484
+dialogue_act	caller	30185	30565	confirm:toppings-0	Ja	1
+dialogue_act	caller	39131	40021	confirm:toppings-3	Käse	0.9190641641616821
+dialogue_act	caller	43055	44365	stalling:address	okay	0.9190641641616821
+dialogue_act	caller	44470	49780	provide_partial:address-0,address-1,address-2	bitte liefern an die Glücksburger Straße 41 in Buch	0.9035852551460266
+dialogue_act	caller	63552	64632	confirm:caller_name	Clemens mit C	0.9190641641616821
+dialogue_act	caller	71547	72427	provide_partial:telephone-0,telephone-1	08	0.8811746835708618
+dialogue_act	caller	73007	73597	provide_partial:telephone-2,telephone-3	11 Uhr	0.6928877234458923
+dialogue_act	caller	74972	75412	provide_partial:telephone-4	7 Uhr	0.7265077829360962
+dialogue_act	caller	76757	77727	provide_partial:telephone-5,telephone-6	34	0.8922359943389893
+dialogue_act	caller	77902	78512	provide_partial:telephone-7,telephone-8	20	0.7641698122024536
+dialogue_act	caller	83517	85067	request_info:delivery_duration	ja wie lange dauert denn die Lieferzeit	0.8675174713134766
+dialogue_act	caller	88504	89364	confirm:delivery_duration	okay gut	0.9190642237663269
+dialogue_act	caller	90819	91359	thanks	Danke	1
+dialogue_act	caller	92274	92994	thanks	Danke	1

@@ -1,0 +1,22 @@
+dialogue_act	callee	1336	2409	greeting:callee_name	Pizzeria Roma	0.9190642237663269
+dialogue_act	callee	18966	22048	confirm:pizza_type	für zwei Personen vegetarische Pizza	0.9190641045570374
+dialogue_act	callee	79035	81436	misunderstanding	ich verstehe nicht recht das raus zu in der Leitung	0.8000110387802124
+dialogue_act	callee	84345	86672	stalling:caller_name	Jeremy Moment	0.7951278686523438
+dialogue_act	callee	92376	94352	confirm:caller_name	pc-ok	0.8007771372795105
+dialogue_act	callee	95729	96958	request_info:address	und die Adresse wäre	0.9190641641616821
+dialogue_act	callee	100473	101669	misunderstanding	ich verstehe sie nicht recht	0.9190641641616821
+dialogue_act	callee	107624	108108	request_confirm:address-2	Bochum	0.9190641641616821
+dialogue_act	callee	108832	109693	confirm:address-2	okay Bochum	0.915081799030304
+dialogue_act	callee	118507	120876	request_info:telephone	okay und wie wäre ihre Telefonnummer	0.8788097500801086
+dialogue_act	callee	125734	126062	confirm	Ja	1
+dialogue_act	callee	127569	138720	confirm:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	0811 73420	0.5977367758750916
+dialogue_act	callee	140704	144146	confirm:telephone	0811 73420	0.572662889957428
+dialogue_act	callee	154551	159059	provide_info:delivery_duration	also es kann so bis zu einer Dreiviertelstunde dauern wäre das in Ordnung für Sie	0.8888965249061584
+dialogue_act	callee	160640	161082	confirm	okay	0.8973388075828552
+dialogue_act	callee	162424	164203	thanks	gut dann danke für Ihren Auftrag	0.9190641045570374
+dialogue_act	callee	165557	166048	goodbye	Wiederhören	0.901136040687561
+dilaogue_act.	callee	41297	44731	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9190641045570374
+dilaogue_act.	callee	49044	49470	confirm	okay	0.8967551589012146
+dilaogue_act.	callee	53327	58401	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Tomaten Käse Champignons und Spinat	0.9190641045570374
+dilaogue_act.	callee	62668	65914	provide_info:price	für zwei Personen der Preis wäre 17 €	0.915030837059021
+dilaogue_act.	callee	71729	74615	request_info:caller_name	okay dann darf ich die Reservierung auf welchen Namen machen	0.870465874671936

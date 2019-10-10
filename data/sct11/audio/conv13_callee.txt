@@ -1,0 +1,19 @@
+dialogue_act	callee	1270	4019	greeting:callee_name	hallo willkommen bei der Pizzeria Roma	0.8835973143577576
+dialogue_act	callee	16720	18480	confirm:num_of_persons	also für zwei Personen	0.8781466484069824
+dialogue_act	callee	19850	21190	request_confirm:pizza_type	vegetarisch soll es sein	0.9154478907585144
+dialogue_act	callee	23707	26587	provide_info:pizza_type	wir haben Pizza Vegetaria	0.8903418779373169
+dialogue_act	callee	27547	30197	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten Käse bei der	0.9190641045570374
+dialogue_act	callee	34887	40127	provide_info:price	wenn sie Vegetarier bestellen für zwei Personen würde das für sie 17 € kosten	0.8663746118545532
+dialogue_act	callee	45279	45529	confirm:price	Ja	1
+dialogue_act	callee	49154	49514	confirm:accept	Ja	1
+dialogue_act	callee	53999	54589	stalling:delivery_duration	Ehm	1
+dialogue_act	callee	54594	58864	provide_info:delivery_duration	heute dauert es bisher etwas länger weil wir heute ein bisschen mehr Bestellung gekriegt habe	0.8627790212631226
+dialogue_act	callee	59254	59754	stalling:address	Ehm	1
+dialogue_act	callee	59994	61924	request_info:address	an welche Adresse soll ich das schicken	0.9164226651191711
+dialogue_act	callee	72139	72329	confirm:telephone-0,telephone-1	Ja	1
+dialogue_act	callee	73784	74034	confirm:telephone-2,telephone-3	Ja	1
+dialogue_act	callee	75729	75969	confirm:telephone-4	Ja	1
+dialogue_act	callee	78709	78899	confirm:telephone-5,telephone-6	Ja	1
+dialogue_act	callee	80629	81249	confirm:telephone-7,telephone-8	Sonne	0.7361060380935669
+dialogue_act	callee	82524	82934	confirm:telephone	Ja	1
+dialogue_act	callee	83579	84689	goodbye	dann bis später	0.9190641641616821

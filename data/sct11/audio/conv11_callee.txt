@@ -1,0 +1,14 @@
+dialogue_act	callee	670	2470	greeting:callee_name	Montag Pizzeria Roma hier	0.8431389927864075
+dialogue_act	callee	9175	9605	confirm:reason	Ja	1
+dialogue_act	callee	10425	10855	stalling	Ehm	1
+dialogue_act	callee	11335	12435	request_info:pizza_type	welche Sorte denn	0.9190641641616821
+dialogue_act	callee	19200	20780	confirm:pizza_type	werden wir die Vegetarier	0.8721453547477722
+dialogue_act	callee	21475	22645	provide_info:price	17 €	0.9129180908203125
+dialogue_act	callee	26970	27090	confirm:price	Ja	1
+dialogue_act	callee	30850	31140	confirm:accept	Ja	1
+dialogue_act	callee	32725	36235	request_info:address,telephone	dann bräuchte ich mal Ihre Adresse und Ihre Telefonnummer für die Reservierung	0.8761551380157471
+dialogue_act	callee	49065	49365	confirm:address,telephone	Ja	1
+dialogue_act	callee	53615	54275	stalling:delivery_duration	Ehm	1
+dialogue_act	callee	54495	55325	provide_info:delivery_duration	halbe Stunde	0.9190642237663269
+dialogue_act	callee	58570	58930	welcome	bitte schön	1
+dialogue_act	callee	59310	59670	goodbye	ciao	0.7941889762878418

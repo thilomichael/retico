@@ -1,0 +1,16 @@
+dialogue_act	caller	3700	4160	greeting	Hallo	0.8422012329101562
+dialogue_act	caller	4160	5920	provide_info:caller_name	Jeremy Clemency	0.7676324248313904
+dialogue_act	caller	5965	12005	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für zwei Personen und sie sollte bitte vegetarisch sein	0.8711382150650024
+dialogue_act	caller	25310	25820	confirm:toppings	okay	0.8936842083930969
+dialogue_act	caller	26710	27340	stalling:delivery_duration	Ehm	1
+dialogue_act	caller	28700	31440	request_info:delivery_duration	wie lange dauert es denn bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act	caller	35165	35675	confirm:delivery_duration	okay	0.9027565121650696
+dialogue_act	caller	40395	40755	confirm:accept	ja	0.910489559173584
+dialogue_act	caller	44265	47445	provide_partial:address-0,address-1	in die Glücksburger Straße 41	0.9190641045570374
+dialogue_act	caller	48050	49130	provide_partial:address-2	nach Bochum	0.9190642237663269
+dialogue_act	caller	49780	51070	stalling:telephone	also	0.9190641641616821
+dialogue_act	caller	51260	54090	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	Telefon 0811	0.862623393535614
+dialogue_act	caller	54630	55830	provide_partial:telephone-4,telephone-5,telephone-6	734	0.9027045965194702
+dialogue_act	caller	56090	56820	provide_partial:telephone-7,telephone-8	20	0.9140745401382446
+dialogue_act	caller	62520	62860	confirm:accept	genau	0.9190641641616821
+dialogue_act	caller	67565	69975	goodbye	dann wünsche ich dir noch einen schönen Tag tschüss	0.9098553657531738

@@ -1,0 +1,18 @@
+dialogue_act	caller	4790	6730	greeting:caller_name	hallo mein Name ist Jeremy Creme	0.8478304743766785
+dialogue_act	caller	6730	14510	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für zwei Personen und zwar es dann bei uns vegetarischer Belag bevorzugt	0.8978894948959351
+dialogue_act	caller	21475	22145	confirm:pizza_type	ja genau	0.9190642237663269
+dialogue_act	caller	41205	43575	confirm:toppings	Pilze Spinat	0.9190642237663269
+dialogue_act	caller	44090	44990	request_confirm:price	17 ja	0.7577040791511536
+dialogue_act	caller	47070	48290	provide_info:accept	ach dann nehmen wir die doch	0.7549702525138855
+dialogue_act	caller	49292	49632	stalling:delivery_duration	Ehm	1
+dialogue_act	caller	49656	53826	request_info:delivery_duration	dann noch eine Frage wie lange dauert es bis die Pizza dann geliefert wird über	0.8848490118980408
+dialogue_act	caller	59975	60345	stalling	Ehm	1
+dialogue_act	caller	62265	62835	stalling:address	Ehm	1
+dialogue_act	caller	62877	66197	provide_partial:address-0,address-1,address-2	das ist die Glücksburger Straße 41 in Bochum	0.9190641045570374
+dialogue_act	caller	67047	71277	provide_partial:telephone-0,telephone-1	und die Referenz Telefonnummer wäre dann die 08	0.8968396782875061
+dialogue_act	caller	73079	73469	provide_partial:telephone-2,telephone-3	11	1
+dialogue_act	caller	74809	75229	provide_partial:telephone-4	7 Uhr	0.7306149005889893
+dialogue_act	caller	76424	77134	provide_partial:telephone-5,telephone-5	34	0.7405555844306946
+dialogue_act	caller	79474	80214	provide_partial:telephone-7,telephone-8	20	0.9144303798675537
+dialogue_act	caller	81644	82144	confirm:telephone	Ja	1
+dialogue_act	caller	85379	86369	goodbye	bis später dann	0.9190641641616821

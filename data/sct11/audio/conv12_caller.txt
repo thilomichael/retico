@@ -1,0 +1,19 @@
+dialogue_act	caller	2130	2710	greeting	Hallo	0.8333178758621216
+dialogue_act	caller	2820	3120	stalling:caller_name	Ehm	1
+dialogue_act	caller	3120	5160	provide_info:caller_name	mein Name ist Jeremy Clemens	0.8841726779937744
+dialogue_act	caller	6030	10400	provide_info:reason,num_of_persons,pizza_type	ich möchte gerne eine große Pizza für 2 Personen am liebsten vegetarisch	0.8820717334747314
+dialogue_act	caller	28850	29730	provide_info:accept	ja die nehme ich	0.9190641641616821
+dialogue_act	caller	37990	39960	request_confirm:pizza_type	das ist die vegetarische Pizza	0.9140812754631042
+dialogue_act	caller	42000	42480	stalling:address	Ehm	1
+dialogue_act	caller	42545	46445	provide_partial:address-0,address-1	die Lieferung geht dann an die Glücksburger Straße 41	0.8597699403762817
+dialogue_act	caller	47850	48370	provide_partial:address-2	im Buch	0.7421380877494812
+dialogue_act	caller	50340	50960	stalling	und	0.8407987952232361
+dialogue_act	caller	51150	53030	offer_info:telephone	soll ich dir noch meine Telefonnummer geben	0.9048458933830261
+dialogue_act	caller	55535	57575	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	das ist die 0811	0.8862635493278503
+dialogue_act	caller	60220	61130	provide_partial:telephone-4,telephone-5,telephone-6	734	0.9027016758918762
+dialogue_act	caller	62895	63165	provide_partial:telephone-7,telephone-8	20	1
+dialogue_act	caller	64995	65452	stalling:delivery_duration	Ehm	1
+dialogue_act	caller	65452	67462	request_info:delivery_duration	wie lange dauert das bis die Pizza bei mir ist	0.9178065657615662
+dialogue_act	caller	71665	72605	confirm:delivery_duration	okay super	0.9190642237663269
+dialogue_act	caller	73565	74355	thanks	danke schön	0.9190642237663269
+dialogue_act	caller	74535	75115	goodbye	tschüss	0.8743353486061096

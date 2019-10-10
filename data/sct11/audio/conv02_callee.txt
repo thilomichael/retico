@@ -1,0 +1,17 @@
+dialogue_act	callee	700	2420	greeting:callee_name	Hallo Pizzeria Roma am Apparat	0.8504645228385925
+dialogue_act	callee	14720	18340	provide_info:pizza_name	die einzige vegetarische Pizza Limetten wäre die Pizza Vegetaria	0.8584326505661011
+dialogue_act	callee	40390	41670	request_info:caller_name	dann bräuchte ich noch mal ihr Name	0.9190641045570374
+dialogue_act	callee	67080	68170	request_info:telephone	und ihre Telefonnummer	0.8620473146438599
+dialogue_act	callee	71560	71810	confirm	Ja	1
+dialogue_act	callee	73105	73415	confirm	Ja	1
+dialogue_act	callee	75070	75570	confirm	Ja	1
+dialogue_act	callee	77075	77315	confirm	Ja	1
+dialogue_act	callee	81410	85520	provide_info:delivery_duration	dauert ungefähr 45 Minuten bis eine Stunde	0.918104350566864
+dialogue_act	callee	95320	96280	welcome	danke bis dann	0.6361055374145508
+dialogue_act	callee	96990	97330	goodbye	Auf Wiedersehen	1
+dialogue_act.	callee	18792	21762	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	auf der sind Spinat Champignons Tomaten und Käse	0.9190641045570374
+dialogue_act.	callee	29705	29975	confirm	Ja	1
+dialogue_act.	callee	32485	33885	provide_info:price	17 € für zwei Person	0.8767980337142944
+dialogue_act.	callee	36205	36485	confirm	Ja	1
+dialogue_act.	callee	46110	46910	request_confirm:caller_name	Clemens mit C	0.9190641641616821
+dialogue_act.	callee	51655	52365	request_info:address	und ihre Adresse	0.7954790592193604

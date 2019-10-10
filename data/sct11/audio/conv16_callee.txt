@@ -1,0 +1,16 @@
+dialogue_act	callee	660	2380	greeting:callee_name	Pizzeria Roma Telefonnummer	0.9190642237663269
+dialogue_act	callee	16685	19235	provide_info:price	für zwei Personen kostet die 17 €	0.9167409539222717
+dialogue_act	callee	28160	28440	stalling:toppings	Ehm	1
+dialogue_act	callee	28440	32689	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9190641045570374
+dialogue_act	callee	58502	60202	confirm:address-2	Bochum war das okay	0.820697009563446
+dialogue_act	callee	60602	62222	request_info:caller_name	wie war denn der Nachname noch mal	0.9190641045570374
+dialogue_act	callee	65872	66362	confirm:caller_name	Ja	1
+dialogue_act	callee	68797	70097	request_info:telephone	Telefonnummer bitte	0.8777429461479187
+dialogue_act	callee	74672	75032	confirm:telephone-0,telephone-1,telephone-2,telephone-3	Ja	1
+dialogue_act	callee	76422	76852	confirm:telephone-4	Ja	1
+dialogue_act	callee	78582	78892	confirm:telephone	Ja	1
+dialogue_act	callee	86037	86367	stalling:delivery_duration	Ehm	1
+dialogue_act	callee	86377	87257	provide_info:delivery_duration	offene Stunde	0.7562724947929382
+dialogue_act	callee	88792	89002	confirm	Ja	1
+dialogue_act	callee	91842	92302	welcome	gerne	0.9184560179710388
+dialogue_act	callee	92317	92777	goodbye	tschüss	0.8454279899597168

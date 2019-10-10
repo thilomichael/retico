@@ -1,0 +1,28 @@
+dialogue_act	caller	1820	4040	greeting:caller_name	schönen guten Tag mein Name Jeremy Clement	0.8885601162910461
+dialogue_act	caller	4300	8970	provide_info:reason,num_of_persons,pizza_type	noch eine große Bitte haben für zwei Personen aber vegetarische Pizza bevorzugt	0.838579535484314
+dialogue_act	caller	21015	21315	confirm	Ja	1
+dialogue_act	caller	23070	24250	provide_info:accept	oh das wäre super	0.9124664068222046
+dialogue_act	caller	24940	25640	stalling	Ehm	1
+dialogue_act	caller	58900	59350	stalling	Ehm	1
+dialogue_act	caller	59365	59830	provide_partial:telephone-0	nun	0.884667694568634
+dialogue_act	caller	59960	60370	provide_partial:telephone-1	8 Uhr	0.7644715309143066
+dialogue_act	caller	61530	61890	provide_partial:telephone-2	1	1
+dialogue_act	caller	61895	62205	provide_partial:telephone-3	1	1
+dialogue_act.	caller	27085	27945	stalling	Augen	0.874360203742981
+dialogue_act.	caller	27945	29125	request_confirm:pizza_type	vegetarische Spieße	0.6457008123397827
+dialogue_act.	caller	29615	31045	request_info:toppings	welche Pakete zu	0.7751460075378418
+dialogue_act.	caller	35110	35520	confirm	Ja	1
+dialogue_act.	caller	35795	38435	request_confirm:toppings-3	Käse auf ich bin doch Vegetarier	0.8953391313552856
+dialogue_act.	caller	41915	45985	provide_partial:address-0	okay dann bitte Lieferung nach Glücksburger Straße	0.8698235750198364
+dialogue_act.	caller	46280	47570	provide_partial:address-0	Glücksburger	0.9190641641616821
+dialogue_act.	caller	51095	52595	provide_partial:address-1	41	0.7792373895645142
+dialogue_act.	caller	54405	55265	provide_partial:address-2	Bochum	0.9190641641616821
+dialogue_act.	caller	56135	57715	offer_info:telephone	brauchen Sie meine Telefonnummer	0.8029683828353882
+dialogue_act.	caller	63330	63840	provide_partial:telephone-4	7 Uhr	0.7357966899871826
+dialogue_act.	caller	64920	66060	provide_partial:telephone-5,telephone-6	34	0.8550397753715515
+dialogue_act.	caller	68190	68700	provide_partial:telephone-7,telephone-8	20	0.7104571461677551
+dialogue_act.	caller	70725	72825	request_info:delivery_duration	und wie lange lange muss ich meine Pizza bei	0.8656393885612488
+dialogue_act.	caller	74700	75400	request_confirm:delivery_duration	eine Minute	0.7865096926689148
+dialogue_act.	caller	77005	77705	confirm	okay	0.9187372922897339
+dialogue_act.	caller	79755	80795	thanks	danke schön	0.6253625750541687
+dialogue_act.	caller	81815	82205	goodbye	tschüss	0.8494478464126587

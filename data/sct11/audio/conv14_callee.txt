@@ -1,0 +1,9 @@
+dialogue_act	callee	520	1750	greeting:callee_name	Pizzeria Roma	0.8501572012901306
+dialogue_act	callee	11975	17435	provide_info:price	dann haben wir die Pizza Vegetaria und zwar für zwei Personen würde die 17 € kosten	0.9028322696685791
+dialogue_act	callee	22150	24290	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten Käse	0.9190641641616821
+dialogue_act	callee	28560	29070	confirm:accept	alles klar	0.9190642237663269
+dialogue_act	callee	29075	32715	request_info:caller_name,address,telephone	wollen Sie hier reservieren dann bräuchte ich ihr Name Adresse und Telefonnummer	0.8454099297523499
+dialogue_act	callee	48940	49610	confirm:telephone	alles klar	0.9190642237663269
+dialogue_act	callee	52695	54385	provide_info:delivery_duration	so 30 bis 40 Minuten	0.8712615966796875
+dialogue_act	callee	57710	57910	welcome	bitte schön	1
+dialogue_act	callee	58095	58425	goodbye	tschüss	0.7956509590148926

@@ -1,0 +1,14 @@
+dialogue_act	caller	4875	5142	stalling:caller_name	Ehm	1
+dialogue_act	caller	5144	7482	provide_info:caller_name	mit Jeremy Clemens	0.8737984895706177
+dialogue_act	caller	10034	11826	provide_info:reason	und ich möchte eine große Pizza	0.9189330339431763
+dialogue_act	caller	17960	20584	provide_info:num_of_persons,pizza_type	für zwei Personen und am besten	0.918391227722168
+dialogue_act	caller	30355	32375	provide_info:accept	ja okay die nämlich erstmal also Victoria	0.7469638586044312
+dialogue_act	caller	39022	40133	stalling:address	also	0.9190641641616821
+dialogue_act	caller	40545	44195	provide_partial:address-0,address-1	Adresse es ist erstmal Glücksburger Straße 41	0.7603914141654968
+dialogue_act	caller	46999	47830	provide_partial:address-2	in Bochum	0.8052923083305359
+dialogue_act	caller	55265	55596	stalling:telephone	Ehm	1
+dialogue_act	caller	55764	57238	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	0811	0.8094066977500916
+dialogue_act	caller	60911	62540	provide_partial:telephone-4,telephone-5,telephone-6	734	0.9022277593612671
+dialogue_act	caller	65441	66273	provide_partial:telephone-7,telephone-8	22	0.9190641641616821
+dialogue_act	caller	67671	69528	request_info:toppings	und kannst du dann noch mal den Belag sah	0.8812282681465149
+dialogue_act	caller	79957	81405	provide_info:accept	okay okay gut	0.8791090250015259

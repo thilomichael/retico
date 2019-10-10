@@ -1,0 +1,6 @@
+dialogue_act	callee	1150	3030	greeting:callee_name	Pizzeria Roma schönen guten Tag	0.9103830456733704
+dialogue_act	callee	11411	14394	offer_info:pizza_name	ja da haben wir vier verschiedene zur Auswahl	0.9186168313026428
+dialogue_act	callee	17877	24275	provide_info:pizza_name,price	da kann ich Ihnen auch nur die Pizza Vegetaria anbieten kostet 17 € für zwei	0.8931447267532349
+dialogue_act	callee	26525	29627	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9190641045570374
+dialogue_act	callee	35406	37965	provide_info:delivery_duration	innerhalb von 45 Minuten Seite B71	0.8150547742843628
+dialogue_act	callee	45989	46582	confirm:address	alles klar	0.9190642237663269

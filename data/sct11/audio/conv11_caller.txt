@@ -1,0 +1,13 @@
+dialogue_act	caller	3320	5130	greeting:caller_name	ja Jeremy Clemens	0.8250067234039307
+dialogue_act	caller	5130	8039	provide_info:reason	ich hätte sehr gerne eine große Pizza	0.9053658246994019
+dialogue_act	caller	13460	14160	stalling	Ehm	1
+dialogue_act	caller	14635	18135	provide_info:pizza_type,num_of_persons	bevorzugt eine vegetarische Pizza für zwei Personen	0.8835219740867615
+dialogue_act	caller	24345	25365	request_confirm:price	17 €	0.9190641641616821
+dialogue_act	caller	27505	27755	confirm:price	Ja	1
+dialogue_act	caller	27975	28625	provide_info:accept	Teenager	0.6769232153892517
+dialogue_act	caller	36910	40450	provide_partial:address-0,address-1,address-2	das ist die Glücksburger Straße 41 in Bochum	0.9190641045570374
+dialogue_act	caller	41555	48275	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	Telefonnummer 08117 3420	0.7113190293312073
+dialogue_act	caller	50510	52830	request_info:delivery_duration	wie lange dauert es dann bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act	caller	55900	56840	confirm:delivery_duration	okay perfekt	0.9190642237663269
+dialogue_act	caller	56965	58145	thanks	alles klar vielen Dank	0.9118914604187012
+dialogue_act	caller	58255	59695	goodbye	dann bis dann tschüss	0.9190641641616821

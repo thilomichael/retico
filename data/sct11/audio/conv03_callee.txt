@@ -1,0 +1,11 @@
+dialogue_act	callee	1046	2255	greeting:callee_name	Hallo Pizzeria Roma hier	0.7965050935745239
+dialogue_act	callee	12070	13983	offer_info:accept	okay also wir haben die Vegetarier	0.9190641045570374
+dialogue_act	callee	14260	16195	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	mit Spinat Champignons Tomaten und Käse	0.8981701731681824
+dialogue_act	callee	25563	27377	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.898806631565094
+dialogue_act	callee	30104	31343	provide_info:price	17 € Vertrag Häuser	0.7834717035293579
+dialogue_act	callee	33966	36437	request_info:address	okay dann bräuchte noch mal kurz Ihre Adresse und ihre Namen	0.8908877968788147
+dialogue_act	callee	42136	42403	confirm	Ja	1
+dialogue_act	callee	46606	46850	confirm	Ja	1
+dialogue_act	callee	50219	50574	confirm	Ja	1
+dialogue_act	callee	57770	59892	provide_info:delivery_duration	also 45 Minuten bist du den Rechner	0.8080819845199585
+dialogue_act	callee	62196	62795	goodbye	Auf Wiedersehen	1

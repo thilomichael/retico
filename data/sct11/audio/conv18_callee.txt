@@ -1,0 +1,20 @@
+dialogue_act	callee	760	2380	greeting:callee_name	ja Pizzeria Roma hier	0.8965777158737183
+dialogue_act	callee	3270	4130	request_info:caller_name	mit wem spreche ich	0.9190641641616821
+dialogue_act	callee	8455	9155	confirm:caller_name	Ja	1
+dialogue_act	callee	12920	13480	confirm:reason	alles	0.9190641641616821
+dialogue_act	callee	14030	16920	request_info:num_of_persons	für eine Person zwei Personen oder vier Personen	0.7952911257743835
+dialogue_act	callee	21845	26835	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	da kann ich die pizza.de Tage empfehlen die hat Spinat Champignons Tomaten und Käse	0.8696205019950867
+dialogue_act	callee	27517	28617	provide_info:price	kostet 17 €	0.9190641045570374
+dialogue_act	callee	32917	33167	confirm:accept	Ja	1
+dialogue_act	callee	33217	36787	request_info:address	nur noch die Adresse und die kann man dann direkt ausliefern	0.7609927654266357
+dialogue_act	callee	43892	44112	confirm:address-0,address-1	Ja	1
+dialogue_act	callee	50342	50872	confirm:address-2	Bruch	0.7596887350082397
+dialogue_act	callee	51652	52012	confirm:address	Ja	1
+dialogue_act	callee	53312	54252	request_info:telephone	gute Telefonnummer	0.782498300075531
+dialogue_act	callee	58622	59032	stalling:telephone	Ehm	1
+dialogue_act	callee	59442	59682	confirm:telephone-0,telephone-1,telephone-2,telephone-3	Ja	1
+dialogue_act	callee	64117	64497	confirm:telephone-4,telephone-5,telephone-6	Ja	1
+dialogue_act	callee	67922	68202	confirm:telephone-7,telephone-8	Ja	1
+dialogue_act	callee	70837	74007	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	was ist Spinat Champignons Tomaten und Käse	0.8877204656600952
+dialogue_act	callee	82119	82309	confirm:accept	Ja	1
+dialogue_act	callee	82964	83604	confirm:accept	alles klar	0.8675136566162109

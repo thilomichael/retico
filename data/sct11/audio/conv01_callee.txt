@@ -1,0 +1,23 @@
+dialogue_act	callee	450	1560	greeting:callee_name	Pizzeria Roma Hallo	0.8518061637878418
+dialogue_act	callee	9915	12205	stalling	Moment bitte	0.9190642237663269
+dialogue_act	callee	12540	14350	stalling:pizza_type	wir möchten vegetarische Spinne	0.8198188543319702
+dialogue_act	callee	15950	19340	provide_info:pizza_name	also wie haben Vegetarier	0.821491539478302
+dialogue_act	callee	19810	20800	request_confirm:num_of_persons	für zwei Personen	0.8600101470947266
+dialogue_act	callee	21980	24100	provide_info:price	17 € würde das kosten	0.9190641045570374
+dialogue_act	callee	25365	26325	request_info:address	was ist Ihre Interesse	0.8206917643547058
+dialogue_act	callee	29505	29665	confirm	Ja	1
+dialogue_act	callee	31345	34155	provide_partial:toppings	Spinat Champignons Tomaten Käse	0.9190641641616821
+dialogue_act	callee	37175	37365	confirm	Ja	1
+dialogue_act	callee	50565	50765	confirm	Ja	1
+dialogue_act	callee	53865	54045	confirm	Ja	1
+dialogue_act	callee	55510	55820	confirm	Ja	1
+dialogue_act	callee	57760	58240	provide_info:accept	ja bitte	0.9105396270751953
+dialogue_act	callee	61025	61175	confirm	Ja	1
+dialogue_act	callee	62650	62830	confirm	Ja	1
+dialogue_act	callee	64165	64364	confirm	Ja	1
+dialogue_act	callee	67390	67610	confirm	Ja	1
+dialogue_act	callee	69440	70530	thanks	alles klar danke schön	0.9190641641616821
+dialogue_act	callee	73200	73900	provide_info:delivery_duration	eine Minute	0.7885063290596008
+dialogue_act	callee	75580	75770	confirm	Ja	1
+dialogue_act	callee	80940	81210	welcome	bitte schön	1
+dialogue_act	callee	82345	82545	goodbye	Auf Wiedersehen	1

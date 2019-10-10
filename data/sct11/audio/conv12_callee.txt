@@ -1,0 +1,18 @@
+dialogue_act	callee	460	840	greeting	Hallo	0.8418495655059814
+dialogue_act	callee	900	1860	provide_info:callee_name	Pizzeria Roma	0.9190642237663269
+dialogue_act	callee	5370	5770	confirm:caller_name	Ja	1
+dialogue_act	callee	11790	15230	confirm:num_of_persons,pizza_type	also Frau Clemens ok2 und vegetarisch	0.8834244608879089
+dialogue_act	callee	15825	16645	stalling	Ehm	1
+dialogue_act	callee	17557	23267	provide_info:pizza_type,price	da haben wir einmal eine Pizza Vegetaria die kostet 17 €	0.918298602104187
+dialogue_act	callee	24670	28700	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	die ist belegt mit Spinat Champignons und Tomaten und Käse	0.905049741268158
+dialogue_act	callee	30150	30580	confirm:accept	Ja	1
+dialogue_act	callee	31060	32020	request_info:address	wie ist die Adresse	0.879220187664032
+dialogue_act	callee	39875	40315	confirm:pizza_type	genau	0.9190641641616821
+dialogue_act	callee	46715	47155	confirm:address-0,address-1	Ja	1
+dialogue_act	callee	49095	49455	confirm:address	Ja	1
+dialogue_act	callee	57980	60060	confirm:telephone-0,telephone-1,telephone-2,telephone-3	0811 ja	0.836938202381134
+dialogue_act	callee	62240	62740	confirm:telephone-4,telephone-5,telephone-6	ja	0.911422848701477
+dialogue_act	callee	64135	64595	confirm:telephone	Ja	1
+dialogue_act	callee	67610	67940	stalling:delivery_duration	Ehm	1
+dialogue_act	callee	67955	71555	provide_info:delivery_duration	dauert so zwischen 15 und 25 Minuten	0.8337209224700928
+dialogue_act	callee	74900	75720	goodbye	okay tschüss	0.899346649646759

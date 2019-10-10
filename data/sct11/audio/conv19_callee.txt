@@ -1,0 +1,11 @@
+dialogue_act	callee	710	2770	greeting:callee_name	Pizzeria Roma City am Telefon guten Tag	0.8287090063095093
+dialogue_act	callee	16955	18715	provide_info:price	für 17 € für 2 Personen	0.8530725836753845
+dialogue_act	callee	19997	22147	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten Käse	0.9190641641616821
+dialogue_act	callee	32447	33857	provide_info:delivery_duration	45 Minuten	0.6545220017433167
+dialogue_act	callee	38087	39267	request_info:accept	soll ich die bestellen	0.9190641641616821
+dialogue_act	callee	41542	43022	request_info:address	bräuchte ich einmal die Adresse bitte	0.879119873046875
+dialogue_act	callee	48247	48577	confirm:address-0,address-1	Ja	1
+dialogue_act	callee	58022	58612	confirm:telephone	okay	0.9129353165626526
+dialogue_act	callee	58779	61329	confirm:accept	wunderbar dann ist das eine Wäsche soyana für zwei Personen	0.8528358936309814
+dialogue_act	callee	66899	68639	thanks	danke schön alles	0.8075382113456726
+dialogue_act	callee	69629	70499	goodbye	tschüss	0.7207422256469727

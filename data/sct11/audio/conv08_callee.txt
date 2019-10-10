@@ -1,0 +1,23 @@
+dialogue_act	callee	1050	2567	greeting:callee_name	Pizza Roma guten Tag	0.7489220499992371
+dialogue_act	callee	12317	12936	confirm	okay	0.912947416305542
+dialogue_act	callee	13234	15345	request_confirm:num_of_persons	für zwei Personen	0.8568494915962219
+dialogue_act	callee	16942	17332	stalling	Ehm	1
+dialogue_act	callee	17434	18832	request_confirm:pizza_type	vegetarisch	0.9190641641616821
+dialogue_act	callee	19246	19576	stalling	Ehm	1
+dialogue_act	callee	20434	21375	provide_info:price	17 €	0.9190641641616821
+dialogue_act	callee	24136	24416	confirm	Ja	1
+dialogue_act	callee	26000	26407	stalling	Ehm	1
+dialogue_act	callee	26583	27303	provide_info:pizza_name	Vegetarier	0.8449699282646179
+dialogue_act	callee	29757	29935	confirm	Ja	1
+dialogue_act	callee	31500	32932	request_info:address	sOliver	0.7129356265068054
+dialogue_act	callee	34476	36985	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	Spinat Champignons Tomaten und Käse	0.9190641045570374
+dialogue_act	callee	41200	43505	request_info:address	zeige mir schnell Ihre Adresse wo ich die liefern soll	0.8310787081718445
+dialogue_act	callee	46693	47015	confirm	Ja	1
+dialogue_act	callee	48873	49305	confirm:telephone-0,telephone-1	Ja	1
+dialogue_act	callee	50829	51083	confirm:telephone-2,telephone-3	Ja	1
+dialogue_act	callee	52531	52878	confirm:telephone-4	Liebe	0.729445219039917
+dialogue_act	callee	54400	55662	confirm:telephone-5,telephone-6	34	0.858015775680542
+dialogue_act	callee	56518	56985	confirm:telephone-7,telephone-8	Ja	1
+dialogue_act	callee	57339	57720	confirm	Ja	1
+dialogue_act	callee	58263	58924	welcome	bitteschön	0.810867190361023
+dialogue_act	callee	58924	59164	goodbye	Auf Wiedersehen	1

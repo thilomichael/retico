@@ -1,0 +1,25 @@
+dialogue_act	caller	3550	5380	greeting:caller_name	hallo mein Name ist Jeremy Klemen	0.8140659332275391
+dialogue_act	caller	5885	9914	provide_info:reason,num_of_persons,pizza_type	ich möchte gerne eine große Pizza für 2 Personen bevorzugt vegetarisch	0.8912157416343689
+dialogue_act	caller	22374	27067	confirm:toppings	Spinat Champignons Tomaten Käse das hört sich gut an	0.9190641641616821
+dialogue_act	caller	28056	28792	request_info:price	was kostet die	0.9190641641616821
+dialogue_act	caller	32077	33692	request_confirm:price	17 € für zwei Person	0.8672906756401062
+dialogue_act	caller	34273	34830	confirm:price	war das	0.6013430953025818
+dialogue_act	caller	35136	36764	provide_info:accept	gut dann würde ich sie gerne haben wollen	0.9166678190231323
+dialogue_act	caller	36842	38078	stalling:address	Ehm	1
+dialogue_act	caller	38244	43194	provide_partial:address-0,address-1	liefern Sie bitte in die Glücksburger Straße 41	0.8927188515663147
+dialogue_act	caller	48199	48928	provide_partial:address-2	in Bochum	0.9075613617897034
+dialogue_act	caller	51150	51650	confirm:address	genau	0.9190641641616821
+dialogue_act	caller	52327	53298	offer_info:telephone	eine Rückrufnummer	0.8617294430732727
+dialogue_act	caller	55543	55829	stalling:telephone	Ehm	1
+dialogue_act	caller	55894	57837	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	das ist 08.11	0.7771652936935425
+dialogue_act	caller	60414	61678	provide_partial:telephone-4,telephone-5,telephone-6	7 und 34	0.9190641641616821
+dialogue_act	caller	65382	66004	provide_partial:telephone-7,telephone-8	20	0.914585530757904
+dialogue_act	caller	70229	73143	request_info:delivery_duration	können Sie mir kurz noch sagen wann die Pizza ungefähr hier sein wird	0.8934465646743774
+dialogue_act	caller	77861	78689	confirm:delivery_duration	alles klar	0.9190642237663269
+dialogue_act	caller	80044	80316	confirm	Ja	1
+dialogue_act	caller	80865	81094	stalling:caller_name	Ehm	1
+dialogue_act	caller	81250	82979	provide_info:caller_name	Clemens ist der Nachname	0.8689072728157043
+dialogue_act	caller	87855	88319	confirm:delivery_duration	sehr schön	0.6480039954185486
+dialogue_act	caller	88423	88902	thanks	Danke	1
+dialogue_act	caller	90962	91269	welcome	bitte schön	1
+dialogue_act	caller	91314	91614	goodbye	Auf Wiedersehen	1

@@ -1,0 +1,12 @@
+dialogue_act	caller	2885	4871	greeting:caller_name	wir haben Tag mein Name ist Jeremy Klemen	0.7738242745399475
+dialogue_act	caller	4871	10690	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für zwei Personen und am besten vegetarisch an sie da eine	0.8631852865219116
+dialogue_act...	caller	17479	18022	confirm	okay	0.9148626327514648
+dialogue_act...	caller	23335	24845	request_info:toppings	dann kann ich mir kurz sagen was da drauf is	0.9028078317642212
+dialogue_act...	caller	29087	29979	request_info:price	und wie teuer ist sie	0.8780120015144348
+dialogue_act...	caller	32329	33451	confirm:price	okay dann nehme ich die	0.9190641045570374
+dialogue_act...	caller	36720	40427	provide_partial:address-0,address-1,address-2	das ist die Glücksburger Straße 41 in Bochum	0.8984289169311523
+dialogue_act...	caller	42190	44430	provide_info:caller_name	mein Name ist Jeremy Clemens	0.8851077556610107
+dialogue_act...	caller	46352	52481	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	und die Telefonnummer 08117 3420	0.9190642237663269
+dialogue_act...	caller	54634	55662	request_info:delivery_duration	wie lange dauert es ungefähr	0.9190641045570374
+dialogue_act...	caller	60264	61543	thanks	okay alles klar danke schön	0.9190641045570374
+dialogue_act...	caller	62664	62949	goodbye	Auf Wiedersehen	1

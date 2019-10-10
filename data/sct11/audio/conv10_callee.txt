@@ -1,0 +1,16 @@
+dialogue_act	callee	1300	3050	greeting:callee_name	guten Tag Pizzeria Roma	0.8910871744155884
+dialogue_act	callee	3120	4600	request_info:reason	was kann ich für Sie tun	0.9190641045570374
+dialogue_act	callee	18620	19160	confirm	okay	0.9000397324562073
+dialogue_act	callee	19270	19780	stalling	erben	0.7162011861801147
+dialogue_act	callee	20640	23730	provide_info:callee_name	da hätten wir die Vegetarier im Angebot	0.9190641045570374
+dialogue_act	callee	24165	27135	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	mit Spinat Champignons Tomaten und Käse	0.9098718762397766
+dialogue_act	callee	32375	33855	provide_info:price	das wären 17 €	0.9190641045570374
+dialogue_act	callee	41910	42350	confirm	Ja	1
+dialogue_act	callee	42350	44320	request_info:address	dann bräuchte ich noch mal die Adresse	0.9190641045570374
+dialogue_act	callee	51445	55045	confirm:address	41 in Bochum	0.8765081167221069
+dialogue_act	callee	60665	61595	confirm:telephone-2,telephone-3	11	0.891273021697998
+dialogue_act	callee	65620	65950	confirm:telephone-4,telephone-5,telephone-6	Ja	1
+dialogue_act	callee	70250	72280	confirm:telephone-7,telephone-8	20 alles klar	0.8702508211135864
+dialogue_act	callee	78385	80675	provide_info:delivery_duration	also das dauert ungefähr so 30 minuten	0.8827281594276428
+dialogue_act	callee	84515	85065	welcome	gerne	0.9073071479797363
+dialogue_act	callee	85165	85725	goodbye	tschüss	0.874336838722229

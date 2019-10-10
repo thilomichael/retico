@@ -1,0 +1,18 @@
+dialogue_act	callee	730	4480	greeting:callee_name	hallihallo Pizzeria Roma wie kann ich Ihnen helfen	0.8967812061309814
+dialogue_act	callee	21007	25727	provide_info:price	für zwei Personen kostet es 17 €	0.889349639415741
+dialogue_act	callee	26727	33027	provide_partial:toppings-0,toppings-1,toppings-2,toppings-3	sie besteht aus Spinat Champignons Tomaten Käse	0.8310897350311279
+dialogue_act	callee	36780	37040	confirm	Ja	1
+dialogue_act	callee	39007	40377	stalling	Ehm	1
+dialogue_act	callee	40606	44066	request_info:caller_name	die Pizza nicht unter welchen Namen reserviert	0.8775743246078491
+dialogue_act	callee	50546	51826	request_info:address	und die Adresse	0.8440647125244141
+dialogue_act	callee	58838	59438	confirm	Ja	1
+dialogue_act	callee	59441	59871	stalling	Ehm	1
+dialogue_act	callee	61060	61310	confirm	Ja	1
+dialogue_act	callee	62849	62949	stalling	Ehm	1
+dialogue_act	callee	62964	65914	request_info:telephone	könnten sie mir auch Ihre Telefonnummer geben zu sichern	0.7645019292831421
+dialogue_act	callee	69929	73929	confirm:telephone-0,telephone-1,telephone-2,telephone-3	8114	0.711071252822876
+dialogue_act	callee	76107	76787	confirm:telephone-4	Ja	1
+dialogue_act	callee	77557	78057	confirm	ja	0.9108808040618896
+dialogue_act	callee	82966	92076	request_confirm:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	0811 73420	0.5584332346916199
+dialogue_act	callee	97935	101425	provide_info:delivery_duration	ist die Pizza da ist ungefähr 40 Minuten	0.8313352465629578
+dialogue_act	callee	106875	107275	goodbye	Auf Wiedersehen	1

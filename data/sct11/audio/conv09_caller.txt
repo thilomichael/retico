@@ -1,0 +1,8 @@
+dialogue_act	caller	3280	6210	greeting:caller_name	hallo hier ist Jeremy Clemens	0.8913649916648865
+dialogue_act	caller	6240	10340	provide_info:reason,num_of_persons	ich hätte gerne eine große Pizza für zwei Personen	0.8701530694961548
+dialogue_act	caller	13840	16540	provide_info:pizza_type	ja am besten eine vegetarische	0.892435610294342
+dialogue_act	caller	25070	26400	request_info:toppings	was ist da drauf	0.8959210515022278
+dialogue_act	caller	30585	31445	confirm:toppings	alles klar	0.9190642237663269
+dialogue_act	caller	31860	34610	request_info:delivery_duration	wie lange dauert es eigentlich bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act	caller	38994	44514	provide_partial:address-0,address-1,address-2	die Lieferadresse wäre dann die Glücksburger Straße 41 in Bochum	0.8800000548362732
+dialogue_act	caller	48020	48420	thanks	Killer	0.7414711713790894

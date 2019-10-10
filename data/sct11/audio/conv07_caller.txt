@@ -1,0 +1,18 @@
+dialogue_act	caller	4545	7325	greeting:caller_name	ja hallo hier ist Jeremy die Clemens	0.8783183693885803
+dialogue_act	caller	7638	13611	provide_info:reason,num_of_persons,pizza_type	ich würde gerne eine große Pizza für zwei Personen bestellen wenn es geht vegetarisch	0.9035455584526062
+dialogue_act	caller	20854	21304	confirm	Ja	1
+dialogue_act	caller	25913	26354	confirm	Ja	1
+dialogue_act	caller	33218	34136	confirm	Ja	1
+dialogue_act	caller	35622	37686	confirm:pizza_type,price,toppings	dann nehme ich die Idee klingt super	0.8606500625610352
+dialogue_act	caller	44569	47496	provide_info:caller_name	Jeremy Klemens	0.7979941368103027
+dialogue_act	caller	51956	60250	provide_partial:address-0,address-1,address-2	das ist die Glücksburger Straße 41 in Bochum	0.9190641045570374
+dialogue_act	caller	66254	69575	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	das ist die 0811	0.8808633685112
+dialogue_act	caller	74171	75281	provide_partial:telephone-4,telephone-5	73	0.8884999752044678
+dialogue_act	caller	78337	80204	provide_partial:telephone-6,telephone-7,telephone-8	420	0.9190641641616821
+dialogue_act	caller	86117	86567	confirm	Ja	1
+dialogue_act	caller	88694	89180	confirm	Ja	1
+dialogue_act	caller	92980	93790	stalling	Ehm	1
+dialogue_act	caller	93925	97125	request_info:delivery_duration	wie lange dauert es ungefähr bis die Pizza da ist	0.9073135852813721
+dialogue_act	caller	101535	102021	confirm	Ja	1
+dialogue_act	caller	104701	105711	thanks	danke schön	0.9190642237663269
+dialogue_act	caller	105948	107287	goodbye	jo bis dann tschüss	0.9181992411613464

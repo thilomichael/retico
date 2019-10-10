@@ -1,0 +1,16 @@
+dialogue_act	caller	2400	2880	greeting	ja du	0.791673481464386
+dialogue_act	caller	2940	3850	provide_info:caller_name	femikliman	0.4555826783180237
+dialogue_act	caller	3900	8770	provide_info:reason,num_of_persons,pizza_type	ich möchte gerne eine große Pizza für zwei Personen bestellen und zwar am liebsten eine vegetarische Pizza	0.8674490451812744
+dialogue_act	caller	9795	11455	request_info:price	was hätten Sie denn dafür welchen Preis	0.791804850101471
+dialogue_act	caller	19980	21900	request_info:toppings	was ist denn da das als Belag drauf	0.9135134220123291
+dialogue_act	caller	25950	26880	confirm:toppings	ja das geht doch	0.9190641641616821
+dialogue_act	caller	34610	38470	provide_partial:address-0,address-1	ja 2 GTD von einem Glücksburger Straße 41	0.8194096088409424
+dialogue_act	caller	39765	40355	provide_partial:address-2	in Bochum	0.91108638048172
+dialogue_act	caller	41542	42322	stalling:caller_name	und	0.6117490530014038
+dialogue_act	caller	42326	43736	provide_info:caller_name	der Name Jamie Clemens	0.8827013969421387
+dialogue_act	caller	43982	45462	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3	der Nummer 0811	0.7933210134506226
+dialogue_act	caller	46467	47987	provide_partial:telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	73420	0.7633931636810303
+dialogue_act	caller	49922	52132	request_info:delivery_duration	wie lange dauert es ungefähr bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act	caller	55087	55547	confirm:delivery_duration	Luke	0.7172231674194336
+dialogue_act	caller	56432	57632	thanks	gut danke schön	0.9190641641616821
+dialogue_act	caller	58187	58617	goodbye	tschüss	0.8743345737457275

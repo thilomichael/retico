@@ -1,0 +1,14 @@
+dialogue_act	caller	2740	4950	greeting:callee_name	Zitate Jeremy Leben ist mein Name	0.7819522619247437
+dialogue_act	caller	4953	8913	provide_info:reason,num_of_persons,pizza_type	ich hätte gerne eine große Pizza für 2 Personen vegetarisch wär super	0.8578240871429443
+dialogue_act	caller	18890	19220	confirm	genau	0.9190641641616821
+dialogue_act	caller	23269	24809	request_confirm:price	17 € am	0.8740148544311523
+dialogue_act	caller	24809	30304	confirm:toppings-2,toppings-1,toppings-3,toppings-0	Tomaten Champignons Käse Spinat	0.8490697145462036
+dialogue_act	caller	30309	31109	confirm:toppings	hört sich gut an	0.9190641641616821
+dialogue_act	caller	31634	32694	stalling	Ehm	1
+dialogue_act	caller	34200	36200	request_info:delivery_duration	wie lange dauert das ungefähr bis die Pizza geliefert wird	0.9190641641616821
+dialogue_act	caller	45185	45585	confirm	Ja	1
+dialogue_act	caller	45585	54105	provide_partial:address-0,address-1,address-2	kommt dann in die Glücksburger Straße 41 Bochum	0.910925567150116
+dialogue_act	caller	61735	61955	stalling	Ehm	1
+dialogue_act	caller	61977	72467	provide_partial:telephone-0,telephone-1,telephone-2,telephone-3,telephone-4,telephone-5,telephone-6,telephone-7,telephone-8	Jan das ist die 0811 73420	0.8323317766189575
+dialogue_act	caller	82972	83182	confirm	Ja	1
+dialogue_act	caller	84837	85107	goodbye	Auf Wiedersehen	1

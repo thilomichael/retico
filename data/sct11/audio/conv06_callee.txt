@@ -1,0 +1,11 @@
+dialogue_act	callee	772	2129	greeting:callee_name	Pizzeria Romana Hallo	0.8532049655914307
+dialogue_act	callee	11842	14543	provide_info:pizza_name,price	haben wir die Vegetarier für 17 €	0.8809004426002502
+dialogue_act	callee	17551	19772	provide_partial:toppings-1,toppings-2,toppings-3,toppings-4	mit Spinat Champignons Tomaten und Käse	0.9070020914077759
+dialogue_act	callee	29182	30903	provide_info:price	17 € für 2 Personen	0.8533691763877869
+dialogue_act	callee	32927	34239	request_info:caller_name	bräuchte ich ihren Namen bitte	0.8534861207008362
+dialogue_act	callee	39072	39877	request_info:address	die Adresse bitte	0.8063080906867981
+dialogue_act	callee	44693	45434	request_info:telephone	und das Telefon	0.8328475952148438
+dialogue_act	callee	50897	51527	confirm:telephone	Ja	1
+dialogue_act	callee	53525	54577	provide_info:delivery_duration	30 Minuten zurück	0.9190641641616821
+dialogue_act	callee	56136	56435	welcome	bitte schön	1
+dialogue_act	callee	56444	56723	goodbye	Auf Wiedersehen	1

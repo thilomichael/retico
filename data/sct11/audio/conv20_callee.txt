@@ -1,0 +1,11 @@
+dialogue_act	callee	580	1920	greeting:callee_name	Hallo Pizzeria Roma	0.8805553913116455
+dialogue_act	callee	14150	18420	provide_partial:toppings-0,toppings-1,toppings-2	da hätten wir die mit Spinat und Pilzen und Tomate	0.9190641641616821
+dialogue_act	callee	34515	35940	provide_info:price	würde 17 € kosten	0.9065925478935242
+dialogue_act	callee	38032	38465	confirm:price	Ja	1
+dialogue_act	callee	44307	44741	confirm:address-0,address-1,address-2	Ja	1
+dialogue_act	callee	46591	47299	confirm:address-2	Bochum	0.9190641641616821
+dialogue_act	callee	53890	54498	confirm:telephone	okay	0.9083467721939087
+dialogue_act	callee	55965	56532	confirm:telephone	habe ich notiert	0.9190641641616821
+dialogue_act	callee	58640	58965	stalling:delivery_duration	Ehm	1
+dialogue_act	callee	58965	60898	provide_info:delivery_duration	das sind so 20 bis 30 Minuten etwa	0.8880186080932617
+dialogue_act	callee	66241	66774	goodbye	tschüss	0.8743349313735962
