@@ -118,7 +118,7 @@ m1.stop()
 m2.stop()
 ```
 
-This example will create a simple network consisting of a MicrophoneModule that gives it's output to the StreamingSpeakerModule, which just outputs the incoming data to the speaker.
+This example will create a simple network consisting of a MicrophoneModule that gives its output to the StreamingSpeakerModule, which just outputs the incoming data to the speaker.
 
 
 ### With the GUI
