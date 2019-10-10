@@ -8,6 +8,7 @@ from hashlib import blake2b
 
 from retico.core import abstract, text, audio
 
+
 class MaryTTS:
     """
     A mary TTS class that is able to return the audio as pcm.
@@ -20,8 +21,14 @@ class MaryTTS:
     TEMP_DIR = "/tmp"
     TEMP_NAME = "tmp_tts_%s" % random.randint(1000, 10000)
 
-    def __init__(self, language_code="de", voice_name="bits1-hsmm",
-                 server_address="127.0.0.1", server_port=59125, caching=True):
+    def __init__(
+        self,
+        language_code="de",
+        voice_name="bits1-hsmm",
+        server_address="127.0.0.1",
+        server_port=59125,
+        caching=True,
+    ):
         """
         Creates a Mart TTS instance with the specified language_code and voice_name.
         The valid values can be looked up [here](http://mary.dfki.de/documentation/index.html).
@@ -39,8 +46,8 @@ class MaryTTS:
         self.server_port = server_port
         self.caching = caching
 
-        self.wav_sample_rate = 44100 # 44100 sample rate / See ffmpeg
-        self.wav_codec = "pcm_s16le" # 16-bit little endian codec / See ffmpeg
+        self.wav_sample_rate = 44100  # 44100 sample rate / See ffmpeg
+        self.wav_codec = "pcm_s16le"  # 16-bit little endian codec / See ffmpeg
 
         # Create caching directory if it not already exists
         if not os.path.exists(self.CACHING_DIR):
@@ -58,11 +65,11 @@ class MaryTTS:
 
         """
         h = blake2b(digest_size=16)
-        h.update(bytes(text, 'utf-8'))
-        h.update(bytes(self.voice_name, 'utf-8'))
-        h.update(bytes(self.language_code, 'utf-8'))
-        h.update(bytes(self.wav_codec, 'utf-8'))
-        h.update(bytes(str(self.wav_sample_rate), 'utf-8')) # Wait this makes no sense. FIXME
+        h.update(bytes(text, "utf-8"))
+        h.update(bytes(self.voice_name, "utf-8"))
+        h.update(bytes(self.language_code, "utf-8"))
+        h.update(bytes(self.wav_codec, "utf-8"))
+        h.update(bytes(str(self.wav_sample_rate), "utf-8"))  # Does this make sense?
         text_digest = h.hexdigest()
 
         return os.path.join(self.CACHING_DIR, text_digest)
@@ -81,12 +88,12 @@ class MaryTTS:
         cache_path = self.get_cache_path(text)
         if os.path.isfile(cache_path):
             wav_audio = None
-            with open(cache_path, 'rb') as cfile:
+            with open(cache_path, "rb") as cfile:
                 wav_audio = cfile.read()
         else:
             mtts_audio = self.mary_tts_call(text)
             wav_audio = self.convert_audio(mtts_audio)
-            with open(cache_path, 'wb') as cfile:
+            with open(cache_path, "wb") as cfile:
                 cfile.write(wav_audio)
 
         return wav_audio
@@ -100,9 +107,12 @@ class MaryTTS:
         Returns (bytes): Audio data in WAVE format as bytes.
 
         """
-        h1 = http.client.HTTPConnection("%s:%d" % (self.server_address, self.server_port))
+        h1 = http.client.HTTPConnection(f"{self.server_address}:{self.server_port}")
         text = urllib.parse.quote_plus(text)
-        request_str = "/process?INPUT_TEXT=%s&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&AUDIO=WAVE_FILE&LOCALE=%s&VOICE=%s" % (text, self.language_code, self.voice_name)
+        request_str = (
+            "/process?INPUT_TEXT=%s&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&AUDIO=WAVE_FILE&LOCALE=%s&VOICE=%s"
+            % (text, self.language_code, self.voice_name)
+        )
         h1.request("GET", request_str)
 
         r1 = h1.getresponse()
@@ -126,15 +136,27 @@ class MaryTTS:
         tmp_mary_path = os.path.join(self.TEMP_DIR, tmp_mary_name)
         tmp_wav_path = os.path.join(self.TEMP_DIR, tmp_wav_name)
 
-        with open(tmp_mary_path, 'wb') as f:
+        with open(tmp_mary_path, "wb") as f:
             f.write(audio)
 
-        subprocess.call(["ffmpeg", "-i", tmp_mary_path, "-acodec", self.wav_codec, "-ar", str(self.wav_sample_rate), tmp_wav_path, "-y"],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL)
+        subprocess.call(
+            [
+                "ffmpeg",
+                "-i",
+                tmp_mary_path,
+                "-acodec",
+                self.wav_codec,
+                "-ar",
+                str(self.wav_sample_rate),
+                tmp_wav_path,
+                "-y",
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
 
         wav_audio = None
-        with wave.open(tmp_wav_path, 'rb') as wav_file:
+        with wave.open(tmp_wav_path, "rb") as wav_file:
             w_length = wav_file.getnframes()
             wav_audio = wav_file.readframes(w_length)
 
@@ -144,8 +166,10 @@ class MaryTTS:
 
         return wav_audio
 
+
 class MaryTTSModule(abstract.AbstractModule):
     """A Mary TTS Module that uses Marry TTS to synthesize audio."""
+
     @staticmethod
     def name():
         return "Mary TTS Module"
@@ -162,14 +186,24 @@ class MaryTTSModule(abstract.AbstractModule):
     def output_iu():
         return audio.common.SpeechIU
 
-    def __init__(self, language_code, voice_name, server_address="localhost", server_port=59125, caching=True, **kwargs):
+    def __init__(
+        self,
+        language_code,
+        voice_name,
+        server_address="localhost",
+        server_port=59125,
+        caching=True,
+        **kwargs,
+    ):
         super().__init__(**kwargs)
         self.language_code = language_code
         self.voice_name = voice_name
         self.server_address = server_address
         self.server_port = server_port
         self.caching = caching
-        self.mtts = MaryTTS(language_code, voice_name, server_address, server_port, caching)
+        self.mtts = MaryTTS(
+            language_code, voice_name, server_address, server_port, caching
+        )
         self.sample_width = 2
         self.rate = 44100
 

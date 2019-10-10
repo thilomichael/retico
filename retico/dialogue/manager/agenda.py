@@ -243,11 +243,16 @@ class ActGuider:
 
         """
         # TODO: Refactor this!
+        if isinstance(entities, str):
+            entities = {entities: ""}
+        if isinstance(entities, dict):
+            entities = list(entities.keys())
         entities_string = ",".join(entities)
 
         # If the dialogue act is not at all in the available acts, "stalling" is
         # the fallback
         if not self.guide.get(act):
+            print("COULD NOT FIND", act)
             return self.DA_FALLBACK, []
 
         # If there are no entities, we can just return the act.
@@ -267,10 +272,10 @@ class ActGuider:
             if entities[0] in e:
                 good = True
                 if act == "provide_info" or act == "provide_partial":
-                    # print("-->", act, e)
                     for ent in e.split(","):
                         if agenda.has_field(ent) and agenda.fields[ent].confirmed:
                             good = False
+                            break
                 if good:
                     best_u.append((act, e.split(",")))
                 possible_u.append((act, e.split(",")))
@@ -282,6 +287,7 @@ class ActGuider:
             if "-" in entities[-1]:  # Evil hack for partials
                 # We have a problem
                 partial_int = int(entities[-1].split("-")[1])
+                return_them = []
                 for a, es in possible_u:
                     not_good = False
                     for e in es:
@@ -293,9 +299,16 @@ class ActGuider:
                                 not_good = True
                     if not_good:
                         continue
+                    return_them.append((a, es))
+                if len(return_them) > 0:
+                    a, es = random.choice(return_them)
+                    if len(es) == 1:
+                        a, es = random.choice(return_them)
                     return a, es
                 if act == "provide_partial":
                     return random.choice(possible_u)
+                if act == "confirm":
+                    return "confirm", []
             else:
                 return random.choice(possible_u)
 
@@ -322,7 +335,8 @@ class ActGuider:
         if act == "request_info" and entities == ["callee_name"]:
             return "greeting", []
 
-        return "stalling", []
+        print("RETURN STALLING BECAUSE WE DONT HAVE", act, entities)
+        return "stalling", []  # Instead of throwing an error, we just stall
         assert False, "Could not find utterance for %s - %s" % (act, entities)
 
 
@@ -359,7 +373,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return None, None
 
     def _rule_PROVIDE_INFO(self, entities):
-        if random.random() < 0.41:
+        if random.random() < 0.23:
             return self.DA_REQUEST_CONFIRM, entities
         return self.DA_CONFIRM, entities
 
@@ -393,6 +407,8 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def _rule_THANKS(self, entities):
         self.thanked = True
+        if random.random() < 0.06:
+            return self.DA_GOODBYE, []
         return self.DA_WELCOME, []
 
     def _rule_WELCOME(self, entities):
@@ -458,12 +474,26 @@ class AgendaDialogueManager(AbstractDialogueManager):
                 self.agenda.mention_field("callee_name")
                 return self.DA_GREETING, ["callee_name"]
             return self.DA_GREETING, []
+
         if self.stack:
             act, entities = self.stack.pop(0)
+            if entities:
+                ent = entities[0]
+                while self.agenda.has_field(ent) and self.agenda.fields[ent].confirmed:
+                    if not self.stack:
+                        break
+                    act, entities = self.stack.pop(0)
+                    if not entities:
+                        break
+                    ent = entities[0]
             return act, entities
+
         current_field = self.agenda.next_field()
         if not current_field:
+            if random.random() < 0.02:
+                self.thanked = True
             if not self.thanked:
+                self.thanked = True
                 return self.DA_THANKS, []
             self.dialogue_finished = True
             return self.DA_GOODBYE, []
@@ -478,12 +508,9 @@ class AgendaDialogueManager(AbstractDialogueManager):
 
     def next_act(self):
         act, entities = self.create_next_act()
-        if act == self.DA_OFFER_INFO:
-            print("OFFER INFO", act, entities)
         real_act, real_entities = self.act_guider.guide_utterance(
             act, entities, self.agenda
         )
-        print("  ", real_act, real_entities)
 
         if real_act == "provide_info" or real_act == "provide_partial":
             self.provided_entities = real_entities
@@ -512,7 +539,7 @@ class AgendaDialogueManager(AbstractDialogueManager):
             self.stack.pop(0)
         if (act, entities) not in self.stack:
             self.stack.insert(0, tup)
-        if random.random() < 0.15:
+        if random.random() < 0.07:
             self.stack.insert(0, (self.DA_STALLING, {}))
 
     def process_act(self, act, entities):
