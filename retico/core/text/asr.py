@@ -3,6 +3,8 @@ A module that helps transforming text to be used for synthesis.
 """
 
 from retico.core import abstract, text
+
+
 class TextDispatcherModule(abstract.AbstractModule):
     """
     A Moduel that turns SpeechRecognitionIUs or TextIUs into GeneratedTextIUs
@@ -17,8 +19,9 @@ class TextDispatcherModule(abstract.AbstractModule):
 
     @staticmethod
     def description():
-        return "A module that uses SpeechRecognition IUs and outputs" + \
-               " dispatchable IUs"
+        return (
+            "A module that uses SpeechRecognition IUs and outputs" + " dispatchable IUs"
+        )
 
     @staticmethod
     def input_ius():
@@ -41,8 +44,8 @@ class TextDispatcherModule(abstract.AbstractModule):
         output_iu.dispatch = True
         return output_iu
 
-class IncrementalizeASRModule(abstract.AbstractModule):
 
+class IncrementalizeASRModule(abstract.AbstractModule):
     @staticmethod
     def name():
         return "Incrementalize ASR Module"
@@ -61,24 +64,44 @@ class IncrementalizeASRModule(abstract.AbstractModule):
 
     def __init__(self, threshold=0.8, **kwargs):
         super().__init__(**kwargs)
-        self.last_text = None
+        self.last_ius = []
         self.threshold = threshold
+
+    def get_increment(self, new_text):
+        """Compares the full text given by the asr with the IUs that are already
+        produced and returns only the increment from the last update. It revokes all
+        previously produced IUs that do not match."""
+        for iu in self.last_ius:
+            if new_text.startswith(iu.text):
+                new_text = new_text[len(iu.text) :]
+            else:
+                iu.revoked = True
+        self.last_ius = [iu for iu in self.last_ius if not iu.revoked]
+        return new_text
 
     def process_iu(self, input_iu):
         if input_iu.stability < self.threshold and input_iu.confidence == 0.0:
             return None
         current_text = input_iu.get_text()
-        if self.last_text:
-            if self.last_text == current_text:
-                return None
-            current_text = current_text.replace(self.last_text, "")
-        self.last_text = input_iu.get_text()
-        output_iu = self.create_iu(input_iu)
-        # Just copy the input IU
+        if self.last_ius:
+            current_text = self.get_increment(current_text)
+        if current_text.strip() == "":
+            return None
 
-        output_iu.set_asr_results(input_iu.predictions,
-                                  current_text,
-                                  input_iu.stability,
-                                  input_iu.confidence,
-                                  input_iu.final)
+        output_iu = self.create_iu(input_iu)
+
+        # Just copy the input IU
+        output_iu.set_asr_results(
+            input_iu.predictions,
+            current_text,
+            input_iu.stability,
+            input_iu.confidence,
+            input_iu.final,
+        )
+        self.last_ius.append(output_iu)
+
+        if output_iu.final:
+            self.last_ius = []
+            output_iu.committed = True
+
         return output_iu

@@ -4,7 +4,7 @@ from retico.core import abstract
 from retico.core.text.common import SpeechRecognitionIU
 from retico.core.dialogue.common import DialogueActIU
 
-from rasa_nlu.model import Interpreter
+from rasa.nlu.model import Interpreter
 
 
 class RasaNLUModule(abstract.AbstractModule):
@@ -33,7 +33,7 @@ class RasaNLUModule(abstract.AbstractModule):
     def output_iu():
         return DialogueActIU
 
-    def __init__(self, model_dir, **kwargs):
+    def __init__(self, model_dir, incremental=False, **kwargs):
         """Initializes the RasaNLUModule.
 
         Args:
@@ -43,13 +43,34 @@ class RasaNLUModule(abstract.AbstractModule):
         super().__init__(**kwargs)
         self.model_dir = model_dir
         self.interpreter = None
+        self.incremental = incremental
+        self.lb_hypotheses = []
         self.cache = None
+        self.started_prediction = False
+
+    def get_current_text(self, input_iu):
+        if not self.incremental:
+            txt = input_iu.get_text()
+            if txt == self.cache:
+                return None
+            self.cache = txt
+            return txt
+        else:
+            self.lb_hypotheses.append(input_iu)
+            self.lb_hypotheses = [iu for iu in self.lb_hypotheses if not iu.revoked]
+            txt = ""
+            for iu in self.lb_hypotheses:
+                txt += iu.get_text()
+            if input_iu.committed:
+                self.lb_hypotheses = []
+            return txt
 
     def process_iu(self, input_iu):
-        if input_iu.get_text() == self.cache:
+        current_text = self.get_current_text(input_iu)
+        if not current_text:
             return None
-        self.cache = input_iu.get_text()
-        result = self.interpreter.parse(input_iu.get_text())
+        print(f"Current text '{current_text}'")
+        result = self.interpreter.parse(current_text)
         concepts = {}
         for entity in result.get("entities"):
             concepts[entity["entity"]] = entity["value"]
@@ -57,6 +78,15 @@ class RasaNLUModule(abstract.AbstractModule):
         confidence = result["intent"]["confidence"]
         output_iu = self.create_iu(input_iu)
         output_iu.set_act(act, concepts, confidence)
+        piu = output_iu.previous_iu
+        if piu:
+            if piu.act != output_iu.act or piu.concepts != output_iu.concepts:
+                piu.revoked = True
+        if input_iu.committed:
+            output_iu.committed = True
+            self.started_prediction = False
+        else:
+            self.started_prediction = True
         return output_iu
 
     def setup(self):

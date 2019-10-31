@@ -94,6 +94,9 @@ class IncrementalUnit:
         self.payload = payload
         self.mutex = threading.Lock()
 
+        self.committed = False
+        self.revoked = False
+
         self.meta_data = {}
         if grounded_in:
             self.meta_data = {**grounded_in.meta_data}
