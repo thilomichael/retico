@@ -7,11 +7,11 @@ import random
 
 from retico.dialogue.common import AbstractDialogueManager
 
-from rasa_core.agent import Agent
-from rasa_core.policies.keras_policy import  KerasPolicy
+from rasa.core.agent import Agent
+from rasa.core.policies.keras_policy import KerasPolicy
+
 
 class RandomChoicePolicy(KerasPolicy):
-
     def predict_action_probabilities(self, tracker, domain):
         """This function activates the RNN to predict the next action, but then
         does a dice roll and sets the "winning" action to a probability of 100%"""
@@ -19,15 +19,27 @@ class RandomChoicePolicy(KerasPolicy):
         # print("PREDICTIONS", predictions[0])
         predictions[0] = 0
 
-        total = sum(predictions) # This is the sum of all predictions, should be close to 1
-        new_predictions = [0.0] * len(predictions) # This is the new predictions array. Initially all values are set to 0.0
+        total = sum(
+            predictions
+        )  # This is the sum of all predictions, should be close to 1
+        new_predictions = [0.0] * len(
+            predictions
+        )  # This is the new predictions array. Initially all values are set to 0.0
 
         # This algorithm results in chosing each element in the array with the percentage it contains
-        random_choice = random.uniform(0, total) # Now we chose a number between 0 and 1
-        for i, value in enumerate(predictions): # Go over every prediction of the real model
-            random_choice -= value # Substract the current prediction from our random number
-            if random_choice < 0: # If we hit 0, we take the element
-                new_predictions[i] = 1.0 # Set the probability of that prediction to 100 %
+        random_choice = random.uniform(
+            0, total
+        )  # Now we chose a number between 0 and 1
+        for i, value in enumerate(
+            predictions
+        ):  # Go over every prediction of the real model
+            random_choice -= (
+                value
+            )  # Substract the current prediction from our random number
+            if random_choice < 0:  # If we hit 0, we take the element
+                new_predictions[
+                    i
+                ] = 1.0  # Set the probability of that prediction to 100 %
                 break
 
         # print(new_predictions)
@@ -56,25 +68,18 @@ def train():
 
     caller_train_data = caller_agent.load_data(caller_training)
     caller_agent.train(
-        caller_train_data,
-        epochs=100,
-        batch_size=100,
-        validation_split=0.2
+        caller_train_data, epochs=100, batch_size=100, validation_split=0.2
     )
     caller_agent.persist(caller_model_path)
 
     callee_train_data = callee_agent.load_data(callee_training)
     callee_agent.train(
-        callee_train_data,
-        epochs=100,
-        batch_size=100,
-        validation_split=0.2
+        callee_train_data, epochs=100, batch_size=100, validation_split=0.2
     )
     callee_agent.persist(callee_model_path)
 
 
 class RasaDialogueManager(AbstractDialogueManager):
-
     def __init__(self, model_dir):
         self.agent = Agent.load(model_dir)
         self.acts = []
@@ -103,5 +108,6 @@ class RasaDialogueManager(AbstractDialogueManager):
         print(act, " - ", entities)
         return act, entities
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     train()
