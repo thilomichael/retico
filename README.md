@@ -67,7 +67,7 @@ In the ReTiCo Builder, the modules won't appear in the list of available modules
 
 ### Google Cloud Speech
 
-To use the Automatic Speech Recognition module utilizing google cloud speech, you need to install the thrid party package first.
+To use the Automatic Speech Recognition module utilizing google cloud speech, you need to install the third party package first.
 
 For this you may follow the first two steps of [this tutorial](https://cloud.google.com/speech-to-text/docs/quickstart-client-libraries#client-libraries-install-python).
 
