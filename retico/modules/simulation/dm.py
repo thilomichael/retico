@@ -521,7 +521,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
                     0.169563 * (-1 + 1 / self.rnd)
                 )  # GANDO RNV1
                 if result > 0:
-                    result *= 0.5
+                    result -= 0.5
 
         return result
 

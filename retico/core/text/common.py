@@ -44,10 +44,16 @@ class SpeechRecognitionIU(TextIU):
     def type():
         return "Speech Recgonition IU"
 
-    def __init__(self, creator, iuid=0, previous_iu=None, grounded_in=None,
-                 payload=None):
-        super().__init__(creator, iuid=iuid, previous_iu=previous_iu,
-                         grounded_in=grounded_in, payload=payload)
+    def __init__(
+        self, creator, iuid=0, previous_iu=None, grounded_in=None, payload=None
+    ):
+        super().__init__(
+            creator,
+            iuid=iuid,
+            previous_iu=previous_iu,
+            grounded_in=grounded_in,
+            payload=payload,
+        )
         self.predictions = None
         self.stability = None
         self.confidence = None

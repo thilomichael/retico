@@ -241,6 +241,8 @@ class StreamingSpeakerModule(abstract.AbstractConsumingModule):
             stream_callback=self.callback,
             frames_per_buffer=self.chunk_size,
         )
+
+    def prepare_run(self):
         self.stream.start_stream()
 
     def shutdown(self):
@@ -418,7 +420,7 @@ class AudioDispatcherModule(abstract.AbstractModule):
                         self.append(current_iu)
             time.sleep((self.target_chunk_size / self.rate) / self.speed)
 
-    def setup(self):
+    def prepare_run(self):
         self.run_loop = True
         t = threading.Thread(target=self._dispatch_audio_loop)
         t.start()

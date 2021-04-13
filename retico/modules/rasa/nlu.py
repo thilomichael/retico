@@ -1,7 +1,7 @@
 """A module for Natural Language Understanding provided by rasa_nlu"""
 
 from retico.core import abstract
-from retico.core.text.common import SpeechRecognitionIU
+from retico.core.text.common import TextIU
 from retico.core.dialogue.common import DialogueActIU
 
 from rasa.nlu.model import Interpreter
@@ -27,7 +27,7 @@ class RasaNLUModule(abstract.AbstractModule):
 
     @staticmethod
     def input_ius():
-        return [SpeechRecognitionIU]
+        return [TextIU]
 
     @staticmethod
     def output_iu():
@@ -90,4 +90,5 @@ class RasaNLUModule(abstract.AbstractModule):
         return output_iu
 
     def setup(self):
-        self.interpreter = Interpreter.load(self.model_dir)
+        if self.interpreter is None:
+            self.interpreter = Interpreter.load(self.model_dir)

@@ -1,2 +1,2 @@
 pyaudio~=0.2.11
-flexx~=0.4.2
+flexx~=0.8
