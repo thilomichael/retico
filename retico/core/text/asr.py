@@ -3,6 +3,7 @@ A module that helps transforming text to be used for synthesis.
 """
 
 from retico.core import abstract, text
+from retico.core.prosody.common import EndOfTurnIU
 
 
 class TextDispatcherModule(abstract.AbstractModule):
@@ -105,3 +106,30 @@ class IncrementalizeASRModule(abstract.AbstractModule):
             output_iu.committed = True
 
         return output_iu
+
+
+class EndOfUtteranceModule(abstract.AbstractModule):
+    @staticmethod
+    def name():
+        return "End of Utterance Module"
+
+    @staticmethod
+    def description():
+        return "A module that takes forwards the end of utterance from the ASR output"
+
+    @staticmethod
+    def input_ius():
+        return [text.common.SpeechRecognitionIU]
+
+    @staticmethod
+    def output_iu():
+        return EndOfTurnIU
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def process_iu(self, input_iu):
+        if input_iu.final:
+            outiu = self.create_iu(input_iu)
+            outiu.set_eot(1.0, False)
+            return outiu
