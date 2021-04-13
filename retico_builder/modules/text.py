@@ -3,6 +3,7 @@ from retico.core.text import asr
 from retico.core.dialogue import io
 from retico.core.text import io as textio
 
+
 class TextDispatcherModule(AbstractModule):
 
     MODULE = asr.TextDispatcherModule
@@ -16,6 +17,22 @@ class TextDispatcherModule(AbstractModule):
         latest_iu = self.retico_module.latest_iu()
         if latest_iu:
             self.gui.update_info("Current text:<br>%s" % latest_iu.payload)
+
+
+class EndOfUtteranceModule(AbstractModule):
+
+    MODULE = asr.EndOfUtteranceModule
+    PARAMETERS = {}
+
+    def set_content(self):
+        self.gui.clear_content()
+        self.gui.add_info("End of Utterance Module")
+
+    def update_running_info(self):
+        latest_iu = self.retico_module.latest_iu()
+        if latest_iu:
+            self.gui.update_info("End of utterance:<br>%s" % latest_iu.is_speaking)
+
 
 class IncrementalizeASRModule(AbstractModule):
 
@@ -31,6 +48,7 @@ class IncrementalizeASRModule(AbstractModule):
         if latest_iu:
             self.gui.update_info("Current text:<br>%s" % latest_iu.payload)
 
+
 class DialogueActRecorderModule(AbstractModule):
 
     MODULE = io.DialogueActRecorderModule
@@ -44,6 +62,7 @@ class DialogueActRecorderModule(AbstractModule):
         latest_iu = self.retico_module.latest_iu()
         if latest_iu:
             self.gui.update_info("Current act:<br>%s" % latest_iu.act)
+
 
 class TextRecorderModule(AbstractModule):
 

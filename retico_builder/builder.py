@@ -20,6 +20,7 @@ except ImportError:
 flx.assets.associate_asset(__name__, "http://localhost:8000/interact.js")
 flx.assets.associate_asset(__name__, "http://localhost:8000/style.css")
 
+
 class ReticoBuilder(flx.PyComponent):
     """The main connection between the GUI (JS) and the Model (Python).
     The ReticoBuilder object lives on the Python-side and has access to all
@@ -64,7 +65,9 @@ class ReticoBuilder(flx.PyComponent):
             gui.set_parent(None)
             gui.dispose()
             return
-        pymodule = modlist.MODULE_LIST[parent][module_type](gui, params, None, flx_session=self.session)
+        pymodule = modlist.MODULE_LIST[parent][module_type](
+            gui, params, None, flx_session=self.session
+        )
         self.modules[id(gui)] = pymodule
         gui.set_mtitle(pymodule.retico_module.name())
         pymodule.enable_buttons()
@@ -85,14 +88,16 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def init_out_click(self, gui):
-        if self.running: # If the network is in running state we do not allow to make new connections
+        if (
+            self.running
+        ):  # If the network is in running state we do not allow to make new connections
             return
         module = self.modules[id(gui)]
         out_iu = module.MODULE.output_iu()
 
         self.set_connecting_state(True)
         self.connecting_module = gui
-        self.connecting_direction = 'out'
+        self.connecting_direction = "out"
 
         gui.highlight(True, "border")
         for m in self.modules.values():
@@ -101,14 +106,16 @@ class ReticoBuilder(flx.PyComponent):
 
     @flx.action
     def init_in_click(self, gui):
-        if self.running: # If the network is in running state we do not allow to make new connections
+        if (
+            self.running
+        ):  # If the network is in running state we do not allow to make new connections
             return
         module = self.modules[id(gui)]
         in_ius = module.MODULE.input_ius()
 
         self.set_connecting_state(True)
         self.connecting_module = gui
-        self.connecting_direction = 'in'
+        self.connecting_direction = "in"
 
         gui.highlight(True, "border")
         for m in self.modules.values():
@@ -120,7 +127,7 @@ class ReticoBuilder(flx.PyComponent):
         if self.running:
             return
         if gui != self.connecting_module:
-            if self.connecting_direction == 'in':
+            if self.connecting_direction == "in":
                 in_module = self.modules[id(self.connecting_module)]
                 out_module = self.modules[id(gui)]
             else:
@@ -241,7 +248,9 @@ class ReticoBuilder(flx.PyComponent):
     def register_existing_module(self, type, parent, gui, mid):
         m = self.load_map[mid]
         self.load_map[mid] = gui
-        pymodule = modlist.MODULE_LIST[parent][type](gui, None, m, flx_session=self.session)
+        pymodule = modlist.MODULE_LIST[parent][type](
+            gui, None, m, flx_session=self.session
+        )
         self.modules[id(gui)] = pymodule
         gui.set_mtitle(pymodule.retico_module.name())
         pymodule.enable_buttons()
@@ -261,8 +270,8 @@ class ReticoBuilder(flx.PyComponent):
     def handle_trigger(self, gui, text):
         self.modules[id(gui)].handle_trigger(text)
 
-class ReticoWidget(flx.Widget):
 
+class ReticoWidget(flx.Widget):
     def init(self, model, module_list, file_list):
         self.model = model
         self.connection_list = []
@@ -271,7 +280,9 @@ class ReticoWidget(flx.Widget):
             with flx.Widget(flex=3):
                 self.mpane = ModulePane(self)
             with flx.Widget(flex=1):
-                self.menu = MenuPane(self, self.mpane, module_list, file_list, style="height:100%;")
+                self.menu = MenuPane(
+                    self, self.mpane, module_list, file_list, style="height:100%;"
+                )
 
     def clear(self):
         self.connection_list = []
@@ -333,7 +344,9 @@ class ReticoWidget(flx.Widget):
 
     def draw_strokes(self):
         canvas = self.mpane.canvas.node.getContext("2d")
-        canvas.clearRect(0, 0, self.mpane.canvas.node.width, self.mpane.canvas.node.height)
+        canvas.clearRect(
+            0, 0, self.mpane.canvas.node.width, self.mpane.canvas.node.height
+        )
         for (f, t) in self.connection_list:
             f_rect = f.node.getBoundingClientRect()
             t_rect = t.node.getBoundingClientRect()
@@ -350,12 +363,12 @@ class ReticoWidget(flx.Widget):
             t_rect_top = t_rect.top + mpanenode.scrollTop
 
             from_x, from_y = f.in_pos()
-            if f_rect_right < t_rect_left-40:
+            if f_rect_right < t_rect_left - 40:
                 from_x = f_rect_right
             else:
                 from_x = f_rect_left
             to_x, to_y = t.out_pos()
-            if t_rect_left < f_rect_right+40:
+            if t_rect_left < f_rect_right + 40:
                 to_x = t_rect_right
                 to_arrow_direction = +1
             else:
@@ -363,42 +376,43 @@ class ReticoWidget(flx.Widget):
                 to_arrow_direction = -1
             half_x = from_x + ((to_x - from_x) / 2)
             if t_rect_top > f_rect_top:
-                half_y = t_rect_top + ((f_rect_bottom - t_rect_top)/2)
+                half_y = t_rect_top + ((f_rect_bottom - t_rect_top) / 2)
             else:
-                half_y = f_rect_top + ((t_rect_bottom - f_rect_top)/2)
+                half_y = f_rect_top + ((t_rect_bottom - f_rect_top) / 2)
             canvas.beginPath()
-            canvas.strokeStyle = '#fff'
+            canvas.strokeStyle = "#fff"
             canvas.lineWidth = 3
-            canvas.lineCap = 'round'
-            if f_rect_right > t_rect_left-40 and f_rect_left < t_rect_right+40:
+            canvas.lineCap = "round"
+            if f_rect_right > t_rect_left - 40 and f_rect_left < t_rect_right + 40:
                 canvas.moveTo(from_x, from_y)
-                canvas.lineTo(f_rect_left-20, from_y)
-                canvas.lineTo(f_rect_left-20, half_y)
-                canvas.lineTo(t_rect_right+20, half_y)
-                canvas.lineTo(t_rect_right+20, to_y)
+                canvas.lineTo(f_rect_left - 20, from_y)
+                canvas.lineTo(f_rect_left - 20, half_y)
+                canvas.lineTo(t_rect_right + 20, half_y)
+                canvas.lineTo(t_rect_right + 20, to_y)
                 canvas.lineTo(to_x, to_y)
-                canvas.lineTo(to_x+(6*to_arrow_direction), to_y-4)
-                canvas.lineTo(to_x+(6*to_arrow_direction), to_y+4)
+                canvas.lineTo(to_x + (6 * to_arrow_direction), to_y - 4)
+                canvas.lineTo(to_x + (6 * to_arrow_direction), to_y + 4)
                 canvas.lineTo(to_x, to_y)
             else:
                 canvas.moveTo(from_x, from_y)
                 canvas.lineTo(half_x, from_y)
                 canvas.lineTo(half_x, to_y)
                 canvas.lineTo(to_x, to_y)
-                canvas.lineTo(to_x+(6*to_arrow_direction), to_y-4)
-                canvas.lineTo(to_x+(6*to_arrow_direction), to_y+4)
+                canvas.lineTo(to_x + (6 * to_arrow_direction), to_y - 4)
+                canvas.lineTo(to_x + (6 * to_arrow_direction), to_y + 4)
                 canvas.lineTo(to_x, to_y)
             canvas.stroke()
 
 
 class MenuPane(flx.Widget):
-
     def init(self, retico_widget, mpane, module_list, file_list):
         self.retico_widget = retico_widget
         self.mpane = mpane
         with flx.VBox(css_class="stupid-vbox") as stupid_vbox:
             stupid_vbox.set_padding("20px")
-            with flx.TreeWidget(max_selected=1, style="height: 300px;", flex=1) as self.module_tree:
+            with flx.TreeWidget(
+                max_selected=1, style="height: 300px;", flex=1
+            ) as self.module_tree:
                 for k in module_list.keys():
                     with flx.TreeItem(text=k, checked=None):
                         for m in module_list[k]:
@@ -409,7 +423,9 @@ class MenuPane(flx.Widget):
             self.stop_button = flx.Button(text="Stop", css_class="menu-button")
             self.stop_button.set_disabled(True)
             flx.Widget(style="min-height:50px;")
-            self.file_tree = flx.TreeWidget(max_selected=1, style="height:300px;", flex=1)
+            self.file_tree = flx.TreeWidget(
+                max_selected=1, style="height:300px;", flex=1
+            )
             self.update_file_tree(file_list)
             self.load_button = flx.Button(text="Load")
             self.filename_edit = flx.LineEdit()
@@ -425,7 +441,6 @@ class MenuPane(flx.Widget):
             child.dispose()
         for g in files:
             flx.TreeItem(text=g[5:], checked=None, parent=self.file_tree)
-
 
     @flx.reaction("add_module_button.pointer_click")
     def module_click(self, *events):
@@ -461,27 +476,26 @@ class MenuPane(flx.Widget):
 
 
 class ModulePane(flx.Widget):
-
     def dragMoveListener(self, event):
         target = event.target
 
-        x = float(target.getAttribute('data-x'))
-        y = float(target.getAttribute('data-y'))
+        x = float(target.getAttribute("data-x"))
+        y = float(target.getAttribute("data-y"))
 
         if event.rect:
-            target.style.width  = event.rect.width + 'px';
-            target.style.height = event.rect.height + 'px';
-            x += event.deltaRect.left;
-            y += event.deltaRect.top;
+            target.style.width = event.rect.width + "px"
+            target.style.height = event.rect.height + "px"
+            x += event.deltaRect.left
+            y += event.deltaRect.top
         else:
             x += event.dx
             y += event.dy
 
-        target.style.webkitTransform = 'translate(' + x + 'px, ' + y + 'px)'
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+        target.style.webkitTransform = "translate(" + x + "px, " + y + "px)"
+        target.style.transform = "translate(" + x + "px, " + y + "px)"
 
-        target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
+        target.setAttribute("data-x", x)
+        target.setAttribute("data-y", y)
 
         self.retico_widget.draw_strokes()
 
@@ -494,20 +508,28 @@ class ModulePane(flx.Widget):
             self.node.style["background-color"] = None
 
     def init_moving(self):
-        window.interact(".flx-ReticoModule").draggable({
-            "onmove": self.dragMoveListener,
-            "restrict": {"restriction": 'parent', "elementRect":
-                {"top": 0, "left": 0, "bottom": 1, "right": 1 }},
-        }).resizable({
-            "edges": { "left": True, "right": True, "bottom": True, "top": False },
-            "restrictEdges": {"outer": 'parent', "endOnly": True },
-            "restrictSize": {"min": {"width": 150, "height": 150 }}
-        }).on('resizemove', self.dragMoveListener)
+        window.interact(".flx-ReticoModule").draggable(
+            {
+                "onmove": self.dragMoveListener,
+                "restrict": {
+                    "restriction": "parent",
+                    "elementRect": {"top": 0, "left": 0, "bottom": 1, "right": 1},
+                },
+            }
+        ).resizable(
+            {
+                "edges": {"left": True, "right": True, "bottom": True, "top": False},
+                "restrictEdges": {"outer": "parent", "endOnly": True},
+                "restrictSize": {"min": {"width": 150, "height": 150}},
+            }
+        ).on(
+            "resizemove", self.dragMoveListener
+        )
 
     def center_view(self):
         rect = self.node.getBoundingClientRect()
-        h = rect.height/2
-        w = rect.width/2
+        h = rect.height / 2
+        w = rect.width / 2
         if h == 0 or w == 0:
             window.setTimeout(self.center_view, 10)
             return
@@ -516,28 +538,39 @@ class ModulePane(flx.Widget):
 
     def init(self, retico_widget):
         self.retico_widget = retico_widget
-        with flx.PinboardLayout(style="height: 3000px; width: 3000px;") as self.mcontainer:
-            self.canvas = flx.CanvasWidget(style="left: 0; top: 0; height:100%; width: 100%;")
+        with flx.PinboardLayout(
+            style="height: 3000px; width: 3000px;"
+        ) as self.mcontainer:
+            self.canvas = flx.CanvasWidget(
+                style="left: 0; top: 0; height:100%; width: 100%;"
+            )
         self.modules = []
         self.init_moving()
         window.setTimeout(self.center_view, 10)
 
     def create_module(self, type, parent, params):
         rect = self.node.getBoundingClientRect()
-        init_x = self.node.scrollLeft + (rect.width/2) - 75
-        init_y = self.node.scrollTop + (rect.height/2) - 75
-        module = ReticoModule(self.retico_widget, parent=self.mcontainer,
-                              style="left: %dpx; top: %dpx;" % (init_x, init_y))
+        init_x = self.node.scrollLeft + (rect.width / 2) - 75
+        init_y = self.node.scrollTop + (rect.height / 2) - 75
+        module = ReticoModule(
+            self.retico_widget,
+            parent=self.mcontainer,
+            style="left: %dpx; top: %dpx;" % (init_x, init_y),
+        )
         self.modules.append(module)
         self.retico_widget.model.register_module(type, parent, module, params)
 
     def create_existing_module(self, type, parent, x, y, w, h, id, active):
-        module = ReticoModule(self.retico_widget, parent=self.mcontainer,
-                              style="left: %dpx; top: %dpx; width: %dpx; height: %dpx;" % (x, y, w, h))
+        module = ReticoModule(
+            self.retico_widget,
+            parent=self.mcontainer,
+            style="left: %dpx; top: %dpx; width: %dpx; height: %dpx;" % (x, y, w, h),
+        )
         module.set_active(active)
-        module.display_active();
+        module.display_active()
         self.modules.append(module)
         self.retico_widget.model.register_existing_module(type, parent, module, id)
+
 
 class ReticoModule(flx.Widget):
 
@@ -552,7 +585,9 @@ class ReticoModule(flx.Widget):
         self.retico_widget = retico_widget
         self.l_title = flx.Label(text="", css_class="title-label")
         self.close_button = flx.Button(text="X", css_class="close-button")
-        with flx.VBox(style="cursor: default; padding-bottom: 30px; padding-left: 20px; padding-right:20px; padding-top: 30px;") as self.content_box:
+        with flx.VBox(
+            style="cursor: default; padding-bottom: 30px; padding-left: 20px; padding-right:20px; padding-top: 30px;"
+        ) as self.content_box:
             self.content_box.set_padding("20px")
         self.out_button_l = flx.Button(text="◀", css_class="out-button left-button")
         self.out_button_r = flx.Button(text="▶", css_class="out-button right-button")
@@ -560,8 +595,7 @@ class ReticoModule(flx.Widget):
         self.in_button_r = flx.Button(text="◀", css_class="in-button right-button")
         self.enable_button = flx.Button(text="enabled", css_class="enable-button")
         self.trigger_edit = flx.LineEdit(self.content_box)
-        self.trigger_button = flx.Button(parent=self.content_box,
-                                         text="Trigger")
+        self.trigger_button = flx.Button(parent=self.content_box, text="Trigger")
         self.trigger_edit.set_parent(None)
         self.trigger_button.set_parent(None)
         self.trigger_button.set_disabled(True)
@@ -604,12 +638,11 @@ class ReticoModule(flx.Widget):
         self.trigger_edit.set_parent(self.content_box)
         self.trigger_button.set_parent(self.content_box)
 
-    @flx.reaction('trigger_button.pointer_click')
+    @flx.reaction("trigger_button.pointer_click")
     def trigger_clicked(self):
         params_txt = self.trigger_edit.text
         print("TRIGGER CLICKED!", str(params_txt))
         self.retico_widget.model.handle_trigger(self, params_txt)
-
 
     # @flx.action
     # def set_content(self, content_list):
@@ -662,25 +695,25 @@ class ReticoModule(flx.Widget):
         else:
             self.node.style["background-color"] = "#fff"
 
-    @flx.reaction('out_button_l.pointer_click', 'out_button_r.pointer_click')
+    @flx.reaction("out_button_l.pointer_click", "out_button_r.pointer_click")
     def out_button_click(self):
         if not self.retico_widget.model.connecting_state:
             self.retico_widget.model.init_out_click(self)
         else:
             self.retico_widget.model.connect_to(self)
 
-    @flx.reaction('in_button_l.pointer_click', 'in_button_r.pointer_click')
+    @flx.reaction("in_button_l.pointer_click", "in_button_r.pointer_click")
     def in_button_click(self):
         if not self.retico_widget.model.connecting_state:
             self.retico_widget.model.init_in_click(self)
         else:
             self.retico_widget.model.connect_to(self)
 
-    @flx.reaction('close_button.pointer_click')
+    @flx.reaction("close_button.pointer_click")
     def _close(self):
         self.retico_widget.model.delete_module(self)
 
-    @flx.reaction('enable_button.pointer_click')
+    @flx.reaction("enable_button.pointer_click")
     def enable_button_click(self):
         self.retico_widget.model.toggle_module(self)
 
@@ -691,14 +724,18 @@ class ReticoModule(flx.Widget):
     def in_pos(self):
         rect = self.node.getBoundingClientRect()
         mp_node = self.retico_widget.mpane.node
-        return(rect.left+(rect.width/2)+mp_node.scrollLeft,
-               rect.bottom-13+mp_node.scrollTop)
+        return (
+            rect.left + (rect.width / 2) + mp_node.scrollLeft,
+            rect.bottom - 13 + mp_node.scrollTop,
+        )
 
     def out_pos(self):
         rect = self.node.getBoundingClientRect()
         mp_node = self.retico_widget.mpane.node
-        return(rect.left+(rect.width/2)+mp_node.scrollLeft,
-               rect.top+45+mp_node.scrollTop)
+        return (
+            rect.left + (rect.width / 2) + mp_node.scrollLeft,
+            rect.top + 45 + mp_node.scrollTop,
+        )
 
     @flx.action
     def setup(self):
@@ -723,7 +760,6 @@ class ReticoModule(flx.Widget):
 
 
 class ParameterBox(flx.Widget):
-
     def init(self, parameters, mpane, module_type, mod_parent):
         flx.Label(text="Parameters for this module:", style="color: #fff;")
         self.params = flx.LineEdit(text=parameters, style="width: 500px;")
@@ -732,7 +768,7 @@ class ParameterBox(flx.Widget):
         self.module_type = module_type
         self.mod_parent = mod_parent
 
-    @flx.reaction('okbtn.pointer_click')
+    @flx.reaction("okbtn.pointer_click")
     def ok_click(self):
         self.set_parent(None)
         self.dispose()
@@ -743,9 +779,9 @@ def main():
     resourceserver.run_server()
     a = flx.App(ReticoBuilder)
     a.launch(runtime="chrome-browser", title="ReTiCo Builder")
-    flx.start()  # Or .run() if the App should terminate after closing.
+    flx.run()  # Or .run() if the App should terminate after closing.
     resourceserver.stop_server()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

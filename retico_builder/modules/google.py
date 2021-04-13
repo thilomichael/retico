@@ -18,12 +18,19 @@ try:
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
-                self.gui.update_info("Recognized Speech:<br>%s<br/>(confidence: %.2f, stability: %.2f)" % (latest_iu.text, latest_iu.confidence, latest_iu.stability))
+                self.gui.update_info(
+                    "Recognized Speech:<br>%s<br/>(confidence: %.2f, stability: %.2f)"
+                    % (latest_iu.text, latest_iu.confidence, latest_iu.stability)
+                )
 
     class GoogleTTSModule(AbstractModule):
 
         MODULE = tts.GoogleTTSModule
-        PARAMETERS = {"language_code": "en-US", "voice_name": "en-US-Wavenet-A", "speaking_rate": 1.4}
+        PARAMETERS = {
+            "language_code": "en-US",
+            "voice_name": "en-US-Wavenet-A",
+            "speaking_rate": 1.4,
+        }
 
         def set_content(self):
             self.gui.clear_content()
@@ -34,7 +41,36 @@ try:
         def update_running_info(self):
             latest_iu = self.retico_module.latest_iu()
             if latest_iu:
-                self.gui.update_info("<b>Produced speech:</b><br/>%s" % (latest_iu.grounded_in.get_text()))
+                self.gui.update_info(
+                    "<b>Produced speech:</b><br/>%s"
+                    % (latest_iu.grounded_in.get_text())
+                )
+
+
+except ImportError:
+    pass
+
+try:
+    from retico.modules.google import translate
+
+    class GoogleTranslateModule(AbstractModule):
+
+        MODULE = translate.GoogleTranslateModule
+        PARAMETERS = {"source": "de", "destination": "en"}
+
+        def set_content(self):
+            self.gui.clear_content()
+            self.gui.add_info("Source: %s" % self.retico_module.source)
+            self.gui.add_info("Destination: %s" % self.retico_module.destination)
+
+        def update_running_info(self):
+            latest_iu = self.retico_module.latest_iu()
+            if latest_iu:
+                self.gui.update_info(
+                    "Input:<br>%s<br/>Output:<br>%s</br>"
+                    % (latest_iu.grounded_in.get_text(), latest_iu.get_text())
+                )
+
 
 except ImportError:
     pass

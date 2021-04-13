@@ -3,6 +3,7 @@ from retico_builder.modules.abstract import AbstractModule
 
 from retico.core.audio import io
 
+
 class AudioRecorderModule(AbstractModule):
 
     MODULE = io.AudioRecorderModule
@@ -14,20 +15,31 @@ class AudioRecorderModule(AbstractModule):
         self.gui.add_info("Rate: %d" % self.retico_module.rate)
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
 
+
 class AudioDispatcherModule(AbstractModule):
 
     MODULE = io.AudioDispatcherModule
-    PARAMETERS = {"target_chunk_size": 5000, "rate": 44100, "sample_width": 2,
-                 "speed": 1.0, "continuous": True, "silence": None, "interrupt" :True}
+    PARAMETERS = {
+        "target_chunk_size": 5000,
+        "rate": 44100,
+        "sample_width": 2,
+        "speed": 1.0,
+        "continuous": True,
+        "silence": None,
+        "interrupt": True,
+    }
 
     def set_content(self):
         self.gui.clear_content()
-        self.gui.add_info("Target chunk size: %d" % self.retico_module.target_chunk_size)
+        self.gui.add_info(
+            "Target chunk size: %d" % self.retico_module.target_chunk_size
+        )
         self.gui.add_info("Rate: %d" % self.retico_module.rate)
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
-        self.gui.add_info("Speed: %d" % self.retico_module.speed)
+        self.gui.add_info("Speed: %f" % self.retico_module.speed)
         self.gui.add_info("Continuous: %s" % self.retico_module.continuous)
         self.gui.add_info("Silence: %d" % len(self.retico_module.silence))
+
 
 class SpeakerModule(AbstractModule):
 
@@ -40,6 +52,7 @@ class SpeakerModule(AbstractModule):
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
         self.gui.add_info("Using Speaker: %s" % self.retico_module.use_speaker)
 
+
 class StreamingSpeakerModule(AbstractModule):
 
     MODULE = io.StreamingSpeakerModule
@@ -50,6 +63,7 @@ class StreamingSpeakerModule(AbstractModule):
         self.gui.add_info("Chunk Size: %d" % self.retico_module.chunk_size)
         self.gui.add_info("Rate: %d" % self.retico_module.rate)
         self.gui.add_info("Sample Width: %d" % self.retico_module.sample_width)
+
 
 class MicrophoneModule(AbstractModule):
 
