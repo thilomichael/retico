@@ -68,3 +68,4 @@ confirm:address
 stalling:telephone
 welcome
 provide_info:num_of_persons,pizza_type
+misunderstanding

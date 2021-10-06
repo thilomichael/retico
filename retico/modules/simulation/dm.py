@@ -150,9 +150,11 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
     SLEEP_TIME = 0.05
     """The time to sleep between dialogue state checks. This is not necessary
     but helps decreasing the load."""
-    P_PROCESS = 0.30
+    P_PROCESS = 0.70
     """The threshold of EoT prediction value that triggers the processing of the
     next dialogue act."""
+    INTERRUPT_DAMPENING = 0.20
+    """The dampening of turn taking after an interruption has occured in seconds."""
 
     EVENT_DIALOGUE_ENDED = "dialogue_end"
     """Name of the event that gets called when the agent dispatches `goodbye`"""
@@ -166,7 +168,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
     EVENT_HEARD = "heard"
     """The name of the event that gets called when the agent receives a
     DialogueAct from the User."""
-    EVENT_DOUBLE_TALK = "doubeltalk"
+    EVENT_DOUBLE_TALK = "doubletalk"
     """The name of the event that gets called when a double talk interruption
     is detected and the agent silences itself to not be rude."""
 
@@ -204,7 +206,11 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
 
         self.suspended = False
         self.rnd = 0
+        self.tt_delay = 0.0
         self.reset_random()
+
+        self.misunderstanding = False
+        self.misunderstood_concepts = {}
 
     def reset_random(self):
         """Resets the internal random variable to a new random value between 0
@@ -298,7 +304,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         self.other.utter_start = now
         self.other.utter_end = now
 
-    def handle_dilaogue_act(self, input_iu):
+    def handle_dialogue_act(self, input_iu):
         """Set the current act of the interlocutor.
 
         If the EoT prediction of the interlocutors current dialogue utterance
@@ -316,6 +322,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
             current_str = self._create_act_string(oca.act, oca.concepts)
         if self.other.completion > self.P_PROCESS:
             if incoming_str != current_str:
+                # TODO: Insert packet-loss detection and according action here
                 self.other.current_act = input_iu
                 self.dialogue_manager.process_act(input_iu.act, input_iu.concepts)
                 self.event_call(self.EVENT_HEARD, {"iu": input_iu})
@@ -387,7 +394,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
         """
         # First, we switch between the different types of IUs
         if isinstance(input_iu, DialogueActIU):
-            self.handle_dilaogue_act(input_iu)
+            self.handle_dialogue_act(input_iu)
         elif isinstance(input_iu, DispatchedAudioIU):
             self.handle_dispatched_audio(input_iu)
         elif isinstance(input_iu, EndOfTurnIU):
@@ -450,8 +457,15 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
 
         If the act that the dialogue manager created is "goodbye" it calls the
         event `EVENT_DIALOGUE_ENDED`.
+
+        If the TurnTakingDialogueManagerModule decides that a misunderstanding occurs
+        via the self.misunderstanding flag, the underlying dialogue manager is not
+        triggered and only a misunderstanding with the correct concepts is dispatched.
         """
-        act, concepts = self.dialogue_manager.next_act()
+        if self.misunderstanding:
+            act, concepts = "misunderstanding", self.misunderstood_concepts
+        else:
+            act, concepts = self.dialogue_manager.next_act()
         iu = self.dispatch_act(act, concepts)
         self.event_call(self.EVENT_SAID, data={"iu": iu})
         if act == "goodbye":
@@ -523,6 +537,8 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
                 if result > 0:
                     result -= 0.5
 
+        result = result + (self.tt_delay / 2)  # Add dampening due to interruptions
+
         return result
 
     def pause_model(self):
@@ -560,8 +576,12 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
                     val = 0.2
             elif self.me.last_act.act == "greeting":
                 val += 0.5
+
         if val < 0:  # This should never happen...?
             val = 0.2
+
+        val = val + self.tt_delay  # Add dampening due to interruptions
+
         return val
 
     def should_interrupt(self):
@@ -664,6 +684,7 @@ class TurnTakingDialogueManagerModule(abstract.AbstractModule):
                             },
                         )
                         self.silence()
+                        self.tt_delay += self.INTERRUPT_DAMPENING
 
             time.sleep(self.SLEEP_TIME)
 

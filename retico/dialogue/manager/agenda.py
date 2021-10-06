@@ -403,7 +403,9 @@ class AgendaDialogueManager(AbstractDialogueManager):
         return None, None
 
     def _rule_MISUNDERSTANDING(self, entities):
-        return self.PROVIDE_INFO, entities
+        if entities:
+            return self.PROVIDE_INFO, entities
+        return None, None
 
     def _rule_THANKS(self, entities):
         self.thanked = True
