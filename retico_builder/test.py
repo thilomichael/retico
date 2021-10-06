@@ -1,12 +1,19 @@
 import sys
-from retico.core.audio.io import MicrophoneModule, SpeakerModule, AudioDispatcherModule, StreamingSpeakerModule, AudioRecorderModule
+from retico.core.audio.io import (
+    MicrophoneModule,
+    SpeakerModule,
+    AudioDispatcherModule,
+    StreamingSpeakerModule,
+    AudioRecorderModule,
+)
 from retico.core.debug.general import CallbackModule
 from retico.core.text.asr import TextDispatcherModule
 
 from retico.modules.google.asr import GoogleASRModule
 from retico.modules.google.tts import GoogleTTSModule
 from retico.modules.mary.tts import MaryTTSModule
-from retico.modules.rasa.nlu import RasaNLUModule
+
+# from retico.modules.rasa.nlu import RasaNLUModule
 
 from retico.modules.simulation.dm import ConvSimDialogueManagerModule
 from retico.modules.simulation.dm import AgendaDialogueManagerModule
@@ -21,6 +28,7 @@ from retico.modules.simulation.eot import SimulatedEoTModule
 from retico.modules.net.network import DelayedNetworkModule
 
 from retico import headless
+
 
 def audio_demo():
     m1 = MicrophoneModule(5000)
@@ -49,8 +57,10 @@ def audio_demo():
 
 def google_asr():
     m1 = MicrophoneModule(5000)
-    m2 = GoogleASRModule("en-US") # en-US or de-DE or ....
-    m3 = CallbackModule(callback=lambda x: print("%s (%f) - %s" % (x.text, x.stability, x.final)))
+    m2 = GoogleASRModule("en-US")  # en-US or de-DE or ....
+    m3 = CallbackModule(
+        callback=lambda x: print("%s (%f) - %s" % (x.text, x.stability, x.final))
+    )
 
     m1.subscribe(m2)
     m2.subscribe(m3)
@@ -64,6 +74,7 @@ def google_asr():
     m1.stop()
     m2.stop()
     m3.stop()
+
 
 def repeat_demo():
     m1 = MicrophoneModule(5000)
@@ -104,10 +115,13 @@ def repeat_demo():
     m5.stop()
     m6.stop()
 
+
 def rasa_nlu():
     m1 = MicrophoneModule(5000)
     m2 = GoogleASRModule("en-US")
-    m3 = CallbackModule(callback=lambda x: print("%s (%f) - %s" % (x.text, x.confidence, x.final)))
+    m3 = CallbackModule(
+        callback=lambda x: print("%s (%f) - %s" % (x.text, x.confidence, x.final))
+    )
     m4 = RasaNLUModule("data/rasa/models/nlu/default/current")
     m5 = CallbackModule(callback=lambda x: print(x.act, "-", x.concepts))
 
@@ -138,24 +152,28 @@ def rasa_nlu():
     m4.stop()
     m5.stop()
 
+
 def simulation_mary(caller_dm, callee_dm, convtype, delay):
     caller_tts = MaryTTSModule("de", "bits1-hsmm")
     callee_tts = MaryTTSModule("de", "bits3-hsmm")
     simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay)
+
 
 def simulation_google(caller_dm, callee_dm, convtype, delay):
     caller_tts = GoogleTTSModule("de-DE", "de-DE-Wavenet-A")
     callee_tts = GoogleTTSModule("de-DE", "de-DE-Wavenet-B")
     simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay)
 
+
 def simulation_simasr(caller_dm, callee_dm, convtype, delay):
     caller_tts = SimulatedTTSModule()
     callee_tts = SimulatedTTSModule()
     simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay)
 
+
 def simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay):
     caller_nlg = SimulatedNLGModule("data/%s/audio" % convtype, agent_type="caller")
-    caller_io  = AudioDispatcherModule(5000)
+    caller_io = AudioDispatcherModule(5000)
     caller_asr = SimulatedASRModule()
     caller_nlu = SimulatedNLUModule()
     caller_eot = SimulatedEoTModule()
@@ -163,7 +181,7 @@ def simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay):
     caller_recorder = AudioRecorderModule("recording_caller.wav")
 
     callee_nlg = SimulatedNLGModule("data/%s/audio" % convtype, agent_type="callee")
-    callee_io  = AudioDispatcherModule(5000)
+    callee_io = AudioDispatcherModule(5000)
     callee_asr = SimulatedASRModule()
     callee_nlu = SimulatedNLUModule()
     callee_eot = SimulatedEoTModule()
@@ -258,6 +276,7 @@ def simulation(caller_tts, callee_tts, caller_dm, callee_dm, convtype, delay):
     callee_speaker.stop()
     callee_recorder.stop()
 
+
 def _get_sim_func(simtype):
     if simtype == "gtts":
         return simulation_google
@@ -266,33 +285,56 @@ def _get_sim_func(simtype):
     else:
         return simulation_simasr
 
+
 def convsim_simulation(convtype, simtype, delay):
-    caller_dm = ConvSimDialogueManagerModule("data/%s/callerfile.ini" % convtype, "data/%s/audio" % convtype, "caller", False)
-    callee_dm = ConvSimDialogueManagerModule("data/%s/calleefile.ini" % convtype, "data/%s/audio" % convtype, "callee", True)
+    caller_dm = ConvSimDialogueManagerModule(
+        "data/%s/callerfile.ini" % convtype, "data/%s/audio" % convtype, "caller", False
+    )
+    callee_dm = ConvSimDialogueManagerModule(
+        "data/%s/calleefile.ini" % convtype, "data/%s/audio" % convtype, "callee", True
+    )
     simfunc = _get_sim_func(simtype)
     simfunc(caller_dm, callee_dm, convtype, delay)
 
 
 def agenda_simulation(convtype, simtype, delay):
-    caller_dm = AgendaDialogueManagerModule("data/%s/callerfile.ini" % convtype, "data/%s/available_acts_%s_caller.txt" % (convtype, convtype), False)
-    callee_dm = AgendaDialogueManagerModule("data/%s/calleefile.ini" % convtype, "data/%s/available_acts_%s_callee.txt" % (convtype, convtype), True)
+    caller_dm = AgendaDialogueManagerModule(
+        "data/%s/callerfile.ini" % convtype,
+        "data/%s/available_acts_%s_caller.txt" % (convtype, convtype),
+        False,
+    )
+    callee_dm = AgendaDialogueManagerModule(
+        "data/%s/calleefile.ini" % convtype,
+        "data/%s/available_acts_%s_callee.txt" % (convtype, convtype),
+        True,
+    )
     simfunc = _get_sim_func(simtype)
     simfunc(caller_dm, callee_dm, convtype, delay)
+
 
 def ngram_simulation(convtype, simtype, delay):
-    caller_dm = NGramDialogueManagerModule("data/%s/ngram_dm/combined-model.pickle" % convtype, False)
-    callee_dm = NGramDialogueManagerModule("data/%s/ngram_dm/combined-model.pickle" % convtype, True)
+    caller_dm = NGramDialogueManagerModule(
+        "data/%s/ngram_dm/combined-model.pickle" % convtype, False
+    )
+    callee_dm = NGramDialogueManagerModule(
+        "data/%s/ngram_dm/combined-model.pickle" % convtype, True
+    )
     simfunc = _get_sim_func(simtype)
     simfunc(caller_dm, callee_dm, convtype, delay)
+
 
 def rasa_simulation(convtype, simtype, delay):
-    caller_dm = RasaDialogueManagerModule("data/%s/rasa_models/caller/" % convtype, False)
-    callee_dm = RasaDialogueManagerModule("data/%s/rasa_models/callee/" % convtype, True)
+    caller_dm = RasaDialogueManagerModule(
+        "data/%s/rasa_models/caller/" % convtype, False
+    )
+    callee_dm = RasaDialogueManagerModule(
+        "data/%s/rasa_models/callee/" % convtype, True
+    )
     simfunc = _get_sim_func(simtype)
     simfunc(caller_dm, callee_dm, convtype, delay)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     simtype = ""
     if len(sys.argv) > 3:
         simtype = sys.argv[3]
