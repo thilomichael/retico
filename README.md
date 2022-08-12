@@ -1,3 +1,6 @@
+# THIS REPOSITORY IS NO LONGER MAINTAINED
+# PLEASE GO TO [github.com/retico-team](https://github.com/retico-team/) FOR THE NEW VERSION OF RETICO
+
 ReTiCo is a python framework to enable real time incremental conversational spoken dialogue systems.
 The architecture is based on the paper of Schlangen and Skantze "A General, Abstract Model of Incremental Dialogue Processing" (2011).
 
